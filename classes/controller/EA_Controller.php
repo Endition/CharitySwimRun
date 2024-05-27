@@ -1,23 +1,23 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-use EndeAuswertung\classes\model\EA_TeilnehmerRepository;
-use EndeAuswertung\classes\model\EA_KonfigurationRepository;
-use EndeAuswertung\classes\renderer\EA_FormRenderer;
-use EndeAuswertung\classes\renderer\EA_Renderer;
-use EndeAuswertung\classes\model\EA_Messages;
-use EndeAuswertung\classes\model\EA_AltersklasseRepository;
-use EndeAuswertung\classes\model\EA_ImpulsRepository;
-use EndeAuswertung\classes\model\EA_Konfiguration;
-use EndeAuswertung\classes\model\EA_VereinRepository;
-use EndeAuswertung\classes\model\EA_MannschaftRepository;
-use EndeAuswertung\classes\model\EA_SpecialEvaluationRepository;
-use EndeAuswertung\classes\model\EA_StreckeRepository;
-use EndeAuswertung\classes\model\EA_MannschaftskategorieRepository;
-use EndeAuswertung\classes\model\EA_UserRepository;
-use EndeAuswertung\classes\model\EA_UrkundenelementRepository;
+use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_KonfigurationRepository;
+use CharitySwimRun\classes\renderer\EA_FormRenderer;
+use CharitySwimRun\classes\renderer\EA_Renderer;
+use CharitySwimRun\classes\model\EA_Messages;
+use CharitySwimRun\classes\model\EA_AltersklasseRepository;
+use CharitySwimRun\classes\model\EA_ImpulsRepository;
+use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_VereinRepository;
+use CharitySwimRun\classes\model\EA_MannschaftRepository;
+use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
+use CharitySwimRun\classes\model\EA_StreckeRepository;
+use CharitySwimRun\classes\model\EA_MannschaftskategorieRepository;
+use CharitySwimRun\classes\model\EA_UserRepository;
+use CharitySwimRun\classes\model\EA_UrkundenelementRepository;
 
 class EA_Controller
 {

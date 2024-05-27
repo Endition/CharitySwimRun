@@ -1,5 +1,5 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;

@@ -1,10 +1,10 @@
 <?php
-namespace EndeAuswertung\classes\helper;
+namespace CharitySwimRun\classes\helper;
 
 use Doctrine\DBAL\Connection;
-use EndeAuswertung\classes\model\EA_Konfiguration;
-use EndeAuswertung\classes\model\EA_Repository;
-use EndeAuswertung\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
 
 class EA_StatistikHelper
 {

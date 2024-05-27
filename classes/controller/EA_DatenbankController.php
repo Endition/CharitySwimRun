@@ -1,14 +1,14 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
-use EndeAuswertung\classes\model\EA_Message;
-use EndeAuswertung\classes\model\EA_Urkunde;
-use EndeAuswertung\classes\renderer\EA_FormRenderer;
-use EndeAuswertung\classes\model\EA_Repository;
-use EndeAuswertung\classes\model\EA_Messages;
-use EndeAuswertung\classes\model\EA_Transponder;
-use EndeAuswertung\classes\model\EA_UrkundenelementRepository;
+use CharitySwimRun\classes\model\EA_Message;
+use CharitySwimRun\classes\model\EA_Urkunde;
+use CharitySwimRun\classes\renderer\EA_FormRenderer;
+use CharitySwimRun\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_Messages;
+use CharitySwimRun\classes\model\EA_Transponder;
+use CharitySwimRun\classes\model\EA_UrkundenelementRepository;
 
 //Because this controller creates the DB connection, no heritage
 class EA_DatenbankController

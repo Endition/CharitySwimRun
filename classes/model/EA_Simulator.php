@@ -1,6 +1,6 @@
 <?php
 
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 /**
  * Provides fake data for simulation

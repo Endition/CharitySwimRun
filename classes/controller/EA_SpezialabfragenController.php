@@ -1,9 +1,9 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
-use EndeAuswertung\classes\model\EA_Teilnehmer;
-use EndeAuswertung\classes\helper\EA_PlatzierungBerechner;
+use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\helper\EA_PlatzierungBerechner;
 
 class EA_SpezialabfragenController extends EA_Controller
 {

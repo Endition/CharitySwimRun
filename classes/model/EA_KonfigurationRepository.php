@@ -1,8 +1,8 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
-use EndeAuswertung\classes\model\EA_Konfiguration;
-use EndeAuswertung\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
 class EA_KonfigurationRepository extends EA_Repository

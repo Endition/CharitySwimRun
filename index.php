@@ -3,10 +3,10 @@
 // Session start, has to be the first thing
 session_start();
 error_reporting(E_ALL);
-use \EndeAuswertung\classes\core\EA_MenueRenderer;
-use \EndeAuswertung\classes\controller\EA_AdminController;
-use \EndeAuswertung\classes\model\EA_Repository;
-use \EndeAuswertung\classes\controller\EA_DatenbankController;
+use \CharitySwimRun\classes\core\EA_MenueRenderer;
+use \CharitySwimRun\classes\controller\EA_AdminController;
+use \CharitySwimRun\classes\model\EA_Repository;
+use \CharitySwimRun\classes\controller\EA_DatenbankController;
 
 require_once 'config/config.php';
 require_once CORE_PATH . 'EA_Autoloader.php';

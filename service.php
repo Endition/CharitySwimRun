@@ -1,9 +1,9 @@
 <?php
 //has to be the very first thing
 session_start();
-use \EndeAuswertung\classes\controller\EA_PDFController;
-use EndeAuswertung\classes\model\EA_User;
-use \EndeAuswertung\classes\model\EA_Repository;
+use \CharitySwimRun\classes\controller\EA_PDFController;
+use CharitySwimRun\classes\model\EA_User;
+use \CharitySwimRun\classes\model\EA_Repository;
 
 
 require_once 'config/config.php';

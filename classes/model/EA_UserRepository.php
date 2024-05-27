@@ -1,7 +1,7 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
-use EndeAuswertung\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
 
@@ -28,22 +28,22 @@ class EA_UserRepository extends EA_Repository
     
     public function loadByUsername(string $username): ?EA_User
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_User')->findOneBy(array('username' => $username));
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_User')->findOneBy(array('username' => $username));
     }
 
     public function checkIfAdminExist(): ?EA_User
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_User')->findOneBy(array('userroleId' => EA_User::USERROLE_ADMIN));
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_User')->findOneBy(array('userroleId' => EA_User::USERROLE_ADMIN));
     }
 
     public function loadById(int $id): ?EA_User
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_User')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_User')->find($id);
     }
 
     public function loadList(): array
     {
-        return $this->entityManager->getRepository("EndeAuswertung\classes\model\EA_User")->findAll();
+        return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_User")->findAll();
     }
 
     public function delete(EA_User $user): void

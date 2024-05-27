@@ -1,8 +1,8 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
-use EndeAuswertung\classes\model\EA_SpecialEvaluation;
-use EndeAuswertung\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_SpecialEvaluation;
+use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
 
@@ -29,7 +29,7 @@ class EA_SpecialEvaluationRepository extends EA_Repository
 
     public function loadById(int $id): ?EA_SpecialEvaluation
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_SpecialEvaluation')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_SpecialEvaluation')->find($id);
     }
 
     public function loadList(string $orderBy = "id"): array
@@ -50,7 +50,7 @@ class EA_SpecialEvaluationRepository extends EA_Repository
 
     public function isAvailable(string $field,string $bezeichnung): int
     {
-        return 0 === $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_SpecialEvaluation')->count([$field => $bezeichnung]);
+        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_SpecialEvaluation')->count([$field => $bezeichnung]);
     }
 
     public function getListForSelectField(): array

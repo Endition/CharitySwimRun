@@ -1,16 +1,16 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
-use EndeAuswertung\classes\model\EA_SpecialEvaluation;
-use EndeAuswertung\classes\renderer\EA_FormRenderer;
-use EndeAuswertung\classes\renderer\EA_Renderer;
-use EndeAuswertung\classes\model\EA_Message;
-use EndeAuswertung\classes\model\EA_Messages;
-use EndeAuswertung\classes\model\EA_SpecialEvaluationRepository;
-use EndeAuswertung\classes\model\EA_StreckeRepository;
-use EndeAuswertung\classes\model\EA_AltersklasseRepository;
+use CharitySwimRun\classes\model\EA_SpecialEvaluation;
+use CharitySwimRun\classes\renderer\EA_FormRenderer;
+use CharitySwimRun\classes\renderer\EA_Renderer;
+use CharitySwimRun\classes\model\EA_Message;
+use CharitySwimRun\classes\model\EA_Messages;
+use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
+use CharitySwimRun\classes\model\EA_StreckeRepository;
+use CharitySwimRun\classes\model\EA_AltersklasseRepository;
 
 
 

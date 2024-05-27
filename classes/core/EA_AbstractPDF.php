@@ -1,20 +1,20 @@
 <?php
 
-namespace EndeAuswertung\classes\core;
+namespace CharitySwimRun\classes\core;
 
 use Doctrine\ORM\EntityManager;
 
-use EndeAuswertung\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Teilnehmer;
 use Smarty\Smarty;
-use EndeAuswertung\classes\model\EA_AltersklasseRepository;
-use EndeAuswertung\classes\model\EA_StreckeRepository;
-use EndeAuswertung\classes\model\EA_Konfiguration;
-use EndeAuswertung\classes\model\EA_KonfigurationRepository;
-use EndeAuswertung\classes\model\EA_TeilnehmerRepository;
-use EndeAuswertung\classes\model\EA_Strecke;
-use EndeAuswertung\classes\model\EA_Altersklasse;
-use EndeAuswertung\classes\model\EA_MannschaftRepository;
-use EndeAuswertung\classes\model\EA_VereinRepository;
+use CharitySwimRun\classes\model\EA_AltersklasseRepository;
+use CharitySwimRun\classes\model\EA_StreckeRepository;
+use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_KonfigurationRepository;
+use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_Strecke;
+use CharitySwimRun\classes\model\EA_Altersklasse;
+use CharitySwimRun\classes\model\EA_MannschaftRepository;
+use CharitySwimRun\classes\model\EA_VereinRepository;
 require_once (ROOT_PATH.'/vendor/autoload.php');
 
 abstract class EA_AbstractPDF extends \TCPDF
@@ -99,7 +99,7 @@ abstract class EA_AbstractPDF extends \TCPDF
         // Set font
         $this->SetFont('helvetica', '', 8);
         // Page number
-        $this->Cell(0, 10, 'Seite ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages() . ' - erstellt am:' . date("d.m.Y H:i") . ' Uhr mit ENDEAuswertung', 0, false, 'C', 0, '', 0, false, 'T', 'M');
+        $this->Cell(0, 10, 'Seite ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages() . ' - erstellt am:' . date("d.m.Y H:i") . ' Uhr mit CharitySwimRun', 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
 
 

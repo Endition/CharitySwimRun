@@ -1,9 +1,9 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-use EndeAuswertung\classes\helper\EA_PlatzierungBerechner;
+use CharitySwimRun\classes\helper\EA_PlatzierungBerechner;
 
 class EA_ErgebnisController extends EA_Controller
 {

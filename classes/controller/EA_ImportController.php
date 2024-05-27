@@ -1,17 +1,17 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 
-use EndeAuswertung\classes\model\EA_AltersklasseRepository;
+use CharitySwimRun\classes\model\EA_AltersklasseRepository;
 
-use EndeAuswertung\classes\model\EA_MannschaftRepository;
-use EndeAuswertung\classes\model\EA_KonfigurationRepository;
-use EndeAuswertung\classes\model\EA_StreckeRepository;
-use EndeAuswertung\classes\model\EA_Teilnehmer;
-use EndeAuswertung\classes\model\EA_VereinRepository;
-use EndeAuswertung\classes\model\EA_Message;
+use CharitySwimRun\classes\model\EA_MannschaftRepository;
+use CharitySwimRun\classes\model\EA_KonfigurationRepository;
+use CharitySwimRun\classes\model\EA_StreckeRepository;
+use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_VereinRepository;
+use CharitySwimRun\classes\model\EA_Message;
 
 class EA_ImportController extends EA_Controller
 {

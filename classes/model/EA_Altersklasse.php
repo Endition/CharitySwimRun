@@ -1,6 +1,6 @@
 <?php
 
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;

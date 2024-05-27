@@ -1,11 +1,11 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-use EndeAuswertung\classes\model\EA_Impuls;
-use EndeAuswertung\classes\model\EA_Teilnehmer;
-use EndeAuswertung\classes\model\EA_Message;
+use CharitySwimRun\classes\model\EA_Impuls;
+use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Message;
 
 
 

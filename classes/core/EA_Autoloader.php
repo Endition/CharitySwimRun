@@ -1,9 +1,9 @@
 <?php
 
-namespace EndeAuswertung\classes\core;
+namespace CharitySwimRun\classes\core;
 /** specify extensions that may be loaded */
 spl_autoload_extensions('.php');
-spl_autoload_register('EndeAuswertung\classes\core\Autoloader::load');
+spl_autoload_register('CharitySwimRun\classes\core\Autoloader::load');
 
 class Autoloader
 {

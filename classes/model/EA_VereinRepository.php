@@ -1,8 +1,8 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 use Doctrine\ORM\EntityManager;
-use EndeAuswertung\classes\model\EA_Verein;
+use CharitySwimRun\classes\model\EA_Verein;
 
 
 class EA_VereinRepository extends EA_Repository
@@ -33,12 +33,12 @@ class EA_VereinRepository extends EA_Repository
 
     public function loadById(int $id): ?EA_Verein
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Verein')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Verein')->find($id);
     }
 
     public function isAvailable(string $field,string $bezeichnung): int
     {
-        return 0 === $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Verein')->count([$field => $bezeichnung]);
+        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Verein')->count([$field => $bezeichnung]);
     }
 
     public function isInUse(EA_Verein $verein): bool
@@ -48,7 +48,7 @@ class EA_VereinRepository extends EA_Repository
 
     public function loadByBezeichnung(string $bezeichnung): ?EA_Verein
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Verein')->findOneBy(["verein"=>$bezeichnung]);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Verein')->findOneBy(["verein"=>$bezeichnung]);
     }
 
     public function loadList(string $orderBy = "id", ?string $searchVerein = null): array

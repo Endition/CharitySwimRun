@@ -1,6 +1,6 @@
 <?php
 
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 
 class EA_Message extends EA_Messages

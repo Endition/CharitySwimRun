@@ -1,9 +1,9 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 use DateTimeInterface;
-use EndeAuswertung\classes\model\EA_Altersklasse;
-use EndeAuswertung\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_Altersklasse;
+use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
 
@@ -22,7 +22,7 @@ class EA_AltersklasseRepository extends EA_Repository
 
     public function isAvailable(string $field,string $bezeichnung): int
     {
-        return 0 === $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Altersklasse')->count([$field => $bezeichnung]);
+        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Altersklasse')->count([$field => $bezeichnung]);
     }
     
     public function create(EA_Altersklasse $altersklasse): EA_Altersklasse
@@ -34,7 +34,7 @@ class EA_AltersklasseRepository extends EA_Repository
 
     public function loadById(int $id): ?EA_Altersklasse
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Altersklasse')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Altersklasse')->find($id);
     }
 
     public function loadList(string $orderBy = "id"): array

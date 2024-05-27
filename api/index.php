@@ -3,9 +3,9 @@
 session_start();
 header("Content-Type: application/json");
 
-use EndeAuswertung\classes\model\EA_User;
-use EndeAuswertung\classes\model\EA_Repository;
-use EndeAuswertung\classes\controller\EA_ApiController;
+use CharitySwimRun\classes\model\EA_User;
+use CharitySwimRun\classes\model\EA_Repository;
+use CharitySwimRun\classes\controller\EA_ApiController;
 
 // error_reporting(E_ALL);
 // ini_set('display_errors', true);

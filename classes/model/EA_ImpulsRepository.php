@@ -1,8 +1,8 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
-use EndeAuswertung\classes\model\EA_Impuls;
-use EndeAuswertung\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_Impuls;
+use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
 class EA_ImpulsRepository extends EA_Repository
@@ -27,7 +27,7 @@ class EA_ImpulsRepository extends EA_Repository
 
     public function loadById(int $id): ?EA_Impuls
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Impuls')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Impuls')->find($id);
     }
 
     public function loadList(?string $order = "i.timestamp", ?string $orderRichtung = "ASC", ?int $limit = null,?string $groupby = null, ?int $bigerAsTimestamp=null): array
@@ -105,7 +105,7 @@ class EA_ImpulsRepository extends EA_Repository
 
     public function deleteAllByTeilnehmer(EA_Teilnehmer $EA_Teilnehmer): bool
     {
-        $query = $this->entityManager->createQuery('DELETE EndeAuswertung\classes\model\EA_Impuls i WHERE i.teilnehmerId = :teilnehmerId');
+        $query = $this->entityManager->createQuery('DELETE CharitySwimRun\classes\model\EA_Impuls i WHERE i.teilnehmerId = :teilnehmerId');
         $query->setParameter(":teilnehmerId",$EA_Teilnehmer->getId());
         $query->execute();
         return true;

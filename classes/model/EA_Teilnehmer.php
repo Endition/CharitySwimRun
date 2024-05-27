@@ -1,14 +1,14 @@
 <?php
 
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
-use EndeAuswertung\classes\helper\EA_Helper;
-use EndeAuswertung\classes\model\EA_Altersklasse;
+use CharitySwimRun\classes\helper\EA_Helper;
+use CharitySwimRun\classes\model\EA_Altersklasse;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 

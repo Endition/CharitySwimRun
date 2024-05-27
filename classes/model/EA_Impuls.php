@@ -1,8 +1,8 @@
 <?php
 
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
-use EndeAuswertung\classes\helper\EA_Helper;
+use CharitySwimRun\classes\helper\EA_Helper;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 

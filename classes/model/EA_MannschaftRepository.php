@@ -1,9 +1,9 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 
-use EndeAuswertung\classes\model\EA_Mannschaft;
-use EndeAuswertung\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_Mannschaft;
+use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
 class EA_MannschaftRepository extends EA_Repository
@@ -27,12 +27,12 @@ class EA_MannschaftRepository extends EA_Repository
 
     public function isAvailable(string $field,string $bezeichnung): int
     {
-        return 0 === $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Mannschaft')->count([$field => $bezeichnung]);
+        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Mannschaft')->count([$field => $bezeichnung]);
     }
 
     public function loadById(int $id): ?EA_Mannschaft
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Mannschaft')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Mannschaft')->find($id);
     }
 
     public function loadList(string $orderBy = "id"): array
@@ -43,7 +43,7 @@ class EA_MannschaftRepository extends EA_Repository
             ->from(EA_Mannschaft::class, 'm',"m.id")
             ->orderBy('m.'.$orderBy);        
         return $queryBuilder->getQuery()->getResult();
-        //return $this->entityManager->getRepository("EndeAuswertung\classes\model\EA_Mannschaft")->findAll();
+        //return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_Mannschaft")->findAll();
     }
 
     public function getListForSelectField(): array

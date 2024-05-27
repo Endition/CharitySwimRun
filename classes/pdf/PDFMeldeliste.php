@@ -1,9 +1,9 @@
 <?php
 
-namespace EndeAuswertung\classes\pdf;
+namespace CharitySwimRun\classes\pdf;
 
 use Doctrine\ORM\EntityManager;
-use EndeAuswertung\classes\core\EA_AbstractPDF;
+use CharitySwimRun\classes\core\EA_AbstractPDF;
 
 class PDFMeldeliste extends EA_AbstractPDF
 {

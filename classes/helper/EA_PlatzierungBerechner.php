@@ -1,13 +1,13 @@
 <?php
-namespace EndeAuswertung\classes\helper;
+namespace CharitySwimRun\classes\helper;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 
-use EndeAuswertung\classes\model\EA_SpecialEvaluation;
-use EndeAuswertung\classes\model\EA_TeilnehmerRepository;
-use EndeAuswertung\classes\model\EA_KonfigurationRepository;
-use EndeAuswertung\classes\model\EA_ImpulsRepository;
+use CharitySwimRun\classes\model\EA_SpecialEvaluation;
+use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_KonfigurationRepository;
+use CharitySwimRun\classes\model\EA_ImpulsRepository;
 
 class EA_PlatzierungBerechner
 {

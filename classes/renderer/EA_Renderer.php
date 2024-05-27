@@ -1,10 +1,10 @@
 <?php
 
-namespace EndeAuswertung\classes\renderer;
+namespace CharitySwimRun\classes\renderer;
 
 require_once (ROOT_PATH.'/vendor/autoload.php');
 
-use EndeAuswertung\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_Konfiguration;
 use Smarty\Smarty;
 
 class EA_Renderer extends EA_AbstractRenderer

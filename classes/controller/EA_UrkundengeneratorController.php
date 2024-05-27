@@ -1,11 +1,11 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
 
-use EndeAuswertung\classes\model\EA_Urkundenelement;
-use EndeAuswertung\classes\model\EA_Message;
+use CharitySwimRun\classes\model\EA_Urkundenelement;
+use CharitySwimRun\classes\model\EA_Message;
 
 class EA_UrkundengeneratorController  extends EA_Controller
 {

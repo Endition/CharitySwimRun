@@ -1,5 +1,5 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 class EA_Urkunde
 {

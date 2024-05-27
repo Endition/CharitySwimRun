@@ -1,13 +1,13 @@
 <?php
 
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 
-use EndeAuswertung\classes\model\EA_Repository;
-use EndeAuswertung\classes\pdf\PDFMeldeliste;
-use EndeAuswertung\classes\pdf\PDFErgebnisliste;
-use EndeAuswertung\classes\pdf\PDFUrkunde;
-use EndeAuswertung\classes\pdf\PDFRundenzeiten;
+use CharitySwimRun\classes\model\EA_Repository;
+use CharitySwimRun\classes\pdf\PDFMeldeliste;
+use CharitySwimRun\classes\pdf\PDFErgebnisliste;
+use CharitySwimRun\classes\pdf\PDFUrkunde;
+use CharitySwimRun\classes\pdf\PDFRundenzeiten;
 
 class EA_PDFController extends EA_Controller
 {

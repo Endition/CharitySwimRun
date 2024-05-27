@@ -1,5 +1,5 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use DateTime;
 use Doctrine\ORM\EntityManager;

@@ -4,7 +4,7 @@
 <h1>CharitySwimRun</h1>
 24h/Benefiz-Schwimmen und -Läufe abwickeln. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken.
 Gedacht ist die Software für den temporären Einsatz auf einem Webserver in einem lokalen Netzwerk. 
-Die Software läuft im Browser und ist responsive. Sie kann also von allen Geräten im Netzwerk ohne weitere Voraussetzungen benutzt werden.
+Die Software läuft im Browser und ist responsive. Sie kann also von allen Geräten im Netzwerk ohne weitere Voraussetzungen benutzt werden. Danke an <a href="https://github.com/zuramai/mazer">zuramai</a> für das Dashboard.
 
 Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch in deutsch. Wird stetig umgebaut)
 

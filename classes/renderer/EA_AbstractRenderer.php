@@ -1,6 +1,6 @@
 <?php
 
-namespace EndeAuswertung\classes\renderer;
+namespace CharitySwimRun\classes\renderer;
 
 class EA_AbstractRenderer
 {

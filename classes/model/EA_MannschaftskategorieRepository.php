@@ -1,8 +1,8 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
-use EndeAuswertung\classes\model\EA_Mannschaftskategorie;
-use EndeAuswertung\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_Mannschaftskategorie;
+use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
 class EA_MannschaftskategorieRepository extends EA_Repository
@@ -27,17 +27,17 @@ class EA_MannschaftskategorieRepository extends EA_Repository
 
     public function loadByBezeichnung(string $bezeichnung): ?EA_Mannschaftskategorie
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Mannschaftskategorie')->findOneBy(array('mannschaftskategorie' => $bezeichnung));
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Mannschaftskategorie')->findOneBy(array('mannschaftskategorie' => $bezeichnung));
     }
 
     public function loadById(int $id): ?EA_Mannschaftskategorie
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Mannschaftskategorie')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Mannschaftskategorie')->find($id);
     }
 
     public function loadList(): array
     {
-        return $this->entityManager->getRepository("EndeAuswertung\classes\model\EA_Mannschaftskategorie")->findAll();
+        return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_Mannschaftskategorie")->findAll();
     }
 
     public function loadListForSelect(): array

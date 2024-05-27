@@ -1,8 +1,8 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
-use EndeAuswertung\classes\model\EA_Strecke;
-use EndeAuswertung\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_Strecke;
+use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
 class EA_StreckeRepository extends EA_Repository
@@ -20,7 +20,7 @@ class EA_StreckeRepository extends EA_Repository
 
     public function isAvailable(string $field,string $bezeichnung): int
     {
-        return 0 === $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Strecke')->count([$field => $bezeichnung]);
+        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Strecke')->count([$field => $bezeichnung]);
     }
     
     public function create(EA_Strecke $strecke): EA_Strecke
@@ -37,12 +37,12 @@ class EA_StreckeRepository extends EA_Repository
 
     public function loadById(int $id): ?EA_Strecke
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Strecke')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Strecke')->find($id);
     }
 
     public function loadByBezeichnungLang(string $bezeichnungLang): ?EA_Strecke
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Strecke')->findOneBy(["bezeichnungLang"=>$bezeichnungLang]);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Strecke')->findOneBy(["bezeichnungLang"=>$bezeichnungLang]);
     }
 
     public function loadList(string $orderBy = "id"): array
@@ -53,7 +53,7 @@ class EA_StreckeRepository extends EA_Repository
             ->from(EA_Strecke::class, 's',"s.id")
             ->orderBy('s.'.$orderBy);        
         return $queryBuilder->getQuery()->getResult();
-       // return $this->entityManager->getRepository("EndeAuswertung\classes\model\EA_Strecke")->findAll();
+       // return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_Strecke")->findAll();
     }
 
     public function getListForSelectField(): array

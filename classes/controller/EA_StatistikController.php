@@ -1,9 +1,9 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
-use EndeAuswertung\classes\helper\EA_StatistikHelper;
+use CharitySwimRun\classes\helper\EA_StatistikHelper;
 
-use EndeAuswertung\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_Repository;
 
 
 class EA_StatistikController extends EA_Controller

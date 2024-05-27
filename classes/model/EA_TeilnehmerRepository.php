@@ -1,11 +1,11 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManager;
-use EndeAuswertung\classes\model\EA_Teilnehmer;
-use EndeAuswertung\classes\helper\EA_Helper;
+use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\helper\EA_Helper;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 
@@ -31,17 +31,17 @@ class EA_TeilnehmerRepository extends EA_Repository
 
     public function loadById(int $id): ?EA_Teilnehmer
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Teilnehmer')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Teilnehmer')->find($id);
     }
 
     public function loadByStartnummer(int $startnummer): ?EA_Teilnehmer
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Teilnehmer')->findOneBy(["startnummer"=>$startnummer]);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Teilnehmer')->findOneBy(["startnummer"=>$startnummer]);
     }
 
     public function loadByTransponder(int $transponder): ?EA_Teilnehmer
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Teilnehmer')->findOneBy(["transponder"=>$transponder]);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Teilnehmer')->findOneBy(["transponder"=>$transponder]);
     }
 
     public function loadByFilter(

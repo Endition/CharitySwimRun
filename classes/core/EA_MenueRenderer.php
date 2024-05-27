@@ -1,8 +1,8 @@
 <?php
 
-namespace EndeAuswertung\classes\core;
+namespace CharitySwimRun\classes\core;
 
-use EndeAuswertung\classes\model\EA_User;
+use CharitySwimRun\classes\model\EA_User;
 
 class EA_MenueRenderer
 {

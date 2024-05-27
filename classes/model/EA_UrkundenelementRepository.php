@@ -1,8 +1,8 @@
 <?php
-namespace EndeAuswertung\classes\model;
+namespace CharitySwimRun\classes\model;
 
 use Doctrine\ORM\EntityManager;
-use EndeAuswertung\classes\model\EA_Urkundenelement;
+use CharitySwimRun\classes\model\EA_Urkundenelement;
 
 
 class EA_UrkundenelementRepository extends EA_Repository
@@ -26,12 +26,12 @@ class EA_UrkundenelementRepository extends EA_Repository
 
     public function loadById(int $id): ?EA_Urkundenelement
     {
-        return $this->entityManager->getRepository('EndeAuswertung\classes\model\EA_Urkundenelement')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Urkundenelement')->find($id);
     }
 
     public function loadList(): array
     {
-        return $this->entityManager->getRepository("EndeAuswertung\classes\model\EA_Urkundenelement")->findAll();
+        return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_Urkundenelement")->findAll();
     }
 
     public function loadListQueryBuilder(): array

@@ -1,10 +1,10 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
-use EndeAuswertung\classes\model\EA_Repository;
-use EndeAuswertung\classes\model\EA_User;
-use EndeAuswertung\classes\model\EA_Impuls;
-use EndeAuswertung\classes\controller\EA_SimulatorController;
+use CharitySwimRun\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_User;
+use CharitySwimRun\classes\model\EA_Impuls;
+use CharitySwimRun\classes\controller\EA_SimulatorController;
 
 class EA_ApiController extends EA_Controller
 {

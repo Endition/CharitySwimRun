@@ -1,11 +1,11 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 
-use EndeAuswertung\classes\model\EA_Konfiguration;
-use EndeAuswertung\classes\model\EA_Message;
+use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_Message;
 
 class EA_KonfigurationController extends EA_Controller
 {

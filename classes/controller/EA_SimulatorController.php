@@ -1,13 +1,13 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
-use EndeAuswertung\classes\model\EA_Impuls;
-use EndeAuswertung\classes\model\EA_Mannschaft;
-use EndeAuswertung\classes\model\EA_Simulator;
-use EndeAuswertung\classes\model\EA_Teilnehmer;
-use EndeAuswertung\classes\model\EA_Verein;
+use CharitySwimRun\classes\model\EA_Impuls;
+use CharitySwimRun\classes\model\EA_Mannschaft;
+use CharitySwimRun\classes\model\EA_Simulator;
+use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Verein;
 
 class EA_SimulatorController extends EA_Controller
 {

@@ -1,7 +1,7 @@
 <?php
 
-namespace EndeAuswertung\classes\model;
-use EndeAuswertung\classes\model\EA_Urkunde;
+namespace CharitySwimRun\classes\model;
+use CharitySwimRun\classes\model\EA_Urkunde;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 

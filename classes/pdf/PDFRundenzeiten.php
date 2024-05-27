@@ -1,12 +1,12 @@
 <?php
 
-namespace EndeAuswertung\classes\pdf;
+namespace CharitySwimRun\classes\pdf;
 
 use Doctrine\ORM\EntityManager;
-use EndeAuswertung\classes\core\EA_AbstractPDF;
+use CharitySwimRun\classes\core\EA_AbstractPDF;
 
 use Smarty\Smarty;
-use EndeAuswertung\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
 
 
 class PDFRundenzeiten extends EA_AbstractPDF
@@ -30,7 +30,7 @@ class PDFRundenzeiten extends EA_AbstractPDF
         // Setzten der Dokumenteninformationen
         $this->SetTitle($this->typ);
         $this->SetSubject($this->typ);
-        $this->SetKeywords('Endeauswertung,' . $this->typ);
+        $this->SetKeywords('CharitySwimRun,' . $this->typ);
         $this->setPrintFooter(true);
     }
 

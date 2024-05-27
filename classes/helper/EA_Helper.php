@@ -1,6 +1,6 @@
 <?php
 
-namespace EndeAuswertung\classes\helper;
+namespace CharitySwimRun\classes\helper;
 
 
 class EA_Helper

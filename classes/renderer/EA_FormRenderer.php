@@ -1,31 +1,31 @@
 <?php
 
-namespace EndeAuswertung\classes\renderer;
+namespace CharitySwimRun\classes\renderer;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 
-use EndeAuswertung\classes\helper\EA_Helper;
-use EndeAuswertung\classes\model\EA_Altersklasse;
-use EndeAuswertung\classes\model\EA_AltersklasseRepository;
+use CharitySwimRun\classes\helper\EA_Helper;
+use CharitySwimRun\classes\model\EA_Altersklasse;
+use CharitySwimRun\classes\model\EA_AltersklasseRepository;
 
-use EndeAuswertung\classes\model\EA_Konfiguration;
-use EndeAuswertung\classes\model\EA_KonfigurationRepository;
-use EndeAuswertung\classes\model\EA_Mannschaft;
-use EndeAuswertung\classes\model\EA_MannschaftRepository;
-use EndeAuswertung\classes\model\EA_Mannschaftskategorie;
-use EndeAuswertung\classes\model\EA_Repository;
-use EndeAuswertung\classes\model\EA_SpecialEvaluation;
-use EndeAuswertung\classes\model\EA_SpecialEvaluationRepository;
-use EndeAuswertung\classes\model\EA_Strecke;
-use EndeAuswertung\classes\model\EA_StreckeRepository;
-use EndeAuswertung\classes\model\EA_Verein;
-use EndeAuswertung\classes\model\EA_Teilnehmer;
-use EndeAuswertung\classes\model\EA_TeilnehmerRepository;
-use EndeAuswertung\classes\model\EA_Urkunde;
-use EndeAuswertung\classes\model\EA_Urkundenelement;
-use EndeAuswertung\classes\model\EA_User;
-use EndeAuswertung\classes\model\EA_VereinRepository;
+use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_KonfigurationRepository;
+use CharitySwimRun\classes\model\EA_Mannschaft;
+use CharitySwimRun\classes\model\EA_MannschaftRepository;
+use CharitySwimRun\classes\model\EA_Mannschaftskategorie;
+use CharitySwimRun\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_SpecialEvaluation;
+use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
+use CharitySwimRun\classes\model\EA_Strecke;
+use CharitySwimRun\classes\model\EA_StreckeRepository;
+use CharitySwimRun\classes\model\EA_Verein;
+use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_Urkunde;
+use CharitySwimRun\classes\model\EA_Urkundenelement;
+use CharitySwimRun\classes\model\EA_User;
+use CharitySwimRun\classes\model\EA_VereinRepository;
 use Smarty\Smarty;
 
 class EA_FormRenderer extends EA_AbstractRenderer {

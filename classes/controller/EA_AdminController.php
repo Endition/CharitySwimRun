@@ -1,10 +1,10 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
-use EndeAuswertung\classes\core\EA_MenueRenderer;
-use EndeAuswertung\classes\model\EA_Repository;
-use EndeAuswertung\classes\model\EA_User;
-use EndeAuswertung\classes\model\EA_Message;
+use CharitySwimRun\classes\core\EA_MenueRenderer;
+use CharitySwimRun\classes\model\EA_Repository;
+use CharitySwimRun\classes\model\EA_User;
+use CharitySwimRun\classes\model\EA_Message;
 
 class EA_AdminController extends EA_Controller
 {

@@ -1,13 +1,13 @@
 <?php
-namespace EndeAuswertung\classes\controller;
+namespace CharitySwimRun\classes\controller;
 
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
-use EndeAuswertung\classes\helper\EA_Helper;
+use CharitySwimRun\classes\helper\EA_Helper;
 
-use EndeAuswertung\classes\model\EA_Altersklasse;
-use EndeAuswertung\classes\model\EA_Message;
+use CharitySwimRun\classes\model\EA_Altersklasse;
+use CharitySwimRun\classes\model\EA_Message;
 
 
 class EA_AltersklassenController extends EA_Controller
