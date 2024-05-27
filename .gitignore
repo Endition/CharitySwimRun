@@ -8,3 +8,5 @@ nbproject/
 .project
 .buildpath
 /doctrineMetaDataCache
+.vscode/
+composer.lock
