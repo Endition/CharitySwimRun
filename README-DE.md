@@ -1,5 +1,5 @@
 
-<a href="https://github.com/Endition/CharitySwimRun/blob/main/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/main/README.md">Readme in English</a>
+<a href="https://github.com/Endition/CharitySwimRun/blob/master/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/master/README.md">Readme in English</a>
 
 <h1>CharitySwimRun</h1>
 24h/Benefiz-Schwimmen und -Läufe abwickeln. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken.

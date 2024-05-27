@@ -1,5 +1,5 @@
 
-<a href="https://github.com/Endition/CharitySwimRun/blob/main/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/main/README.md">Readme in English</a>
+<a href="https://github.com/Endition/CharitySwimRun/blob/master/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/master/README.md">Readme in English</a>
 
 <h1>CharitySwimRun</h1>
 Organize 24-hour/charity swims and runs. Manage participants, count lanes/laps, evaluate results and print certificates.
