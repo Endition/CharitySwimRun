@@ -2,7 +2,7 @@
 <a href="https://github.com/Endition/CharitySwimRun/blob/main/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/main/README.md">Readme in English</a>
 
 <h1>CharitySwimRun</h1>
-Counting and evaluating laps for 24-hour swims/runs or charity swims/runs. The software is intended for temporary use on a web server in a local network. The software runs in the browser and is responsive, meaning it can be used by all devices in the network without additional requirements.
+Organize 24-hour/charity swims and runs. Manage participants, count lanes/laps, evaluate results and print certificates. The software is intended for temporary use on a web server in a local network. The software runs in the browser and is responsive, meaning it can be used by all devices in the network without additional requirements.
 
 The user interface is in German.
 
