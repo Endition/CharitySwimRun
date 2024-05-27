@@ -2,14 +2,13 @@
 
 namespace CharitySwimRun\classes\model;
 
-use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'konfiguration')]
-class EA_Konfiguration
+class EA_Configuration
 {
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue]

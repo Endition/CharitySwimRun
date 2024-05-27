@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 
 use CharitySwimRun\classes\model\EA_TeamRepository;
-use CharitySwimRun\classes\model\EA_KonfigurationRepository;
+use CharitySwimRun\classes\model\EA_ConfigurationRepository;
 use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_Teilnehmer;
 use CharitySwimRun\classes\model\EA_ClubRepository;
@@ -90,8 +90,8 @@ class EA_ImportController extends EA_Controller
          #echo "<pre>";
          #print_r($data);
          #echo "</pre>";
-         $EA_KonfigurationRepository = new EA_KonfigurationRepository($this->entityManager);
-         $konfiguration = $EA_KonfigurationRepository->load();
+         $EA_ConfigurationRepository = new EA_ConfigurationRepository($this->entityManager);
+         $konfiguration = $EA_ConfigurationRepository->load();
          $EA_T = null;
          $EA_T = new EA_Teilnehmer();
          $EA_T->setStartnummer(trim($data[0]));

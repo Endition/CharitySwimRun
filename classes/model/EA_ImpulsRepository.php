@@ -111,7 +111,7 @@ class EA_ImpulsRepository extends EA_Repository
         return true;
     }
 
-    public function getGlobaleVeranstaltungsleistungsdaten(int $gestarteteTeilnehmer, EA_Konfiguration $konfiguration): array
+    public function getGlobaleVeranstaltungsleistungsdaten(int $gestarteteTeilnehmer, EA_Configuration $konfiguration): array
     {
         $data = [];
         $data['streckenart'] = $konfiguration->getStreckenart();

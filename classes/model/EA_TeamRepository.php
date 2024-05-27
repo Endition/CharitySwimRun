@@ -61,7 +61,7 @@ class EA_TeamRepository extends EA_Repository
         $this->update();
     }
 
-    public function MannschaftPunkteBerechnen(?EA_Team $mannschaft2, EA_Konfiguration $konfiguration): void
+    public function MannschaftPunkteBerechnen(?EA_Team $mannschaft2, EA_Configuration $konfiguration): void
     {
         $punkte = 0;
         $mannschaftList = [];

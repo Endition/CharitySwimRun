@@ -4,10 +4,10 @@ namespace CharitySwimRun\classes\controller;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_Configuration;
 use CharitySwimRun\classes\model\EA_Message;
 
-class EA_KonfigurationController extends EA_Controller
+class EA_ConfigurationController extends EA_Controller
 {
 
     public function __construct( EntityManager $entityManager)
@@ -17,9 +17,9 @@ class EA_KonfigurationController extends EA_Controller
     
     public function getPageKonfiguration(): string
     {
-        $konfiguration = $this->EA_KonfigurationRepository->load();
+        $konfiguration = $this->EA_ConfigurationRepository->load();
         if ($konfiguration === null) {
-            $konfiguration = new EA_Konfiguration();
+            $konfiguration = new EA_Configuration();
         }
             
         if (isset($_POST['sendKonfiguration'])) {
@@ -29,12 +29,12 @@ class EA_KonfigurationController extends EA_Controller
         return $this->EA_FR->getFormKonfiguration($konfiguration->getKonfiguration());
     }
 
-    private function saveKonfiguration(): EA_Konfiguration
+    private function saveKonfiguration(): EA_Configuration
     {
-        $konfiguration = $this->EA_KonfigurationRepository->load();
+        $konfiguration = $this->EA_ConfigurationRepository->load();
         if ($konfiguration === null) {
-            $konfiguration = new EA_Konfiguration();
-            $this->EA_KonfigurationRepository->create($konfiguration);
+            $konfiguration = new EA_Configuration();
+            $this->EA_ConfigurationRepository->create($konfiguration);
         }
         $konfiguration->setVeranstaltungsname($_POST['veranstaltungsname']);
         $konfiguration->setVeranstaltungslogo($_POST['veranstaltungslogo']);
@@ -60,7 +60,7 @@ class EA_KonfigurationController extends EA_Controller
         $konfiguration->setInputAdresse((bool)$_POST['input_email']);
         $konfiguration->setSponsor($_POST['sponsor']);
 
-        $this->EA_KonfigurationRepository->update();
+        $this->EA_ConfigurationRepository->update();
         return $konfiguration;
     }
     

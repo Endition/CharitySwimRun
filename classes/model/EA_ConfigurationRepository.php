@@ -1,11 +1,11 @@
 <?php
 namespace CharitySwimRun\classes\model;
 
-use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_Configuration;
 use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
-class EA_KonfigurationRepository extends EA_Repository
+class EA_ConfigurationRepository extends EA_Repository
 {
     
     private EntityManager $entityManager;
@@ -18,7 +18,7 @@ class EA_KonfigurationRepository extends EA_Repository
                 parent::setEntityManager($entitymanager); 
     }
     
-    public function create(EA_Konfiguration $konfiguration): EA_Konfiguration
+    public function create(EA_Configuration $konfiguration): EA_Configuration
     {
         $this->entityManager->persist($konfiguration);
         $this->update();
@@ -26,12 +26,12 @@ class EA_KonfigurationRepository extends EA_Repository
     }
 
 
-    public function load(): ?EA_Konfiguration
+    public function load(): ?EA_Configuration
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('k')
-            ->from(EA_Konfiguration::class, 'k');
+            ->from(EA_Configuration::class, 'k');
         return $queryBuilder->getQuery()->getOneOrNullResult();  
     }
 }

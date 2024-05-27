@@ -2,7 +2,7 @@
 namespace CharitySwimRun\classes\helper;
 
 use Doctrine\DBAL\Connection;
-use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_Configuration;
 use CharitySwimRun\classes\model\EA_Repository;
 use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
 
@@ -13,7 +13,7 @@ class EA_StatistikHelper
 
     private EA_TeilnehmerRepository $EA_TeilnehmerRepository;
 
-    private EA_Konfiguration $konfiguration;
+    private EA_Configuration $konfiguration;
 
     private array $nullwerte24h = array(
         0, 0, 0, 0, 0, 0,
@@ -21,7 +21,7 @@ class EA_StatistikHelper
         0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0);
 
-    public function __construct(EA_Repository $EA_Repository, EA_Konfiguration $konfiguration)
+    public function __construct(EA_Repository $EA_Repository, EA_Configuration $konfiguration)
     {
         $this->konfiguration = $konfiguration;
         $this->DbalConn = $EA_Repository->getEntityManager()->getConnection();

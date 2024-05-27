@@ -51,7 +51,7 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $userController->getPageUser();
                     break;
                 case "konfiguration":
-                    $konfigurationController = new EA_KonfigurationController( $this->entityManager);
+                    $konfigurationController = new EA_ConfigurationController( $this->entityManager);
                     $innercontent .= $konfigurationController->getPageKonfiguration();
                     break;
                 case "altersklassen":

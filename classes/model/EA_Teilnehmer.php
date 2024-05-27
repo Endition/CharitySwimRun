@@ -97,9 +97,9 @@ class EA_Teilnehmer
     private Collection $impulsList;
 
     //Trick to make the Konfiguration available in every attendence
-    #[ORM\ManyToOne(targetEntity: EA_Konfiguration::class)]
+    #[ORM\ManyToOne(targetEntity: EA_Configuration::class)]
     #[ORM\JoinColumn(name: 'konfigurationId', referencedColumnName: 'id',nullable:false,options:["default"=>1])]
-    private EA_Konfiguration $konfiguration;
+    private EA_Configuration $konfiguration;
 
 
     private bool $rundenzeitenBerechnet = false;
@@ -617,7 +617,7 @@ class EA_Teilnehmer
         return 0;
     }
 
-    public function setKonfiguration(EA_Konfiguration $konfiguration): void
+    public function setKonfiguration(EA_Configuration $konfiguration): void
     {
         $this->konfiguration = $konfiguration;
     }

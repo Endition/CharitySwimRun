@@ -6,19 +6,19 @@ use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\model\EA_SpecialEvaluation;
 use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
-use CharitySwimRun\classes\model\EA_KonfigurationRepository;
+use CharitySwimRun\classes\model\EA_ConfigurationRepository;
 use CharitySwimRun\classes\model\EA_ImpulsRepository;
 
 class EA_PlatzierungBerechner
 {
     private EA_TeilnehmerRepository $EA_TeilnehmerRepository;
-    private EA_KonfigurationRepository $EA_KonfigurationRepository;   
+    private EA_ConfigurationRepository $EA_ConfigurationRepository;   
     private EA_ImpulsRepository $EA_ImpulsRepository;   
 
     public function __construct(EntityManager $entityManager)
     {
         $this->EA_TeilnehmerRepository = new EA_TeilnehmerRepository($entityManager);
-        $this->EA_KonfigurationRepository = new EA_KonfigurationRepository($entityManager);
+        $this->EA_ConfigurationRepository = new EA_ConfigurationRepository($entityManager);
         $this->EA_ImpulsRepository = new EA_ImpulsRepository($entityManager);
 
     }
@@ -28,7 +28,7 @@ class EA_PlatzierungBerechner
      */
     private function checkIfCalculationIsNecassary(): bool
     {
-        $konfiguration = $this->EA_KonfigurationRepository->load();
+        $konfiguration = $this->EA_ConfigurationRepository->load();
         $numberOfImpulse =  $this->EA_ImpulsRepository->getNumberOfEntries();
         $result = false;
 
@@ -37,7 +37,7 @@ class EA_PlatzierungBerechner
         }
         
         $konfiguration->setLastCalculationResultsNumber($numberOfImpulse);
-        $this->EA_KonfigurationRepository->update();
+        $this->EA_ConfigurationRepository->update();
         return $result;
     }
 

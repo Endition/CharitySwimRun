@@ -16,7 +16,7 @@ class EA_BuchungenEinesTeilnehmersController extends EA_Controller
     public function __construct(EA_Repository $EA_Repository)
     {
         parent::__construct($EA_Repository->getEntityManager());
-        $this->EA_StatistikHelper = new EA_StatistikHelper($EA_Repository,$this->EA_KonfigurationRepository->load());
+        $this->EA_StatistikHelper = new EA_StatistikHelper($EA_Repository,$this->EA_ConfigurationRepository->load());
 
     }
 

@@ -9,8 +9,8 @@ use CharitySwimRun\classes\helper\EA_Helper;
 use CharitySwimRun\classes\model\EA_AgeGroup;
 use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 
-use CharitySwimRun\classes\model\EA_Konfiguration;
-use CharitySwimRun\classes\model\EA_KonfigurationRepository;
+use CharitySwimRun\classes\model\EA_Configuration;
+use CharitySwimRun\classes\model\EA_ConfigurationRepository;
 use CharitySwimRun\classes\model\EA_Team;
 use CharitySwimRun\classes\model\EA_TeamRepository;
 use CharitySwimRun\classes\model\EA_TeamCategory;
@@ -52,7 +52,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $streckeRepository = new EA_DistanceRepository($entityManager);
         $vereinRepository = new EA_ClubRepository($entityManager);
         $mannschaftRepository = new EA_TeamRepository($entityManager);
-        $konfigurationRepository = new EA_KonfigurationRepository($entityManager);
+        $konfigurationRepository = new EA_ConfigurationRepository($entityManager);
         $konfiguration = $konfigurationRepository->load();
         if (isset($includes['konfiguration'])) {
             $this->smarty->assign('konfiguration', $konfiguration);
@@ -112,7 +112,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormAltersklasse(EntityManager $entityManager, EA_AgeGroup $EA_AK, EA_Konfiguration $konfiguration): string
+    public function getFormAltersklasse(EntityManager $entityManager, EA_AgeGroup $EA_AK, EA_Configuration $konfiguration): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, ["konfiguration" => true]);
@@ -224,7 +224,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormSelbstanmeldung(EntityManager $entityManager, EA_Konfiguration $konfiguration): string
+    public function getFormSelbstanmeldung(EntityManager $entityManager, EA_Configuration $konfiguration): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "mannschaften" => true, "strecken" => true, "startgruppen" => true, "geschlechter" => true, "stati" => true));
@@ -247,7 +247,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormTeilnehmer(EntityManager $entityManager, EA_Teilnehmer $EA_T, EA_Konfiguration $konfiguration): string
+    public function getFormTeilnehmer(EntityManager $entityManager, EA_Teilnehmer $EA_T, EA_Configuration $konfiguration): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "mannschaften" => true, "strecken" => true, "startgruppen" => true, "geschlechter" => true, "stati" => true));

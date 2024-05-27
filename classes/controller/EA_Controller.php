@@ -4,13 +4,13 @@ namespace CharitySwimRun\classes\controller;
 use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
-use CharitySwimRun\classes\model\EA_KonfigurationRepository;
+use CharitySwimRun\classes\model\EA_ConfigurationRepository;
 use CharitySwimRun\classes\renderer\EA_FormRenderer;
 use CharitySwimRun\classes\renderer\EA_Renderer;
 use CharitySwimRun\classes\model\EA_Messages;
 use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 use CharitySwimRun\classes\model\EA_ImpulsRepository;
-use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_Configuration;
 use CharitySwimRun\classes\model\EA_ClubRepository;
 use CharitySwimRun\classes\model\EA_TeamRepository;
 use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
@@ -27,7 +27,7 @@ class EA_Controller
     protected EA_FormRenderer $EA_FR;
     protected EA_AgeGroupRepository $EA_AgeGroupRepository;
     protected EA_TeilnehmerRepository $EA_TeilnehmerRepository;
-    protected EA_KonfigurationRepository $EA_KonfigurationRepository;
+    protected EA_ConfigurationRepository $EA_ConfigurationRepository;
     protected EA_ImpulsRepository $EA_ImpulsRepository;
     protected EA_ClubRepository $vereinRepository;
     protected EA_TeamRepository $EA_TeamRepository;
@@ -40,7 +40,7 @@ class EA_Controller
   
 
     protected EA_Messages $EA_Messages;
-    protected ?EA_Konfiguration $konfiguration;
+    protected ?EA_Configuration $konfiguration;
 
     
     public function __construct(EntityManager $entityManager){
@@ -52,7 +52,7 @@ class EA_Controller
         $this->EA_UserRepository = new EA_UserRepository($entityManager);
         $this->EA_AgeGroupRepository = new EA_AgeGroupRepository($entityManager);
         $this->EA_TeilnehmerRepository = new EA_TeilnehmerRepository($entityManager);
-        $this->EA_KonfigurationRepository = new EA_KonfigurationRepository($entityManager);
+        $this->EA_ConfigurationRepository = new EA_ConfigurationRepository($entityManager);
         $this->EA_ImpulsRepository = new EA_ImpulsRepository($entityManager);
         $this->EA_TeamRepository = new EA_TeamRepository($entityManager);
         $this->EA_SpecialEvaluationRepository = new EA_SpecialEvaluationRepository($entityManager);
@@ -60,7 +60,7 @@ class EA_Controller
         $this->EA_DistanceRepository = new EA_DistanceRepository($entityManager);
         $this->EA_TeamCategoryRepository = new EA_TeamCategoryRepository($entityManager);
         $this->EA_CertificateElementRepository = new EA_CertificateElementRepository($entityManager);
-        $this->konfiguration = $this->EA_KonfigurationRepository->load();
+        $this->konfiguration = $this->EA_ConfigurationRepository->load();
 
     }
 }

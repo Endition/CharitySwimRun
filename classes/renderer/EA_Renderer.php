@@ -4,7 +4,7 @@ namespace CharitySwimRun\classes\renderer;
 
 require_once (ROOT_PATH.'/vendor/autoload.php');
 
-use CharitySwimRun\classes\model\EA_Konfiguration;
+use CharitySwimRun\classes\model\EA_Configuration;
 use Smarty\Smarty;
 
 class EA_Renderer extends EA_AbstractRenderer
@@ -60,7 +60,7 @@ class EA_Renderer extends EA_AbstractRenderer
         return $this->smarty->fetch('DisplayTabelleMannschaftskategorien.tpl');
     }
 
-    public function renderTabelleAltersklassen(array $altersklasseList, EA_Konfiguration $konfig): string
+    public function renderTabelleAltersklassen(array $altersklasseList, EA_Configuration $konfig): string
     {
         $this->smarty->assign('konfiguration', $konfig);
         $this->smarty->assign('jahrgang', $konfig->getAltersklassen());
