@@ -4,14 +4,14 @@ namespace CharitySwimRun\classes\controller;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Club;
 
 use CharitySwimRun\classes\model\EA_Message;
 
 
 
-class EA_TeilnehmerController extends EA_Controller
+class EA_StarterController extends EA_Controller
 {
     public function __construct( EntityManager $entityManager)
     {
@@ -22,7 +22,7 @@ class EA_TeilnehmerController extends EA_Controller
     public function getPageTeilnehmer(): string
     {
         $content = "";
-        $teilnehmer = new EA_Teilnehmer();
+        $teilnehmer = new EA_Starter();
 
         if (isset($_POST['sendTeilnehmerData'])) {
             $teilnehmer = $this->createAndUpdateTeilnehmer();
@@ -40,14 +40,14 @@ class EA_TeilnehmerController extends EA_Controller
             }
 
         } else {
-            $teilnehmer = new EA_Teilnehmer();
+            $teilnehmer = new EA_Starter();
             $content .= $this->EA_FR->getFormTeilnehmer($this->entityManager, $teilnehmer, $this->konfiguration);
         }
         return $content;
     }
 
 
-    private function createAndUpdateTeilnehmer(): ?EA_Teilnehmer
+    private function createAndUpdateTeilnehmer(): ?EA_Starter
     {
         $error = false;
         
@@ -99,7 +99,7 @@ class EA_TeilnehmerController extends EA_Controller
 
 
         //intinalize Object
-        $teilnehmer = ($id === null) ? new EA_Teilnehmer() : $this->EA_TeilnehmerRepository->loadById($id);
+        $teilnehmer = ($id === null) ? new EA_Starter() : $this->EA_StarterRepository->loadById($id);
 
         //checks for update und create case
 
@@ -107,27 +107,27 @@ class EA_TeilnehmerController extends EA_Controller
         //checks only for create case
         if($teilnehmer->getId() === null){
             //Doppelte Startnummer
-            if ($this->EA_TeilnehmerRepository->loadByStartnummer($startnummer) !== null) {
+            if ($this->EA_StarterRepository->loadByStartnummer($startnummer) !== null) {
                 $this->EA_Messages->addMessage("Diese Startnummer gibt es schon.",156353778,EA_Message::MESSAGE_ERROR);
                 $error = true;
 
             }
             //Doppelter Transponder
-            if ($this->EA_TeilnehmerRepository->loadByTransponder($transponder) !== null) {
+            if ($this->EA_StarterRepository->loadByTransponder($transponder) !== null) {
                 $this->EA_Messages->addMessage("Dieser Transponder ist schon in Benutzung.",144357357,EA_Message::MESSAGE_ERROR);
                 $error = true;
             }
         //checks only for update case
         }else{
             //Doppelte Startnummer
-            if ($this->EA_TeilnehmerRepository->loadByFilter($teilnehmer->getId(),$startnummer) !== null) {
+            if ($this->EA_StarterRepository->loadByFilter($teilnehmer->getId(),$startnummer) !== null) {
                 $this->EA_Messages->addMessage("Diese Startnummer gibt es schon.",12353472373,EA_Message::MESSAGE_ERROR);
                 $error = true;
             }
             //Doppelter Transponder
             //Es ist möglich dass der Transponder schon ausgebrucht ist.
             if ($transponder > 0) {
-                if ($this->EA_TeilnehmerRepository->loadByFilter($teilnehmer->getId(),null,$transponder) !== null) {
+                if ($this->EA_StarterRepository->loadByFilter($teilnehmer->getId(),null,$transponder) !== null) {
                     $this->EA_Messages->addMessage("Dieser Transponder ist schon in Benutzung.",13747733754,EA_Message::MESSAGE_ERROR);
                     $error = true;
                 }
@@ -169,18 +169,18 @@ class EA_TeilnehmerController extends EA_Controller
         
         //create case
         if($teilnehmer->getId() === null){
-            $this->EA_TeilnehmerRepository->create($teilnehmer);
+            $this->EA_StarterRepository->create($teilnehmer);
             $this->EA_Messages->addMessage("Teilnehmer {$teilnehmer->getGesamtname()} angelegt",1233532372,EA_Message::MESSAGE_SUCCESS);
         //update case
         }else{
-            $this->EA_TeilnehmerRepository->update();
-            $this->EA_TeilnehmerRepository->resetPlaetzeTeilnehmer($teilnehmer);
+            $this->EA_StarterRepository->update();
+            $this->EA_StarterRepository->resetPlaetzeTeilnehmer($teilnehmer);
             $this->EA_Messages->addMessage("Teilnehmer {$teilnehmer->getGesamtname()} geändert",1897342372,EA_Message::MESSAGE_SUCCESS);
         }
         return $teilnehmer;
     }
 
-    private function findTeilnehmer(): ?EA_Teilnehmer
+    private function findTeilnehmer(): ?EA_Starter
     {
         $idPost = filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
         $idGet = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
@@ -197,12 +197,12 @@ class EA_TeilnehmerController extends EA_Controller
         }
 
         if($id !== null){
-            $teilnehmer = $this->EA_TeilnehmerRepository->loadById($id);
+            $teilnehmer = $this->EA_StarterRepository->loadById($id);
         }
 
         //only backup, suchText = Startnummer?
         if($teilnehmer === null && $suchText !== ""){
-            $teilnehmer = $this->EA_TeilnehmerRepository->loadByFilter(null,(int)$suchText);
+            $teilnehmer = $this->EA_StarterRepository->loadByFilter(null,(int)$suchText);
         }
 
         if($teilnehmer === null){
@@ -219,7 +219,7 @@ class EA_TeilnehmerController extends EA_Controller
         $idGet = filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
         $id = is_numeric($idPost) ? $idPost : $idGet;
 
-        $teilnehmer = $this->EA_TeilnehmerRepository->loadById($id);
+        $teilnehmer = $this->EA_StarterRepository->loadById($id);
 
         if($teilnehmer === null){
             $this->EA_Messages->addMessage("Keine Teilnehmer gefunden.",135775477,EA_Message::MESSAGE_ERROR);
@@ -230,7 +230,7 @@ class EA_TeilnehmerController extends EA_Controller
             $this->EA_Messages->addMessage("Dieser Teilnehmer ist eben noch geschwommen. Bitte noch warten.",15372377477,EA_Message::MESSAGE_ERROR);
             return;
         }
-        $this->EA_TeilnehmerRepository->delete($teilnehmer);
+        $this->EA_StarterRepository->delete($teilnehmer);
         $this->EA_ImpulsRepository->deleteAllByTeilnehmer($teilnehmer);
         $this->EA_Messages->addMessage("Teilnehmer " . $teilnehmer->getGesamtname() . " gelöscht",1723452362,EA_Message::MESSAGE_SUCCESS);
     }

@@ -105,7 +105,7 @@ class EA_AgeGroupController extends EA_Controller
     private function berechneZuordnungNeu(): void
     {
         $this->recalculateAltersklassen();
-        $this->EA_TeilnehmerRepository->resetPlaetzeTeilnehmer();
+        $this->EA_StarterRepository->resetPlaetzeTeilnehmer();
     }
 
     private function createAndUpdateAltersklasse(): void
@@ -238,7 +238,7 @@ class EA_AgeGroupController extends EA_Controller
 
         $this->EA_AgeGroupRepository->delete($altersklasse);
         $this->recalculateAltersklassen();
-        $this->EA_TeilnehmerRepository->resetPlaetzeTeilnehmer();
+        $this->EA_StarterRepository->resetPlaetzeTeilnehmer();
 
         $this->EA_Messages->addMessage("Altersklassenzuordnung neu berechnet.",173564523,EA_Message::MESSAGE_SUCCESS);
         $this->EA_Messages->addMessage("Altersklasse " . $altersklasse->getAltersklasse() . " gelöscht",1723452362,EA_Message::MESSAGE_SUCCESS);
@@ -246,7 +246,7 @@ class EA_AgeGroupController extends EA_Controller
 
     private function recalculateAltersklassen(): void
     {
-        $teilnehmerList = $this->EA_TeilnehmerRepository->loadList();
+        $teilnehmerList = $this->EA_StarterRepository->loadList();
         foreach ($teilnehmerList as $tn) {
             $altersklasseAlt = $tn->getAltersklasse();
             $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($tn->getGeburtsdatum());
@@ -259,6 +259,6 @@ class EA_AgeGroupController extends EA_Controller
                 }
             }
         }
-        $this->EA_TeilnehmerRepository->update();
+        $this->EA_StarterRepository->update();
     }
 }

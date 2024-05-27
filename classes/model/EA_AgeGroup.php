@@ -60,7 +60,7 @@ class EA_AgeGroup
     #[ORM\Column(type: Types::INTEGER,name:"Gold",nullable:true,options:["default"=>null])]
     private ?int $gold = null;
 
-    #[ORM\OneToMany(targetEntity: EA_Teilnehmer::class, mappedBy: 'altersklasse')]
+    #[ORM\OneToMany(targetEntity: EA_Starter::class, mappedBy: 'altersklasse')]
     private Collection $mitgliederList;
 
     private $datenarray = [];

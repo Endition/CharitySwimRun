@@ -103,10 +103,10 @@ class EA_ImpulsRepository extends EA_Repository
         $this->update();
     }
 
-    public function deleteAllByTeilnehmer(EA_Teilnehmer $EA_Teilnehmer): bool
+    public function deleteAllByTeilnehmer(EA_Starter $EA_Starter): bool
     {
         $query = $this->entityManager->createQuery('DELETE CharitySwimRun\classes\model\EA_Impuls i WHERE i.teilnehmerId = :teilnehmerId');
-        $query->setParameter(":teilnehmerId",$EA_Teilnehmer->getId());
+        $query->setParameter(":teilnehmerId",$EA_Starter->getId());
         $query->execute();
         return true;
     }

@@ -4,13 +4,13 @@ namespace CharitySwimRun\classes\model;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManager;
-use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\helper\EA_Helper;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 
 
-class EA_TeilnehmerRepository extends EA_Repository
+class EA_StarterRepository extends EA_Repository
 {
     private EntityManager $entityManager;
 
@@ -22,26 +22,26 @@ class EA_TeilnehmerRepository extends EA_Repository
                 parent::setEntityManager($entitymanager); 
     }
 
-    public function create(EA_Teilnehmer $Teilnehmer): EA_Teilnehmer
+    public function create(EA_Starter $Teilnehmer): EA_Starter
     {
         $this->entityManager->persist($Teilnehmer);
         $this->update();
         return $Teilnehmer;
     }
 
-    public function loadById(int $id): ?EA_Teilnehmer
+    public function loadById(int $id): ?EA_Starter
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Teilnehmer')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Starter')->find($id);
     }
 
-    public function loadByStartnummer(int $startnummer): ?EA_Teilnehmer
+    public function loadByStartnummer(int $startnummer): ?EA_Starter
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Teilnehmer')->findOneBy(["startnummer"=>$startnummer]);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Starter')->findOneBy(["startnummer"=>$startnummer]);
     }
 
-    public function loadByTransponder(int $transponder): ?EA_Teilnehmer
+    public function loadByTransponder(int $transponder): ?EA_Starter
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Teilnehmer')->findOneBy(["transponder"=>$transponder]);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Starter')->findOneBy(["transponder"=>$transponder]);
     }
 
     public function loadByFilter(
@@ -53,12 +53,12 @@ class EA_TeilnehmerRepository extends EA_Repository
         ?DateTimeInterface $geburtsdatum = null, 
         ?string $geschlecht = null, 
         ?bool $hasStartzeit = null,
-        ?int $gesamtplatz = null): ?EA_Teilnehmer
+        ?int $gesamtplatz = null): ?EA_Starter
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('t')
-            ->from(EA_Teilnehmer::class, 't',"t.id");
+            ->from(EA_Starter::class, 't',"t.id");
         if($notThisId){
             $queryBuilder->andWhere("t.id != :notThisId")
             ->setParameter(":notThisId", $notThisId);
@@ -98,12 +98,12 @@ class EA_TeilnehmerRepository extends EA_Repository
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 
-    public function loadOldestYoungstByGender(string $gender, string $sort = "ASC"): ?EA_Teilnehmer
+    public function loadOldestYoungstByGender(string $gender, string $sort = "ASC"): ?EA_Starter
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('t')
-            ->from(EA_Teilnehmer::class, 't')
+            ->from(EA_Starter::class, 't')
             ->where("t.geschlecht = :geschlecht")
             ->andWhere("t.startzeit IS NOT NULL AND t.startzeit != '0000-00-00 00:00:00' ")
             ->orderBy("t.geburtsdatum", $sort)
@@ -118,7 +118,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('count(t.id)')
-            ->from(EA_Teilnehmer::class, 't');
+            ->from(EA_Starter::class, 't');
           
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
@@ -148,7 +148,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('t')
-            ->from(EA_Teilnehmer::class, 't',"t.id");
+            ->from(EA_Starter::class, 't',"t.id");
         if($specialEvaluation){
              $queryBuilder->leftjoin(EA_Impuls::class,'i','WITH', 'i.teilnehmer = t.id');
         }    
@@ -259,7 +259,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         return $this->loadList($strecke,$altersklasse,$geschlecht,null,null,null,null,$order,"ASC",null,null,null,null,null,null,null,null,$limit);
     }
 
-    public function delete(EA_Teilnehmer $Teilnehmer): void
+    public function delete(EA_Starter $Teilnehmer): void
     {
         $this->entityManager->remove($Teilnehmer);
         $this->update();
@@ -310,10 +310,10 @@ class EA_TeilnehmerRepository extends EA_Repository
         return $nachrichten;
     }
 
-    public function resetPlaetzeTeilnehmer(?EA_Teilnehmer $teilnehmer = null): void
+    public function resetPlaetzeTeilnehmer(?EA_Starter $teilnehmer = null): void
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->update(EA_Teilnehmer::class, 't')
+        $queryBuilder->update(EA_Starter::class, 't')
         ->set('t.gesamtplatz', 99999)
         ->set('t.streckenplatz', 99999)
         ->set('t.akplatz', 99999)
@@ -328,9 +328,9 @@ class EA_TeilnehmerRepository extends EA_Repository
     public function updateStartzeit(DateTimeInterface $startzeit, bool $ueberschreiben = false, ?string $geschlecht = null ,?string $spalteName = null, ?string $spalteWertString = null, ?array $spalteWertArray = null): int
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->update(EA_Teilnehmer::class, 't')
+        $queryBuilder->update(EA_Starter::class, 't')
         ->set('t.startzeit', ":startzeit")
-        ->set('t.status', EA_Teilnehmer::STATUS_GESTARTET)
+        ->set('t.status', EA_Starter::STATUS_GESTARTET)
         ->setParameter("startzeit",$startzeit->format("Y-m-d H:i:s"));
         if($ueberschreiben === false){
             $queryBuilder->andWhere(
@@ -376,7 +376,7 @@ class EA_TeilnehmerRepository extends EA_Repository
     public function updateStatus(int $status, ?string $geschlecht = null ,?string $spalteName = null, ?string $spalteWertString = null, ?array $spalteWertArray = null): int
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->update(EA_Teilnehmer::class, 't')
+        $queryBuilder->update(EA_Starter::class, 't')
         ->set('t.status', ':status')
         ->setParameter(":status",$status)
         ->where('t.status < :status2 ')
@@ -417,17 +417,17 @@ class EA_TeilnehmerRepository extends EA_Repository
         //1. Prüfe wer eine gültige Buchung hat aber nicht Status 90
         $teilnehmerListarray = $this->loadTeilnehmerFalscherStatus90();
         if (is_array($teilnehmerListarray) && count($teilnehmerListarray) > 0) {
-            $this->updateStatus(EA_Teilnehmer::STATUS_GUELTIGE_BUCHUNG, null, 'id', null, $teilnehmerListarray);
+            $this->updateStatus(EA_Starter::STATUS_GUELTIGE_BUCHUNG, null, 'id', null, $teilnehmerListarray);
         }
         //2. Prüfe wer im Cache steht hat aber nicht Status 70  ist
         $teilnehmerListarray = $this->loadTeilnehmerFalscherStatus70();
         if (is_array($teilnehmerListarray) && count($teilnehmerListarray) > 0) {
-            $this->updateStatus(EA_Teilnehmer::STATUS_AUF_DER_STRECKE, null, 'id', null, $teilnehmerListarray);
+            $this->updateStatus(EA_Starter::STATUS_AUF_DER_STRECKE, null, 'id', null, $teilnehmerListarray);
         }
         //3. Prüfe wer eine Startzeit hat aber nicht Status 50
         $teilnehmerListarray = $this->loadTeilnehmerFalscherStatus50();
         if (is_array($teilnehmerListarray) && count($teilnehmerListarray) > 0) {
-            $this->updateStatus(EA_Teilnehmer::STATUS_GESTARTET, null, 'id', null, $teilnehmerListarray);
+            $this->updateStatus(EA_Starter::STATUS_GESTARTET, null, 'id', null, $teilnehmerListarray);
         }
     }
 
@@ -438,7 +438,7 @@ class EA_TeilnehmerRepository extends EA_Repository
 
         $query = " SELECT TeilnehmerId FROM " . EA_Repository::TB_LOG . " ";
         $query .= " INNER JOIN " . EA_Repository::TB_TEILNEHMER . " ON " . EA_Repository::TB_TEILNEHMER . ".Id = " . EA_Repository::TB_LOG . ".TeilnehmerId ";
-        $query .= " WHERE Status < ".EA_Teilnehmer::STATUS_GUELTIGE_BUCHUNG."  AND Timestamp > UNIX_TIMESTAMP(Startzeit) AND  geloescht = 0 ";
+        $query .= " WHERE Status < ".EA_Starter::STATUS_GUELTIGE_BUCHUNG."  AND Timestamp > UNIX_TIMESTAMP(Startzeit) AND  geloescht = 0 ";
         $query .= " GROUP BY TeilnehmerId ORDER BY TeilnehmerId ASC;";
         
         $query = $this->entityManager->createNativeQuery($query, $rsm);
@@ -455,7 +455,7 @@ class EA_TeilnehmerRepository extends EA_Repository
             $query = " SELECT " . EA_Repository::TB_TEILNEHMER . ".Id FROM " . EA_Repository::TB_TEILNEHMER . " ";
             $query .= " INNER JOIN " . EA_Repository::TB_TRANSPONDER . " ON " . EA_Repository::TB_TEILNEHMER . ".Transponder = " . EA_Repository::TB_TRANSPONDER . ".Transpondernummer ";
             $query .= " INNER JOIN " . EA_Repository::TB_CACHE . " ON " . EA_Repository::TB_TRANSPONDER . ".Transponderschluessel = " . EA_Repository::TB_CACHE . ".Transponderschluessel ";
-            $query .= " WHERE Status < ".EA_Teilnehmer::STATUS_AUF_DER_STRECKE." ";
+            $query .= " WHERE Status < ".EA_Starter::STATUS_AUF_DER_STRECKE." ";
             $query .= " GROUP BY " . EA_Repository::TB_TEILNEHMER . ".Id   ORDER BY " . EA_Repository::TB_TEILNEHMER . ".Id  ASC;";
 
             $query = $this->entityManager->createNativeQuery($query, $rsm);
@@ -471,7 +471,7 @@ class EA_TeilnehmerRepository extends EA_Repository
 
         //Prüfe wer eine gültige Buchung hat aber nicht Status 90
         $query = " SELECT " . EA_Repository::TB_TEILNEHMER . ".Id FROM " . EA_Repository::TB_TEILNEHMER . " ";
-        $query .= " WHERE Status < ".EA_Teilnehmer::STATUS_GESTARTET." AND Startzeit != '0000-00-00 00:00:00'  ";
+        $query .= " WHERE Status < ".EA_Starter::STATUS_GESTARTET." AND Startzeit != '0000-00-00 00:00:00'  ";
         $query .= " ORDER BY " . EA_Repository::TB_TEILNEHMER . ".Id  ASC;";
 
         $query = $this->entityManager->createNativeQuery($query, $rsm);
@@ -481,13 +481,13 @@ class EA_TeilnehmerRepository extends EA_Repository
     public function loadStatiVerteilung(): ?array
     {
         //Die StatusIds als neues Array bauen, sodass auch leere Stati in dem Ergebnisarray auftauchen
-        $stati = array_keys(EA_Teilnehmer::STATUS_LIST);
+        $stati = array_keys(EA_Starter::STATUS_LIST);
         $stati = array_combine($stati, array_fill(0, count($stati), 0));
         
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('s.id AS streckeId, t.status, count(t.id) AS anzahl')
-            ->from(EA_Teilnehmer::class, 't')
+            ->from(EA_Starter::class, 't')
             ->join(EA_Distance::class, 's') 
             ->groupBy('s.id')
             ->addGroupBy('t.status')
@@ -511,7 +511,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('t.geschlecht, s.id AS streckeId, s.bezLang, count(t.id) AS anzahl')
-            ->from(EA_Teilnehmer::class, 't')
+            ->from(EA_Starter::class, 't')
             ->innerJoin(EA_Distance::class, 's','WITH', 's.id = t.strecke')
             ->groupBy('s.id')
             ->addGroupBy('t.geschlecht')
@@ -532,7 +532,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('t.geschlecht, a.id AS altersklasseId, s.id AS streckeId, s.bezLang, a.altersklasse, count(t.id) AS anzahl')
-            ->from(EA_Teilnehmer::class, 't')
+            ->from(EA_Starter::class, 't')
             ->innerJoin(EA_Distance::class, 's','WITH', 's.id = t.strecke')
             ->innerJoin(EA_AgeGroup::class, 'a','WITH', 'a.id = t.altersklasse');
             if ($streckenId) {
@@ -586,7 +586,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('t')
-            ->from(EA_Teilnehmer::class, 't')
+            ->from(EA_Starter::class, 't')
             ->where('t.strecke IS NULL');
           
         return $queryBuilder->getQuery()->getResult();
@@ -597,7 +597,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('t')
-            ->from(EA_Teilnehmer::class, 't')
+            ->from(EA_Starter::class, 't')
             ->where('t.altersklasse IS NULL')
             ->orWhere('t.geburtsdatum = 0000-00-00');
           
@@ -607,7 +607,7 @@ class EA_TeilnehmerRepository extends EA_Repository
     public function getDataCheckWrongStartzeit1(): ?array
     {
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(EA_Teilnehmer::class,"t");
+        $rsm->addEntityResult(EA_Starter::class,"t");
 
         $query = "SELECT t.* FROM " . EA_Repository::TB_TEILNEHMER . " t WHERE t.Startzeit > NOW() ;";
   
@@ -633,7 +633,7 @@ class EA_TeilnehmerRepository extends EA_Repository
     public function getDataCheckWrongStartzeit2(): ?array
     {
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(EA_Teilnehmer::class,"t");
+        $rsm->addEntityResult(EA_Starter::class,"t");
 
         $query = "SELECT t.* FROM " . EA_Repository::TB_TEILNEHMER . " t
         LEFT JOIN " . EA_Repository::TB_LOG . " i ON i.TeilnehmerId = t.Id 

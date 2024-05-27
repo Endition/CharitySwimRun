@@ -5,7 +5,7 @@ use Doctrine\ORM\EntityManager;
 
 
 
-class EA_TeilnehmeruebersichtController extends EA_Controller
+class EA_StarteruebersichtController extends EA_Controller
 {
 
     public function __construct( EntityManager $entityManager)
@@ -16,7 +16,7 @@ class EA_TeilnehmeruebersichtController extends EA_Controller
     public function getPageTeilnehmeruebersicht(): string
     {
         $content = "";
-        $content .= $this->EA_FR->getFormTeilnehmeruebersicht($this->entityManager, $this->EA_TeilnehmerRepository->loadList());
+        $content .= $this->EA_FR->getFormTeilnehmeruebersicht($this->entityManager, $this->EA_StarterRepository->loadList());
         return $content;
     }
 

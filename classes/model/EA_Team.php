@@ -45,7 +45,7 @@ class EA_Team
     private int $gesamtStreckenartCache = 0;
     private int $gesamtMeterCache = 0;
 
-    #[ORM\OneToMany(targetEntity: EA_Teilnehmer::class, mappedBy: 'mannschaft')]
+    #[ORM\OneToMany(targetEntity: EA_Starter::class, mappedBy: 'mannschaft')]
     private Collection $mitgliederList;
 
     public function __construct()

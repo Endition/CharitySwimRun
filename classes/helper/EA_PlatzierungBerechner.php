@@ -5,19 +5,19 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\model\EA_SpecialEvaluation;
-use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_StarterRepository;
 use CharitySwimRun\classes\model\EA_ConfigurationRepository;
 use CharitySwimRun\classes\model\EA_ImpulsRepository;
 
 class EA_PlatzierungBerechner
 {
-    private EA_TeilnehmerRepository $EA_TeilnehmerRepository;
+    private EA_StarterRepository $EA_StarterRepository;
     private EA_ConfigurationRepository $EA_ConfigurationRepository;   
     private EA_ImpulsRepository $EA_ImpulsRepository;   
 
     public function __construct(EntityManager $entityManager)
     {
-        $this->EA_TeilnehmerRepository = new EA_TeilnehmerRepository($entityManager);
+        $this->EA_StarterRepository = new EA_StarterRepository($entityManager);
         $this->EA_ConfigurationRepository = new EA_ConfigurationRepository($entityManager);
         $this->EA_ImpulsRepository = new EA_ImpulsRepository($entityManager);
 
@@ -107,7 +107,7 @@ class EA_PlatzierungBerechner
             $teilnehmer->setStreckenplatz( $platzList['strecke'][$sgId]['place']);
             $teilnehmer->setAkplatz($platzList['altersklasse'][$sagId]['place']);
         }
-        $this->EA_TeilnehmerRepository->update();
+        $this->EA_StarterRepository->update();
         return $teilnehmerListSorted;
     }
 

@@ -21,7 +21,7 @@ class EA_Club
     #[ORM\Column(type: Types::STRING,name:"Verein")]
     private string $verein = "";
 
-    #[ORM\OneToMany(targetEntity: EA_Teilnehmer::class, mappedBy: 'verein')]
+    #[ORM\OneToMany(targetEntity: EA_Starter::class, mappedBy: 'verein')]
     private Collection $mitgliederList;
 
     private int $gesamtimpulseCache = 0;

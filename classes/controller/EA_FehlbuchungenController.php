@@ -30,7 +30,7 @@ class EA_FehlbuchungenController extends EA_Controller
         foreach ($_POST['tpzuordnenTnId'] as $impulsId => $startnummer) {
             if ($_POST['tpaction'][$impulsId] == "true" && $startnummer != null) {
                 $impuls = $this->EA_ImpulsRepository->loadById($impulsId);
-                $teilnehmer = $this->EA_TeilnehmerRepository->loadByStartnummer($startnummer);
+                $teilnehmer = $this->EA_StarterRepository->loadByStartnummer($startnummer);
                 if ($teilnehmer === null) {
                     $this->EA_Messages->addMessage("Startnummer nicht gefunden",156573535744,EA_Message::MESSAGE_ERROR);
                 } else {

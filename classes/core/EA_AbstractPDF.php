@@ -4,13 +4,13 @@ namespace CharitySwimRun\classes\core;
 
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Starter;
 use Smarty\Smarty;
 use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_Configuration;
 use CharitySwimRun\classes\model\EA_ConfigurationRepository;
-use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_StarterRepository;
 use CharitySwimRun\classes\model\EA_Distance;
 use CharitySwimRun\classes\model\EA_AgeGroup;
 use CharitySwimRun\classes\model\EA_TeamRepository;
@@ -31,7 +31,7 @@ abstract class EA_AbstractPDF extends \TCPDF
     protected EA_AgeGroupRepository $altersklasseRepository;
     protected EA_DistanceRepository $streckeRepository;
     protected EA_ConfigurationRepository $EA_ConfigurationRepository;
-    protected EA_TeilnehmerRepository $teilnehmerRepository;
+    protected EA_StarterRepository $teilnehmerRepository;
     protected EA_ClubRepository $EA_ClubRepository;
     protected EA_TeamRepository $EA_TeamRepository;
 
@@ -51,10 +51,10 @@ abstract class EA_AbstractPDF extends \TCPDF
         $this->streckeRepository = new EA_DistanceRepository($entityManager);
         $this->EA_ClubRepository = new EA_ClubRepository($entityManager);
         $this->EA_TeamRepository = new EA_TeamRepository($entityManager);
-        $this->teilnehmerRepository = new EA_TeilnehmerRepository($entityManager);
+        $this->teilnehmerRepository = new EA_StarterRepository($entityManager);
         $this->EA_ConfigurationRepository = new EA_ConfigurationRepository($entityManager);
         $this->konfiguration = $this->EA_ConfigurationRepository->load();
-        $this->geschlechter = EA_Teilnehmer::GESCHLECHT_LIST_KURZ;
+        $this->geschlechter = EA_Starter::GESCHLECHT_LIST_KURZ;
         $this->altersklasseList = $this->altersklasseRepository->loadList("uDatum");
         $this->streckeList = $this->streckeRepository->loadList("bezLang");
         $this->startgruppen = $this->konfiguration->getStartgruppenAsArray();

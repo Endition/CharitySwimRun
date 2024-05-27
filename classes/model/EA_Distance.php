@@ -22,7 +22,7 @@ class EA_Distance
     #[ORM\Column(type: Types::STRING, name:"bezeichnungKurz")]
     private string $bezKurz = "";
     
-    #[ORM\OneToMany(targetEntity: EA_Teilnehmer::class, mappedBy: 'strecke')]
+    #[ORM\OneToMany(targetEntity: EA_Starter::class, mappedBy: 'strecke')]
     private Collection $mitgliederList;
 
     public function __construct()

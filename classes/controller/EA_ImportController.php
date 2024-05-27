@@ -9,7 +9,7 @@ use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 use CharitySwimRun\classes\model\EA_TeamRepository;
 use CharitySwimRun\classes\model\EA_ConfigurationRepository;
 use CharitySwimRun\classes\model\EA_DistanceRepository;
-use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_ClubRepository;
 use CharitySwimRun\classes\model\EA_Message;
 
@@ -59,7 +59,7 @@ class EA_ImportController extends EA_Controller
                                 #print_r($data);
                                 #echo "</pre>";
                                 $EA_T = $this->initiateTeilnehmerFromCSV($messages, $data);
-                                $answer = $this->EA_TeilnehmerRepository->create($EA_T);
+                                $answer = $this->EA_StarterRepository->create($EA_T);
                                 if ($answer === true) {
                                     $this->EA_Messages->addMessage("Zeile " . $i . " : Starter " . mb_convert_encoding($data[1], 'UTF-8') . " " . mb_convert_encoding($data[2], 'UTF-8')  . " erfolgreich angemeldet",1335375234,EA_Message::MESSAGE_SUCCESS);            
                                 } else {
@@ -85,7 +85,7 @@ class EA_ImportController extends EA_Controller
      * Import from CSV, Vereine Strecken AKS übergeben, damit sie nicht jedes mal geladen werden müssen
      */
 
-     private function initiateTeilnehmerFromCSV(&$messages, $data): EA_Teilnehmer
+     private function initiateTeilnehmerFromCSV(&$messages, $data): EA_Starter
      {
          #echo "<pre>";
          #print_r($data);
@@ -93,7 +93,7 @@ class EA_ImportController extends EA_Controller
          $EA_ConfigurationRepository = new EA_ConfigurationRepository($this->entityManager);
          $konfiguration = $EA_ConfigurationRepository->load();
          $EA_T = null;
-         $EA_T = new EA_Teilnehmer();
+         $EA_T = new EA_Starter();
          $EA_T->setStartnummer(trim($data[0]));
          $transponder = ($konfiguration->getTransponder() === false) ? $EA_T->getStartnummer() : trim($data[1]);
          $EA_T->setTransponder($transponder);

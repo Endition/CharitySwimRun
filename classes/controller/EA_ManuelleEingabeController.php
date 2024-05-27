@@ -4,7 +4,7 @@ namespace CharitySwimRun\classes\controller;
 use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\model\EA_Impuls;
-use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Message;
 
 
@@ -23,7 +23,7 @@ class EA_ManuelleEingabeController extends EA_Controller
             $anzahlimpulse = (isset($_POST['anzahlimpulse'])) ? filter_input(INPUT_POST, "anzahlimpulse",FILTER_SANITIZE_NUMBER_INT) : null;
             $impuls = null;
             
-            $EA_T = $this->EA_TeilnehmerRepository->loadByStartnummer($startnummer);
+            $EA_T = $this->EA_StarterRepository->loadByStartnummer($startnummer);
             if($EA_T === null){
                 $this->EA_Messages->addMessage("Kein Teilnehmer gefunden",133553548936,EA_Message::MESSAGE_ERROR);
             }else{
@@ -45,11 +45,11 @@ class EA_ManuelleEingabeController extends EA_Controller
         return $content;
     }
 
-    private function initiateImpuls(EA_Teilnehmer $EA_Teilnehmer): EA_Impuls
+    private function initiateImpuls(EA_Starter $EA_Starter): EA_Impuls
     {
         $impuls = new EA_Impuls();
-        $impuls->setTeilnehmer($EA_Teilnehmer);
-        $impuls->setTransponderId($EA_Teilnehmer->getTransponder());
+        $impuls->setTeilnehmer($EA_Starter);
+        $impuls->setTransponderId($EA_Starter->getTransponder());
         $impuls->setTimestamp(time());
         $impuls->setLeser(99);
         

@@ -21,9 +21,9 @@ class EA_Impuls
     #[ORM\Id]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: EA_Teilnehmer::class)]
+    #[ORM\ManyToOne(targetEntity: EA_Starter::class)]
     #[ORM\JoinColumn(name: 'TeilnehmerId', referencedColumnName: 'id',nullable:true,options:["default"=>null])]
-    private ?EA_Teilnehmer $teilnehmer = null;
+    private ?EA_Starter $teilnehmer = null;
 
     #[ORM\Column(type: Types::INTEGER,name:"TransponderId",nullable:true,options:["default"=>null])]
     private ?int $transponderId = null;
@@ -62,12 +62,12 @@ class EA_Impuls
         return $this->transponderId;
     }
 
-    public function getTeilnehmer(): ?EA_Teilnehmer
+    public function getTeilnehmer(): ?EA_Starter
     {
         return $this->teilnehmer;
     }
 
-    public function setTeilnehmer(?EA_Teilnehmer $teilnehmer): void
+    public function setTeilnehmer(?EA_Starter $teilnehmer): void
     {
         $this->teilnehmer = $teilnehmer;
     }

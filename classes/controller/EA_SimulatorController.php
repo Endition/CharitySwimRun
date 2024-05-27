@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Impuls;
 use CharitySwimRun\classes\model\EA_Team;
 use CharitySwimRun\classes\model\EA_Simulator;
-use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Club;
 
 class EA_SimulatorController extends EA_Controller
@@ -18,7 +18,7 @@ class EA_SimulatorController extends EA_Controller
 
     public function createRandomTeilnehmer(): array
     {
-        $teilnehmerlist = $this->EA_TeilnehmerRepository->loadList();
+        $teilnehmerlist = $this->EA_StarterRepository->loadList();
         $EA_Simulator = new EA_Simulator();
         $messages = [];
        
@@ -29,7 +29,7 @@ class EA_SimulatorController extends EA_Controller
             $mannschaftzufall = rand(0,100);
         
             $streckeList = $this->EA_DistanceRepository->loadList();
-            $newTeilnehmer = new EA_Teilnehmer();
+            $newTeilnehmer = new EA_Starter();
             $newTeilnehmer->setName($EA_Simulator->lastname[array_rand($EA_Simulator->lastname)]);
             $newTeilnehmer->setVorname($EA_Simulator->firstname[array_rand($EA_Simulator->firstname)]);
             $newTeilnehmer->setStartnummer(rand(1000,100000));
@@ -37,7 +37,7 @@ class EA_SimulatorController extends EA_Controller
             $geburtsdatum = new DateTimeImmutable();
             $geburtsdatum = $geburtsdatum->setTimestamp(mt_rand(strtotime("90 years ago"),strtotime("1 years ago")));
             $newTeilnehmer->setGeburtsdatum($geburtsdatum);
-            $newTeilnehmer->setGeschlecht(EA_Teilnehmer::GESCHLECHT_LIST_KURZ[array_rand(EA_Teilnehmer::GESCHLECHT_LIST_KURZ)]);
+            $newTeilnehmer->setGeschlecht(EA_Starter::GESCHLECHT_LIST_KURZ[array_rand(EA_Starter::GESCHLECHT_LIST_KURZ)]);
             $newTeilnehmer->setStrecke($streckeList[array_rand($streckeList)]);
             $newTeilnehmer->setStartzeit(new DateTimeImmutable());
         
@@ -96,7 +96,7 @@ class EA_SimulatorController extends EA_Controller
         
             $newTeilnehmer->setAltersklasse($this->EA_AgeGroupRepository->findByGeburtsjahr($geburtsdatum));
             $newTeilnehmer->setKonfiguration($this->EA_ConfigurationRepository->load());
-            $this->EA_TeilnehmerRepository->create($newTeilnehmer);  
+            $this->EA_StarterRepository->create($newTeilnehmer);  
             $messages[] =  "neuen Teilnehmer {$newTeilnehmer->getGesamtname()} angelegt";
         }
         $this->createRandomImpuls($messages, $teilnehmerlist);

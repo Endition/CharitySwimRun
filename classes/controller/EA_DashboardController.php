@@ -17,13 +17,13 @@ class EA_DashboardController extends EA_Controller
     {
         $content = "";
 
-        $globaleLeistungsdaten = $this->EA_ImpulsRepository->getGlobaleVeranstaltungsleistungsdaten(count($this->EA_TeilnehmerRepository->loadList(null,null,null,null,null,null,null,"id","ASC",true)),$this->konfiguration);
+        $globaleLeistungsdaten = $this->EA_ImpulsRepository->getGlobaleVeranstaltungsleistungsdaten(count($this->EA_StarterRepository->loadList(null,null,null,null,null,null,null,"id","ASC",true)),$this->konfiguration);
 
-        $teilnehmerWrongStreckeList = $this->EA_TeilnehmerRepository->getDataCheckWrongStrecke();
-        $teilnehmerWrongAltersklasseList = $this->EA_TeilnehmerRepository->getDataCheckWrongAltersklasse();
-        $teilnehmerWrongTransponderList = $this->EA_TeilnehmerRepository->getDataCheckWrongTransponder();
-        $teilnehmerWrongStartzeit1List = $this->EA_TeilnehmerRepository->getDataCheckWrongStartzeit1();
-        $teilnehmerWrongStartzeit2List = $this->EA_TeilnehmerRepository->getDataCheckWrongStartzeit2();
+        $teilnehmerWrongStreckeList = $this->EA_StarterRepository->getDataCheckWrongStrecke();
+        $teilnehmerWrongAltersklasseList = $this->EA_StarterRepository->getDataCheckWrongAltersklasse();
+        $teilnehmerWrongTransponderList = $this->EA_StarterRepository->getDataCheckWrongTransponder();
+        $teilnehmerWrongStartzeit1List = $this->EA_StarterRepository->getDataCheckWrongStartzeit1();
+        $teilnehmerWrongStartzeit2List = $this->EA_StarterRepository->getDataCheckWrongStartzeit2();
 
 
         $content .= $this->EA_FR->getFormSpecialDaten($this->entityManager, $globaleLeistungsdaten);
@@ -35,7 +35,7 @@ class EA_DashboardController extends EA_Controller
             $teilnehmerWrongTransponderList,
             $teilnehmerWrongStartzeit1List,
             $teilnehmerWrongStartzeit2List);
-        $content .= $this->EA_FR->getFormSpecialNachrichten($this->EA_TeilnehmerRepository->loadInformationZielmarkeErreicht());
+        $content .= $this->EA_FR->getFormSpecialNachrichten($this->EA_StarterRepository->loadInformationZielmarkeErreicht());
         $content .= "</div>";
         return $content;
     }

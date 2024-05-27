@@ -13,8 +13,8 @@ class EA_StatusVerwaltenController  extends EA_Controller
 
     public function getPageStatusVerwalten(): string
     {
-        $this->EA_TeilnehmerRepository->berechneStati();
-        $content = $this->EA_FR->getFormStatusVerwalten($this->entityManager, $this->EA_TeilnehmerRepository->loadList(null,null,null,null,null,null,null,"name","ASC"));
+        $this->EA_StarterRepository->berechneStati();
+        $content = $this->EA_FR->getFormStatusVerwalten($this->entityManager, $this->EA_StarterRepository->loadList(null,null,null,null,null,null,null,"name","ASC"));
         return $content;
     }
 

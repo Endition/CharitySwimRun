@@ -4,14 +4,14 @@ namespace CharitySwimRun\classes\helper;
 use Doctrine\DBAL\Connection;
 use CharitySwimRun\classes\model\EA_Configuration;
 use CharitySwimRun\classes\model\EA_Repository;
-use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_StarterRepository;
 
 class EA_StatistikHelper
 {
 
     private Connection $DbalConn;
 
-    private EA_TeilnehmerRepository $EA_TeilnehmerRepository;
+    private EA_StarterRepository $EA_StarterRepository;
 
     private EA_Configuration $konfiguration;
 
@@ -26,7 +26,7 @@ class EA_StatistikHelper
         $this->konfiguration = $konfiguration;
         $this->DbalConn = $EA_Repository->getEntityManager()->getConnection();
         
-        $this->EA_TeilnehmerRepository = new EA_TeilnehmerRepository($EA_Repository->getEntityManager());
+        $this->EA_StarterRepository = new EA_StarterRepository($EA_Repository->getEntityManager());
     }
 
     public function loadStatistikData(string $typ, ?int $id=null): array

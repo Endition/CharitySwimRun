@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\core\EA_AbstractPDF;
 
 use Smarty\Smarty;
-use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_StarterRepository;
 
 
 class PDFRundenzeiten extends EA_AbstractPDF
@@ -16,14 +16,14 @@ class PDFRundenzeiten extends EA_AbstractPDF
     private $id;
     protected string $typ;
     protected Smarty $smarty;
-    protected EA_TeilnehmerRepository $teilnehmerRepository;
+    protected EA_StarterRepository $teilnehmerRepository;
 
     public function __construct(EntityManager $entityManager, $id)
     {
         parent::__construct("P", "A4", $entityManager);
         $this->id = $id;
         $this->messages = [];
-        $this->teilnehmerRepository = new EA_TeilnehmerRepository($entityManager);
+        $this->teilnehmerRepository = new EA_StarterRepository($entityManager);
 
         $this->typ = "Rundenzeiten";
 

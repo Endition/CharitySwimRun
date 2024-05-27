@@ -4,7 +4,7 @@ namespace CharitySwimRun\classes\controller;
 use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\model\EA_Impuls;
-use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Message;
 use CharitySwimRun\classes\helper\EA_StatistikHelper;
 use CharitySwimRun\classes\model\EA_Repository;
@@ -57,11 +57,11 @@ class EA_BuchungenEinesTeilnehmersController extends EA_Controller
         }
         
         if($id !== null){
-            $teilnehmer = $this->EA_TeilnehmerRepository->loadById($id);
+            $teilnehmer = $this->EA_StarterRepository->loadById($id);
         }        
         //only backup, suchText = Startnummer?
         if($teilnehmer === null && $suchText !== ""){
-            $teilnehmer = $this->EA_TeilnehmerRepository->loadByFilter(null,(int)$suchText);
+            $teilnehmer = $this->EA_StarterRepository->loadByFilter(null,(int)$suchText);
         }
 
         if($teilnehmer === null){
@@ -75,14 +75,14 @@ class EA_BuchungenEinesTeilnehmersController extends EA_Controller
     private function addImpuls(): void
     {
         // $_POST['sendImpulseEinlaufenData'] beinhaltet die TN-ID
-        $EA_Teilnehmer = $this->EA_TeilnehmerRepository->loadById(filter_input(INPUT_GET, "teilnehmerid", FILTER_SANITIZE_NUMBER_INT));
-        if($EA_Teilnehmer === null){
+        $EA_Starter = $this->EA_StarterRepository->loadById(filter_input(INPUT_GET, "teilnehmerid", FILTER_SANITIZE_NUMBER_INT));
+        if($EA_Starter === null){
             $this->EA_Messages->addMessage("Der Teilnehmer konnte nicht gefunden werden.",1231323511,EA_Message::MESSAGE_SUCCESS);
             return;
         }
-        $impuls = $this->initiateImpuls($EA_Teilnehmer);
+        $impuls = $this->initiateImpuls($EA_Starter);
         $this->EA_ImpulsRepository->create($impuls);
-        $this->EA_TeilnehmerRepository->resetPlaetzeTeilnehmer($EA_Teilnehmer);
+        $this->EA_StarterRepository->resetPlaetzeTeilnehmer($EA_Starter);
         $this->EA_Messages->addMessage("Impuls für TN-ID " . $impuls->getTeilnehmer()->getId() . " - um " . $impuls->getTimestamp("d.m.Y H:i:s") . " gespeichert",17322443535,EA_Message::MESSAGE_SUCCESS);
 
     }
@@ -91,23 +91,23 @@ class EA_BuchungenEinesTeilnehmersController extends EA_Controller
     {
         $impuls = $this->EA_ImpulsRepository->loadById(filter_input(INPUT_GET, "impulsid", FILTER_SANITIZE_NUMBER_INT));
         $this->EA_ImpulsRepository->delete($impuls);
-        $this->EA_TeilnehmerRepository->resetPlaetzeTeilnehmer($impuls->getTeilnehmer());
+        $this->EA_StarterRepository->resetPlaetzeTeilnehmer($impuls->getTeilnehmer());
         $this->EA_Messages->addMessage("Impuls für TN-ID " . $impuls->getTeilnehmer()->getId() . " - um " . $impuls->getTimestamp("d.m.Y H:i:s") . " gelöscht",17322443535,EA_Message::MESSAGE_SUCCESS);
     }
 
     private function deleteAllImpuls(): void
     {
-        $EA_Teilnehmer = $this->EA_TeilnehmerRepository->loadById(filter_input(INPUT_GET, "teilnehmerid", FILTER_SANITIZE_NUMBER_INT));
-        $this->EA_ImpulsRepository->deleteAllByTeilnehmer($EA_Teilnehmer);
-        $this->EA_TeilnehmerRepository->resetPlaetzeTeilnehmer($EA_Teilnehmer );
-        $this->EA_Messages->addMessage("Alle Buchungen für Teilnehmer " . $EA_Teilnehmer->getGesamtname() . " gelöscht",15632124455,EA_Message::MESSAGE_SUCCESS);
+        $EA_Starter = $this->EA_StarterRepository->loadById(filter_input(INPUT_GET, "teilnehmerid", FILTER_SANITIZE_NUMBER_INT));
+        $this->EA_ImpulsRepository->deleteAllByTeilnehmer($EA_Starter);
+        $this->EA_StarterRepository->resetPlaetzeTeilnehmer($EA_Starter );
+        $this->EA_Messages->addMessage("Alle Buchungen für Teilnehmer " . $EA_Starter->getGesamtname() . " gelöscht",15632124455,EA_Message::MESSAGE_SUCCESS);
     }
 
-    private function initiateImpuls(EA_Teilnehmer $EA_Teilnehmer): EA_Impuls
+    private function initiateImpuls(EA_Starter $EA_Starter): EA_Impuls
     {
         $impuls = new EA_Impuls();
-        $impuls->setTeilnehmer($EA_Teilnehmer);
-        $impuls->setTransponderId($EA_Teilnehmer->getTransponder());
+        $impuls->setTeilnehmer($EA_Starter);
+        $impuls->setTransponderId($EA_Starter->getTransponder());
         $impuls->setTimestamp(time());
         $impuls->setLeser(99);
         

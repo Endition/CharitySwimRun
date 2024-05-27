@@ -3,7 +3,7 @@ namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_StarterRepository;
 use CharitySwimRun\classes\model\EA_ConfigurationRepository;
 use CharitySwimRun\classes\renderer\EA_FormRenderer;
 use CharitySwimRun\classes\renderer\EA_Renderer;
@@ -26,7 +26,7 @@ class EA_Controller
     protected EA_Renderer $EA_R;
     protected EA_FormRenderer $EA_FR;
     protected EA_AgeGroupRepository $EA_AgeGroupRepository;
-    protected EA_TeilnehmerRepository $EA_TeilnehmerRepository;
+    protected EA_StarterRepository $EA_StarterRepository;
     protected EA_ConfigurationRepository $EA_ConfigurationRepository;
     protected EA_ImpulsRepository $EA_ImpulsRepository;
     protected EA_ClubRepository $vereinRepository;
@@ -51,7 +51,7 @@ class EA_Controller
         $this->EA_Messages = new EA_Messages();
         $this->EA_UserRepository = new EA_UserRepository($entityManager);
         $this->EA_AgeGroupRepository = new EA_AgeGroupRepository($entityManager);
-        $this->EA_TeilnehmerRepository = new EA_TeilnehmerRepository($entityManager);
+        $this->EA_StarterRepository = new EA_StarterRepository($entityManager);
         $this->EA_ConfigurationRepository = new EA_ConfigurationRepository($entityManager);
         $this->EA_ImpulsRepository = new EA_ImpulsRepository($entityManager);
         $this->EA_TeamRepository = new EA_TeamRepository($entityManager);

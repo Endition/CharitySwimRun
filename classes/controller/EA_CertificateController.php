@@ -16,8 +16,8 @@ class EA_CertificateController extends EA_Controller
     public function getPageUrkunden(): string
     {
         $content = $this->EA_FR->getContentUrkunden($this->entityManager, 
-            $this->EA_TeilnehmerRepository->loadStreckenAltersklassenTeilnehmerVerteilung(), 
-            $this->EA_TeilnehmerRepository->loadStreckenAltersklassenTeilnehmerVerteilung(true));
+            $this->EA_StarterRepository->loadStreckenAltersklassenTeilnehmerVerteilung(), 
+            $this->EA_StarterRepository->loadStreckenAltersklassenTeilnehmerVerteilung(true));
         return $content;
     }
 }

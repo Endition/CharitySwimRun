@@ -83,11 +83,11 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $buchungsuebersichtController->getPageBuchungsuebersicht();
                     break;
                 case "teilnehmeruebersicht":
-                    $teilnehmeruebersichtController = new EA_TeilnehmeruebersichtController( $this->entityManager);
+                    $teilnehmeruebersichtController = new EA_StarteruebersichtController( $this->entityManager);
                     $innercontent .= $teilnehmeruebersichtController->getPageTeilnehmeruebersicht();
                     break;
                 case "teilnehmer":
-                    $teilnehmerController = new EA_TeilnehmerController($this->entityManager);
+                    $teilnehmerController = new EA_StarterController($this->entityManager);
                     $innercontent .= $teilnehmerController->getPageTeilnehmer();
                     break;
                 case "mannschaften":

@@ -5,7 +5,7 @@ namespace CharitySwimRun\classes\pdf;
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\core\EA_AbstractPDF;
 
-use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_CertificateElementRepository;
 
 
@@ -44,7 +44,7 @@ class PDFUrkunde extends EA_AbstractPDF
 
 
     // Generiert die Urkunde aus den hinterlegten Daten
-    public function UrkundeEinzelstarter(EA_Teilnehmer $teilnehmer): void
+    public function UrkundeEinzelstarter(EA_Starter $teilnehmer): void
     {
         // Teilnehmer ggf. überspringen, wenn nur noch bestimmte Statusse ausgegeben werden sollen
         if(!empty($this->filter['status']) && $teilnehmer->getStatus() < $this->filter['status'] ){

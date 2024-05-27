@@ -80,7 +80,7 @@ class EA_ApiController extends EA_Controller
         $responseList = [];
         switch ($route) {
             case 'teilnehmer':
-                $EA_TeilnehmerController = new EA_TeilnehmerController($this->entityManager);
+                $EA_StarterController = new EA_StarterController($this->entityManager);
                 $responseList = $this->handleGetTeilnehmerPublic($paramList);
                 break;
             default:
@@ -95,7 +95,7 @@ class EA_ApiController extends EA_Controller
         $responseList = [];
         switch ($route) {
             case 'teilnehmer':
-                $EA_TeilnehmerController = new EA_TeilnehmerController($this->entityManager);
+                $EA_StarterController = new EA_StarterController($this->entityManager);
                 $responseList = $this->handleGetTeilnehmerAdministrativ($paramList);
                 break;
             case 'verein':
@@ -141,7 +141,7 @@ class EA_ApiController extends EA_Controller
                 return $this->unprocessableEntityresponseList();
             }
 
-            $EA_T = $this->EA_TeilnehmerRepository->loadById($teilnehmerId);
+            $EA_T = $this->EA_StarterRepository->loadById($teilnehmerId);
             $EA_I = new EA_Impuls();
             $EA_I->setTeilnehmer($EA_T);
             date_default_timezone_set("Europe/Berlin");
@@ -192,9 +192,9 @@ class EA_ApiController extends EA_Controller
             } else {
                 return $this->unprocessableEntityresponseList();
             }
-            $EA_T = $this->EA_TeilnehmerRepository->loadById($id);
+            $EA_T = $this->EA_StarterRepository->loadById($id);
             $EA_T->setStatus($status);
-            $this->EA_TeilnehmerRepository->update();
+            $this->EA_StarterRepository->update();
         }
 
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
@@ -241,7 +241,7 @@ class EA_ApiController extends EA_Controller
         }
         if($paramList[0] === "startnummer"){
             $startnummer = $paramList[0] === "startnummer" ? (int)$paramList[1] : null;
-            $teilnehmer = $this->EA_TeilnehmerRepository->loadByFilter(null,$startnummer);            
+            $teilnehmer = $this->EA_StarterRepository->loadByFilter(null,$startnummer);            
             if ($teilnehmer === null) {
                 return $this->notFoundresponseList();
             }
@@ -262,7 +262,7 @@ class EA_ApiController extends EA_Controller
         }
         if($paramList[0] === "strecke"){
             $strecke = $this->EA_DistanceRepository->loadById((int)$paramList[1]);
-            $teilnehmerList = $this->EA_TeilnehmerRepository->loadList($strecke);            
+            $teilnehmerList = $this->EA_StarterRepository->loadList($strecke);            
             if ($teilnehmerList === []) {
                 return $this->notFoundresponseList();
             }
@@ -290,7 +290,7 @@ class EA_ApiController extends EA_Controller
                 $searchStartnummer = null;
             }
 
-            $teilnehmerList = $this->EA_TeilnehmerRepository->loadList(null,null,null,null,null,null,null,"name","ASC",null,null,null,null,null,$searchStartnummer,$searchName,$searchVorname);            
+            $teilnehmerList = $this->EA_StarterRepository->loadList(null,null,null,null,null,null,null,"name","ASC",null,null,null,null,null,$searchStartnummer,$searchName,$searchVorname);            
             if ($teilnehmerList === null) {
                 return $this->notFoundresponseList();
             }
@@ -341,7 +341,7 @@ class EA_ApiController extends EA_Controller
         $result = [];
 
         if($paramList[0] === "startnummer"){
-            $teilnehmer = $this->EA_TeilnehmerRepository->loadByFilter(null, $paramList[1]);
+            $teilnehmer = $this->EA_StarterRepository->loadByFilter(null, $paramList[1]);
             
             if ($teilnehmer === null) {
                 return $this->notFoundresponseList();

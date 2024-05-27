@@ -5,7 +5,7 @@ use DateTime;
 use Doctrine\ORM\EntityManager;
 
 
-use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Club;
 use CharitySwimRun\classes\model\EA_Message;
 
@@ -27,9 +27,9 @@ class EA_SelbstanmeldungController extends EA_Controller
             $error = $this->securityChecksTeilnehmer($messages, $EA_T);
 
             if ($error === false) {
-                $this->EA_TeilnehmerRepository->create($EA_T);
+                $this->EA_StarterRepository->create($EA_T);
                 $content .= $this->EA_FR->getInfoSelbstanmeldung($this->entityManager, $EA_T);
-                $EA_T = new EA_Teilnehmer();
+                $EA_T = new EA_Starter();
             }
         }else{
             $content .= $this->EA_FR->getFormSelbstanmeldung($this->entityManager, $this->konfiguration);
@@ -40,9 +40,9 @@ class EA_SelbstanmeldungController extends EA_Controller
     }
 
     
-    private function initiateTeilnehmer(): ?EA_Teilnehmer
+    private function initiateTeilnehmer(): ?EA_Starter
     {
-        $EA_T = new EA_Teilnehmer();
+        $EA_T = new EA_Starter();
 
         $startnummer = rand(9000,10000);
         $transponder = $startnummer;
@@ -99,16 +99,16 @@ class EA_SelbstanmeldungController extends EA_Controller
         return $EA_T;
     }
 
-    private function securityChecksTeilnehmer(&$messages, EA_Teilnehmer $teilnehmer): bool
+    private function securityChecksTeilnehmer(&$messages, EA_Starter $teilnehmer): bool
     {
         $error = false;
             //avoid double number
-            if ($this->EA_TeilnehmerRepository->loadByStartnummer($teilnehmer->getStartnummer()) !== null) {
+            if ($this->EA_StarterRepository->loadByStartnummer($teilnehmer->getStartnummer()) !== null) {
                 $this->EA_Messages->addMessage("Diese Startnummer gibt es schon",1337534273,EA_Message::MESSAGE_ERROR);           
                 $error = true;
             }
             //avoid double transponder
-            if ($this->EA_TeilnehmerRepository->loadByTransponder($teilnehmer->getTransponder()) !== null) {
+            if ($this->EA_StarterRepository->loadByTransponder($teilnehmer->getTransponder()) !== null) {
                 $this->EA_Messages->addMessage("Dieser Transponder ist schon in Benutzung",1353747735,EA_Message::MESSAGE_ERROR);           
                 $error = true;
             }
@@ -130,7 +130,7 @@ class EA_SelbstanmeldungController extends EA_Controller
                 $error = true;        
             }
             //avoid double registration
-            if ($this->EA_TeilnehmerRepository->loadByFilter(null,null,null,$teilnehmer->getVorname(),$teilnehmer->getName(),$teilnehmer->getGeburtsdatum()) !== null) {
+            if ($this->EA_StarterRepository->loadByFilter(null,null,null,$teilnehmer->getVorname(),$teilnehmer->getName(),$teilnehmer->getGeburtsdatum()) !== null) {
                 $this->EA_Messages->addMessage("Diese Anmeldung ist schon im System",3273235323745,EA_Message::MESSAGE_ERROR);           
                 $error = true;
             }

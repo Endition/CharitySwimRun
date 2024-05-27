@@ -14,7 +14,7 @@ class EA_MeldelistenController  extends EA_Controller
     }
     public function getPageMeldelisten(): string
     {
-        $content = $this->EA_FR->getContentMeldelisten($this->entityManager, $this->EA_TeilnehmerRepository->loadStreckenAltersklassenTeilnehmerVerteilung(), $this->EA_TeilnehmerRepository->loadStreckenAltersklassenTeilnehmerVerteilung(true));
+        $content = $this->EA_FR->getContentMeldelisten($this->entityManager, $this->EA_StarterRepository->loadStreckenAltersklassenTeilnehmerVerteilung(), $this->EA_StarterRepository->loadStreckenAltersklassenTeilnehmerVerteilung(true));
         return $content;
     }
 }

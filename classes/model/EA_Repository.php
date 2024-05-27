@@ -154,7 +154,7 @@ class EA_Repository{
             $this->entityManager->getClassMetadata(EA_TeamCategory::class),
             $this->entityManager->getClassMetadata(EA_SpecialEvaluation::class),
             $this->entityManager->getClassMetadata(EA_Distance::class),
-            $this->entityManager->getClassMetadata(EA_Teilnehmer::class),
+            $this->entityManager->getClassMetadata(EA_Starter::class),
             $this->entityManager->getClassMetadata(EA_CertificateElement::class),
             $this->entityManager->getClassMetadata(EA_User::class),
             $this->entityManager->getClassMetadata(EA_Club::class),

@@ -19,7 +19,7 @@ use Doctrine\DBAL\Types\Types;
 #[ORM\Index(name: "Verein", columns: ["Verein"])]
 #[ORM\Index(name: "Strecke", columns: ["Strecke"])]
 #[ORM\Index(name: "Mannschaft", columns: ["Mannschaft"])]
-class EA_Teilnehmer
+class EA_Starter
 {
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue]

@@ -20,8 +20,8 @@ use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
 use CharitySwimRun\classes\model\EA_Distance;
 use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_Club;
-use CharitySwimRun\classes\model\EA_Teilnehmer;
-use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
+use CharitySwimRun\classes\model\EA_Starter;
+use CharitySwimRun\classes\model\EA_StarterRepository;
 use CharitySwimRun\classes\model\EA_Certificate;
 use CharitySwimRun\classes\model\EA_CertificateElement;
 use CharitySwimRun\classes\model\EA_User;
@@ -76,13 +76,13 @@ class EA_FormRenderer extends EA_AbstractRenderer {
             $this->smarty->assign('startgruppen', $konfiguration->getStartgruppenAsArray());
         }
         if (isset($includes['geschlechter'])) {
-            $this->smarty->assign('geschlechter', EA_Teilnehmer::GESCHLECHT_LIST);
+            $this->smarty->assign('geschlechter', EA_Starter::GESCHLECHT_LIST);
         }
         if (isset($includes['geschlechterKurz'])) {
-            $this->smarty->assign('geschlechter', EA_Teilnehmer::GESCHLECHT_LIST_KURZ);
+            $this->smarty->assign('geschlechter', EA_Starter::GESCHLECHT_LIST_KURZ);
         }
         if (isset($includes['stati'])) {
-            $this->smarty->assign("stati", EA_Teilnehmer::STATUS_LIST);
+            $this->smarty->assign("stati", EA_Starter::STATUS_LIST);
         }
     }
 
@@ -206,7 +206,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getInfoSelbstanmeldung(EntityManager $entityManager, EA_Teilnehmer $EA_T): string
+    public function getInfoSelbstanmeldung(EntityManager $entityManager, EA_Starter $EA_T): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "stati" => true));
@@ -215,7 +215,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getInfoTeilnehmer(EntityManager $entityManager, EA_Teilnehmer $EA_T): string
+    public function getInfoTeilnehmer(EntityManager $entityManager, EA_Starter $EA_T): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "stati" => true));
@@ -247,7 +247,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormTeilnehmer(EntityManager $entityManager, EA_Teilnehmer $EA_T, EA_Configuration $konfiguration): string
+    public function getFormTeilnehmer(EntityManager $entityManager, EA_Starter $EA_T, EA_Configuration $konfiguration): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "mannschaften" => true, "strecken" => true, "startgruppen" => true, "geschlechter" => true, "stati" => true));
@@ -322,7 +322,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormBuchungenStarter(EntityManager $entityManager, EA_Teilnehmer $teilnehmer, Collection $impulse, array $daten): string
+    public function getFormBuchungenStarter(EntityManager $entityManager, EA_Starter $teilnehmer, Collection $impulse, array $daten): string
     {
         $content = "";
         $content .= $this->getInfoTeilnehmer($entityManager,$teilnehmer);
@@ -427,7 +427,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $gemeldeteTeilnemer,
         $StreckenTeilnehmerVerteilung,
         $StreckenAltersklassenTeilnehmerVerteilung,
-        EA_TeilnehmerRepository $EA_TeilnehmerRepository,
+        EA_StarterRepository $EA_StarterRepository,
         EntityManager $entityManager): string
     {
         $content = "";
@@ -439,10 +439,10 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('aeltesterTeilnehmerFrau',$teilnehmer['WMax']);
         $this->smarty->assign('juengsterTeilnehmerFrau', $teilnehmer['WMin']);
         $this->smarty->assign('gemeldeteTeilnehmer', $gemeldeteTeilnemer);
-        $this->smarty->assign('teilnehmerRepository', $EA_TeilnehmerRepository);
+        $this->smarty->assign('teilnehmerRepository', $EA_StarterRepository);
         $this->smarty->assign('EA_H', $this->EA_H);
         $this->smarty->assign('statiVerteilung', $statiVerteilung);
-        $this->smarty->assign('stati', EA_Teilnehmer::STATUS_LIST);
+        $this->smarty->assign('stati', EA_Starter::STATUS_LIST);
         $this->smarty->assign('medaillenspiegel', $medaillenspiegel);
         $this->smarty->assign('besterTeilnehmer', $besterTeilnehmer);
         $this->smarty->assign('StreckenTeilnehmerVerteilung', $StreckenTeilnehmerVerteilung);

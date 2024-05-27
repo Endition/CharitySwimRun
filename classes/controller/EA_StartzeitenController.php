@@ -3,7 +3,7 @@ namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\model\EA_Teilnehmer;
+use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Message;
 
 
@@ -21,7 +21,7 @@ class EA_StartzeitenController  extends EA_Controller
         $content = "";
         $geschlecht = null;
         $spalte = null;
-        $this->EA_TeilnehmerRepository->berechneStati();
+        $this->EA_StarterRepository->berechneStati();
         if (isset($_GET['action']) && ($_GET['action'] === "start" || $_GET['action'] === "editstartzeit")) {
             if (isset($_GET['action']) && $_GET['action'] === "start") {
                 $startzeit = new \DateTime();
@@ -52,15 +52,15 @@ class EA_StartzeitenController  extends EA_Controller
                 $spalteArray = is_array($_POST['startgruppe']) ? $_POST['startgruppe'] : null;
                 $geschlecht = null;
             }
-            $this->EA_TeilnehmerRepository->updateStatus(EA_Teilnehmer::STATUS_GESTARTET,$geschlecht,$spalte,$spalteValue,$spalteArray);
-            $answer = $this->EA_TeilnehmerRepository->updateStartzeit($startzeit,$uberschreiben,$geschlecht,$spalte,$spalteValue,$spalteArray);
+            $this->EA_StarterRepository->updateStatus(EA_Starter::STATUS_GESTARTET,$geschlecht,$spalte,$spalteValue,$spalteArray);
+            $answer = $this->EA_StarterRepository->updateStartzeit($startzeit,$uberschreiben,$geschlecht,$spalte,$spalteValue,$spalteArray);
             if ($answer > 0) {
                 $this->EA_Messages->addMessage($answer . " Teilnehmer gestartet mit der Zeit " . $startzeit->format('d.m.Y H:i:s'),174635735,EA_Message::MESSAGE_SUCCESS);            
             } else {
                 $this->EA_Messages->addMessage($answer . " Teilnehmer gestartet",193534574,EA_Message::MESSAGE_SUCCESS);            
             }
         }
-        $content .= $this->EA_FR->getFormStartzeiten($this->entityManager, $this->EA_TeilnehmerRepository->loadList(null,null,null,null,null,null,null,"startnummer","DESC", false), $this->EA_TeilnehmerRepository->loadList(null,null,null,null,null,null,null,"startnummer","DESC", true));
+        $content .= $this->EA_FR->getFormStartzeiten($this->entityManager, $this->EA_StarterRepository->loadList(null,null,null,null,null,null,null,"startnummer","DESC", false), $this->EA_StarterRepository->loadList(null,null,null,null,null,null,null,"startnummer","DESC", true));
         return $content;
     }
 
