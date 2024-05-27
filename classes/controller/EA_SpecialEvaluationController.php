@@ -9,7 +9,7 @@ use CharitySwimRun\classes\renderer\EA_Renderer;
 use CharitySwimRun\classes\model\EA_Message;
 use CharitySwimRun\classes\model\EA_Messages;
 use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
-use CharitySwimRun\classes\model\EA_StreckeRepository;
+use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_AltersklasseRepository;
 
 
@@ -43,7 +43,7 @@ class EA_SpecialEvaluationController extends EA_Controller
 
     private function createAndUpdateSpecialEvaluation(): void
     {
-        $streckeRepository = new EA_StreckeRepository($this->entityManager);
+        $streckeRepository = new EA_DistanceRepository($this->entityManager);
         $altersklasseRepository = new EA_AltersklasseRepository($this->entityManager);
         
         $id = filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);

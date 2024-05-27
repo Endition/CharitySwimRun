@@ -63,7 +63,7 @@ class EA_SelbstanmeldungController extends EA_Controller
         } else {
             $verein = null;
         }
-        $strecke = (isset($_POST['strecke'])) ? $this->EA_StreckeRepository->loadById($_POST['strecke']) :null;
+        $strecke = (isset($_POST['strecke'])) ? $this->EA_DistanceRepository->loadById($_POST['strecke']) :null;
         $startgruppe = (isset($_POST['startgruppe'])) ? htmlspecialchars($_POST['startgruppe']) : null;
         $mail = (isset($_POST['mail'])) ? htmlspecialchars($_POST['mail']) : "";
         $plz = (isset($_POST['plz'])) ? htmlspecialchars($_POST['plz']) : null;

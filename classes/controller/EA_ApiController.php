@@ -261,7 +261,7 @@ class EA_ApiController extends EA_Controller
             ];
         }
         if($paramList[0] === "strecke"){
-            $strecke = $this->EA_StreckeRepository->loadById((int)$paramList[1]);
+            $strecke = $this->EA_DistanceRepository->loadById((int)$paramList[1]);
             $teilnehmerList = $this->EA_TeilnehmerRepository->loadList($strecke);            
             if ($teilnehmerList === []) {
                 return $this->notFoundresponseList();

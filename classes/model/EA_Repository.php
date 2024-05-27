@@ -153,7 +153,7 @@ class EA_Repository{
             $this->entityManager->getClassMetadata(EA_Mannschaft::class),
             $this->entityManager->getClassMetadata(EA_Mannschaftskategorie::class),
             $this->entityManager->getClassMetadata(EA_SpecialEvaluation::class),
-            $this->entityManager->getClassMetadata(EA_Strecke::class),
+            $this->entityManager->getClassMetadata(EA_Distance::class),
             $this->entityManager->getClassMetadata(EA_Teilnehmer::class),
             $this->entityManager->getClassMetadata(EA_Urkundenelement::class),
             $this->entityManager->getClassMetadata(EA_User::class),

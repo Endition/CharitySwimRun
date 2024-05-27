@@ -3,12 +3,12 @@ namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\model\EA_Strecke;
+use CharitySwimRun\classes\model\EA_Distance;
 use CharitySwimRun\classes\model\EA_Message;
 
 
 
-class EA_StreckenController extends EA_Controller
+class EA_DistanceController extends EA_Controller
 {
 
     
@@ -21,7 +21,7 @@ class EA_StreckenController extends EA_Controller
     public function getPageStrecken(): string
     {
         $content = "";
-        $strecke = new EA_Strecke();
+        $strecke = new EA_Distance();
 
         if (isset($_POST['sendStreckeData'])) {
             $this->createAndUpdateStrecke();
@@ -30,7 +30,7 @@ class EA_StreckenController extends EA_Controller
         } elseif (isset($_GET['action']) && $_GET['action'] === "delete") {
             $this->deleteStrecke();
         } else {
-            $strecke = new EA_Strecke();
+            $strecke = new EA_Distance();
         }
 
         $content .= $this->getStreckeList();
@@ -45,7 +45,7 @@ class EA_StreckenController extends EA_Controller
         $bezeichnungKurz = htmlspecialchars($_POST['bezeichnungKurz']);
         
         //intinalize Object
-        $strecke = ($id === null || $id === false || $id === "") ? new EA_Strecke() : $this->EA_StreckeRepository->loadById((int)$id);
+        $strecke = ($id === null || $id === false || $id === "") ? new EA_Distance() : $this->EA_DistanceRepository->loadById((int)$id);
 
         //checks for update und create case
         if($bezeichnungLang === ""){
@@ -59,11 +59,11 @@ class EA_StreckenController extends EA_Controller
 
         //checks only for create case
         if($strecke->getId() === null){
-            if($this->EA_StreckeRepository->isAvailable("bezLang", $bezeichnungLang) === false){
+            if($this->EA_DistanceRepository->isAvailable("bezLang", $bezeichnungLang) === false){
                 $this->EA_Messages->addMessage("Die Bezeichnung {$bezeichnungLang} für die Strecke ist schon vergeben",1459789787,EA_Message::MESSAGE_ERROR);
                 return;
             }
-            if($this->EA_StreckeRepository->isAvailable("bezKurz", $bezeichnungKurz) === false){
+            if($this->EA_DistanceRepository->isAvailable("bezKurz", $bezeichnungKurz) === false){
                 $this->EA_Messages->addMessage("Die Bezeichnung {$bezeichnungKurz} für die Strecke ist schon vergeben",1456787777,EA_Message::MESSAGE_ERROR);
                 return;
             }
@@ -75,20 +75,20 @@ class EA_StreckenController extends EA_Controller
         
         //create case
         if($strecke->getId() === null){
-            $this->EA_StreckeRepository->create($strecke);
+            $this->EA_DistanceRepository->create($strecke);
             $this->EA_Messages->addMessage("Eintrag angelegt",193478775454,EA_Message::MESSAGE_SUCCESS);
         //update case
         }else{
-            $this->EA_StreckeRepository->update();
+            $this->EA_DistanceRepository->update();
             $this->EA_Messages->addMessage("Eintrag geändert",19233777772,EA_Message::MESSAGE_SUCCESS);
         }
         
     }
 
-    private function editStrecke(): ?EA_Strecke
+    private function editStrecke(): ?EA_Distance
     {
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-        $strecke = $this->EA_StreckeRepository->loadById($id);
+        $strecke = $this->EA_DistanceRepository->loadById($id);
         if($strecke === null){
             $this->EA_Messages->addMessage("Keine Strecke gefunden.",156567875,EA_Message::MESSAGE_WARNINIG);
         }
@@ -98,7 +98,7 @@ class EA_StreckenController extends EA_Controller
     private function getStreckeList():  string
     {
         $content = "";
-        $streckeList = $this->EA_StreckeRepository->loadList();
+        $streckeList = $this->EA_DistanceRepository->loadList();
         if ($streckeList !== []) {
             $content = $this->EA_R->renderTabelleStrecken($streckeList);
         } else {
@@ -110,18 +110,18 @@ class EA_StreckenController extends EA_Controller
     private function deleteStrecke(): void
     {
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-        $strecke = $this->EA_StreckeRepository->loadById($id);
+        $strecke = $this->EA_DistanceRepository->loadById($id);
 
         if($strecke === null){
             $this->EA_Messages->addMessage("Keine Strecke gefunden.",1956354634562,EA_Message::MESSAGE_ERROR);
             return;
         }
-        if($this->EA_StreckeRepository->isInUse($strecke) === true){
+        if($this->EA_DistanceRepository->isInUse($strecke) === true){
             $this->EA_Messages->addMessage("Strecke ist noch in Benutzung.",18345345322,EA_Message::MESSAGE_ERROR);
             return;
         }
 
-        $this->EA_StreckeRepository->delete($strecke);
+        $this->EA_DistanceRepository->delete($strecke);
         $this->EA_Messages->addMessage("Strecke gelöscht.",1236234235,EA_Message::MESSAGE_SUCCESS);
     }
 }

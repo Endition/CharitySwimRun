@@ -124,7 +124,7 @@ class EA_TeilnehmerRepository extends EA_Repository
     }
 
     public function loadList(
-        ?EA_Strecke $strecke = null, 
+        ?EA_Distance $strecke = null, 
         ?EA_Altersklasse $altersklasse = null, 
         ?string $geschlecht = null, 
         ?EA_Mannschaft $mannschaft = null, 
@@ -245,7 +245,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         $altersklasse = null;
         $limit = null;
         if($streckeId){
-            $strecke = new EA_Strecke();
+            $strecke = new EA_Distance();
             $strecke->setId($streckeId);
         }
         if($altersklasseId){
@@ -488,7 +488,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         $queryBuilder
             ->select('s.id AS streckeId, t.status, count(t.id) AS anzahl')
             ->from(EA_Teilnehmer::class, 't')
-            ->join(EA_Strecke::class, 's') 
+            ->join(EA_Distance::class, 's') 
             ->groupBy('s.id')
             ->addGroupBy('t.status')
             ->orderBy('s.id')
@@ -512,7 +512,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         $queryBuilder
             ->select('t.geschlecht, s.id AS streckeId, s.bezLang, count(t.id) AS anzahl')
             ->from(EA_Teilnehmer::class, 't')
-            ->innerJoin(EA_Strecke::class, 's','WITH', 's.id = t.strecke')
+            ->innerJoin(EA_Distance::class, 's','WITH', 's.id = t.strecke')
             ->groupBy('s.id')
             ->addGroupBy('t.geschlecht')
             ->orderBy('s.bezLang')
@@ -533,7 +533,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         $queryBuilder
             ->select('t.geschlecht, a.id AS altersklasseId, s.id AS streckeId, s.bezLang, a.altersklasse, count(t.id) AS anzahl')
             ->from(EA_Teilnehmer::class, 't')
-            ->innerJoin(EA_Strecke::class, 's','WITH', 's.id = t.strecke')
+            ->innerJoin(EA_Distance::class, 's','WITH', 's.id = t.strecke')
             ->innerJoin(EA_Altersklasse::class, 'a','WITH', 'a.id = t.altersklasse');
             if ($streckenId) {
                 $queryBuilder->where('s.id = :streckenid')

@@ -17,8 +17,8 @@ use CharitySwimRun\classes\model\EA_Mannschaftskategorie;
 use CharitySwimRun\classes\model\EA_Repository;
 use CharitySwimRun\classes\model\EA_SpecialEvaluation;
 use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
-use CharitySwimRun\classes\model\EA_Strecke;
-use CharitySwimRun\classes\model\EA_StreckeRepository;
+use CharitySwimRun\classes\model\EA_Distance;
+use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_Club;
 use CharitySwimRun\classes\model\EA_Teilnehmer;
 use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
@@ -49,7 +49,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
 
     private function getStandardIncludes(EntityManager $entityManager, array $includes = []) {
         $altersklasseRepository = new EA_AltersklasseRepository($entityManager);
-        $streckeRepository = new EA_StreckeRepository($entityManager);
+        $streckeRepository = new EA_DistanceRepository($entityManager);
         $vereinRepository = new EA_ClubRepository($entityManager);
         $mannschaftRepository = new EA_MannschaftRepository($entityManager);
         $konfigurationRepository = new EA_KonfigurationRepository($entityManager);
@@ -152,7 +152,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormStrecke(EA_Strecke $EA_S): string
+    public function getFormStrecke(EA_Distance $EA_S): string
     {
         $content = "";
         $this->smarty->assign('strecke', $EA_S);

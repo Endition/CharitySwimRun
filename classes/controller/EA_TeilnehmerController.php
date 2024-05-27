@@ -87,7 +87,7 @@ class EA_TeilnehmerController extends EA_Controller
         }
 
         $streckeId = filter_input(INPUT_POST,"strecke",FILTER_SANITIZE_NUMBER_INT);
-        $strecke = $this->EA_StreckeRepository ->loadById($streckeId);
+        $strecke = $this->EA_DistanceRepository ->loadById($streckeId);
 
         $startgruppe = isset($_POST['startgruppe']) ? filter_input(INPUT_POST,"startgruppe",FILTER_SANITIZE_NUMBER_INT) : 0;
         $mail = isset($_POST['mail']) ? htmlspecialchars($_POST['mail']) : ""; 

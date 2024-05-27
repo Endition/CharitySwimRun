@@ -4,12 +4,11 @@ namespace CharitySwimRun\classes\model;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'strecken')]
-class EA_Strecke
+class EA_Distance
 {
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue]

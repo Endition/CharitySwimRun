@@ -14,7 +14,7 @@ use CharitySwimRun\classes\model\EA_Konfiguration;
 use CharitySwimRun\classes\model\EA_ClubRepository;
 use CharitySwimRun\classes\model\EA_MannschaftRepository;
 use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
-use CharitySwimRun\classes\model\EA_StreckeRepository;
+use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_MannschaftskategorieRepository;
 use CharitySwimRun\classes\model\EA_UserRepository;
 use CharitySwimRun\classes\model\EA_UrkundenelementRepository;
@@ -33,7 +33,7 @@ class EA_Controller
     protected EA_MannschaftRepository $EA_MannschaftRepository;
     protected EA_SpecialEvaluationRepository $EA_SpecialEvaluationRepository;
     protected EA_ClubRepository $EA_ClubRepository;
-    protected EA_StreckeRepository $EA_StreckeRepository;
+    protected EA_DistanceRepository $EA_DistanceRepository;
     protected EA_MannschaftskategorieRepository $EA_MannschaftskategorieRepository;
     protected EA_UserRepository $EA_UserRepository;
     protected EA_UrkundenelementRepository $EA_UrkundenelementRepository;  
@@ -57,7 +57,7 @@ class EA_Controller
         $this->EA_MannschaftRepository = new EA_MannschaftRepository($entityManager);
         $this->EA_SpecialEvaluationRepository = new EA_SpecialEvaluationRepository($entityManager);
         $this->EA_ClubRepository = new EA_ClubRepository($entityManager);
-        $this->EA_StreckeRepository = new EA_StreckeRepository($entityManager);
+        $this->EA_DistanceRepository = new EA_DistanceRepository($entityManager);
         $this->EA_MannschaftskategorieRepository = new EA_MannschaftskategorieRepository($entityManager);
         $this->EA_UrkundenelementRepository = new EA_UrkundenelementRepository($entityManager);
         $this->konfiguration = $this->EA_KonfigurationRepository->load();

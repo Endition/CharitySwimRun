@@ -28,7 +28,7 @@ class EA_SimulatorController extends EA_Controller
             $vereinszufall = rand(0,100);
             $mannschaftzufall = rand(0,100);
         
-            $streckeList = $this->EA_StreckeRepository->loadList();
+            $streckeList = $this->EA_DistanceRepository->loadList();
             $newTeilnehmer = new EA_Teilnehmer();
             $newTeilnehmer->setName($EA_Simulator->lastname[array_rand($EA_Simulator->lastname)]);
             $newTeilnehmer->setVorname($EA_Simulator->firstname[array_rand($EA_Simulator->firstname)]);

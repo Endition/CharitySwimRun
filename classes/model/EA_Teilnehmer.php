@@ -71,9 +71,9 @@ class EA_Teilnehmer
     #[ORM\JoinColumn(name: 'Verein', referencedColumnName: 'VereinId',nullable:true,options:["default"=>null])]
     private ?EA_Club $verein = null;
 
-    #[ORM\ManyToOne(targetEntity: EA_Strecke::class)]
+    #[ORM\ManyToOne(targetEntity: EA_Distance::class)]
     #[ORM\JoinColumn(name: 'Strecke', referencedColumnName: 'id',nullable:true,options:["default"=>null])]
-    private ?EA_Strecke $strecke = null;
+    private ?EA_Distance $strecke = null;
 
     #[ORM\Column(type: Types::INTEGER,name:'Startgruppe')]
     private int $startgruppe = 0;
@@ -321,16 +321,16 @@ class EA_Teilnehmer
 
     }
 
-    public function getStrecke(): EA_Strecke
+    public function getStrecke(): EA_Distance
     {
         if ($this->strecke !== null) {
             return $this->strecke;
         } else {
-            return new EA_Strecke();
+            return new EA_Distance();
         }
     }
 
-    public function setStrecke(?EA_Strecke $strecke)
+    public function setStrecke(?EA_Distance $strecke)
     {
         $this->strecke = $strecke;
 

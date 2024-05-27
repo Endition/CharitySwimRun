@@ -8,7 +8,7 @@ use CharitySwimRun\classes\model\EA_AltersklasseRepository;
 
 use CharitySwimRun\classes\model\EA_MannschaftRepository;
 use CharitySwimRun\classes\model\EA_KonfigurationRepository;
-use CharitySwimRun\classes\model\EA_StreckeRepository;
+use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_Teilnehmer;
 use CharitySwimRun\classes\model\EA_ClubRepository;
 use CharitySwimRun\classes\model\EA_Message;
@@ -113,7 +113,7 @@ class EA_ImportController extends EA_Controller
          $verein = $this->EA_ClubRepository->loadByBezeichnung(mb_convert_encoding(trim($data[11]), 'UTF-8'));
          $EA_T->setVerein($verein);
 
-         $strecke = $this->EA_StreckeRepository->loadByBezeichnungLang(trim($data[6]));
+         $strecke = $this->EA_DistanceRepository->loadByBezeichnungLang(trim($data[6]));
          $EA_T->setStrecke($strecke);
 
          $EA_T->setStartgruppe(trim($data[7]));

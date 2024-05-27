@@ -41,7 +41,7 @@ class EA_ManuelleEingabeController extends EA_Controller
                 $this->EA_Messages->addMessage("Keine Anzahl oder eine Zahl größer 150 eingegeben",182337742235,EA_Message::MESSAGE_ERROR);
             }
         }
-        $content = $this->EA_FR->getFormManuelleEingabe($this->entityManager, $this->EA_StreckeRepository->getListForSelectField());
+        $content = $this->EA_FR->getFormManuelleEingabe($this->entityManager, $this->EA_DistanceRepository->getListForSelectField());
         return $content;
     }
 

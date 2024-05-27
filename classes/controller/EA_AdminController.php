@@ -59,7 +59,7 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $altersklassenController->getPageAltersklassen();
                     break;
                 case "strecken":
-                    $streckenController = new EA_StreckenController($this->entityManager);
+                    $streckenController = new EA_DistanceController($this->entityManager);
                     $innercontent .= $streckenController->getPageStrecken();
                     break;
                 case "specialevaluation":
