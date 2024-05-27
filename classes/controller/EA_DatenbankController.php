@@ -7,7 +7,7 @@ use CharitySwimRun\classes\model\EA_Certificate;
 use CharitySwimRun\classes\renderer\EA_FormRenderer;
 use CharitySwimRun\classes\model\EA_Repository;
 use CharitySwimRun\classes\model\EA_Messages;
-use CharitySwimRun\classes\model\EA_Transponder;
+use CharitySwimRun\classes\model\EA_RfidChip;
 use CharitySwimRun\classes\model\EA_CertificateElementRepository;
 
 //Because this controller creates the DB connection, no heritage
@@ -71,7 +71,7 @@ class EA_DatenbankController
 
     private function createTransponderStandardentries(EntityManager $entityManager): void
     {
-        foreach(EA_Transponder::getStandardElemente() as $transponder){
+        foreach(EA_RfidChip::getStandardElemente() as $transponder){
             $entityManager->persist($transponder);
                     }
         $entityManager->flush();

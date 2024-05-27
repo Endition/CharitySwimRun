@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Message;
 
-class EA_TransponderRueckgabeController extends EA_Controller
+class EA_RfidChipRueckgabeController extends EA_Controller
 {
 
     public function __construct( EntityManager $entityManager)

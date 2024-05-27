@@ -160,7 +160,7 @@ class EA_Repository{
             $this->entityManager->getClassMetadata(EA_Club::class),
             //only relevant in admin's project
             $this->entityManager->getClassMetadata(EA_Cache::class),
-            $this->entityManager->getClassMetadata(EA_Transponder::class),
+            $this->entityManager->getClassMetadata(EA_RfidChip::class),
 
            //CREATE VALUES
         ];
