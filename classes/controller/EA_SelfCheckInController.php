@@ -9,7 +9,7 @@ use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Club;
 use CharitySwimRun\classes\model\EA_Message;
 
-class EA_SelbstanmeldungController extends EA_Controller
+class EA_SelfCheckInController extends EA_Controller
 {
 
     public function __construct( EntityManager $entityManager)

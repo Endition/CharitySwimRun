@@ -1,11 +1,11 @@
 <?php
 namespace CharitySwimRun\classes\model;
 
-use CharitySwimRun\classes\model\EA_Impuls;
+use CharitySwimRun\classes\model\EA_Hit;
 use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
-class EA_ImpulsRepository extends EA_Repository
+class EA_HitRepository extends EA_Repository
 {
     
     private EntityManager $entityManager;
@@ -18,16 +18,16 @@ class EA_ImpulsRepository extends EA_Repository
                 parent::setEntityManager($entitymanager); 
     }
     
-    public function create(EA_Impuls $impuls): EA_Impuls
+    public function create(EA_Hit $impuls): EA_Hit
     {
         $this->entityManager->persist($impuls);
         $this->update();
         return $impuls;
     }
 
-    public function loadById(int $id): ?EA_Impuls
+    public function loadById(int $id): ?EA_Hit
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Impuls')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Hit')->find($id);
     }
 
     public function loadList(?string $order = "i.timestamp", ?string $orderRichtung = "ASC", ?int $limit = null,?string $groupby = null, ?int $bigerAsTimestamp=null): array
@@ -35,7 +35,7 @@ class EA_ImpulsRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('i')
-            ->from(EA_Impuls::class, 'i')
+            ->from(EA_Hit::class, 'i')
             ->where("i.geloescht = 0");
         if($bigerAsTimestamp){
             $queryBuilder->andWhere("i.timestamp > :biggerAsTimestamp")
@@ -54,12 +54,12 @@ class EA_ImpulsRepository extends EA_Repository
         return $query->getResult();
     }
 
-    public function getNewestEntry(): ?EA_Impuls
+    public function getNewestEntry(): ?EA_Hit
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('i')
-            ->from(EA_Impuls::class, 'i')
+            ->from(EA_Hit::class, 'i')
             ->where("i.geloescht = 0")
             ->orderBy("i.id","DESC")
             ->setMaxResults(1);
@@ -72,7 +72,7 @@ class EA_ImpulsRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('count(i.id) as numberOfEntries')
-            ->from(EA_Impuls::class, 'i')
+            ->from(EA_Hit::class, 'i')
             ->where("i.geloescht = 0");
         $result = $queryBuilder->getQuery()->getSingleScalarResult();
         return intval($result ?? 0);
@@ -91,13 +91,13 @@ class EA_ImpulsRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('i')
-            ->from(EA_Impuls::class, 'i')
+            ->from(EA_Hit::class, 'i')
             ->where("i.teilnehmer IS NULL");
           
         return $queryBuilder->getQuery()->getResult();
     }
 
-    public function delete(EA_Impuls $impuls): void
+    public function delete(EA_Hit $impuls): void
     {
         $this->entityManager->remove($impuls);
         $this->update();
@@ -105,7 +105,7 @@ class EA_ImpulsRepository extends EA_Repository
 
     public function deleteAllByTeilnehmer(EA_Starter $EA_Starter): bool
     {
-        $query = $this->entityManager->createQuery('DELETE CharitySwimRun\classes\model\EA_Impuls i WHERE i.teilnehmerId = :teilnehmerId');
+        $query = $this->entityManager->createQuery('DELETE CharitySwimRun\classes\model\EA_Hit i WHERE i.teilnehmerId = :teilnehmerId');
         $query->setParameter(":teilnehmerId",$EA_Starter->getId());
         $query->execute();
         return true;

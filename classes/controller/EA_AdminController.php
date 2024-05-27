@@ -35,7 +35,7 @@ class EA_AdminController extends EA_Controller
             }
 
             //update ImpulseCache on every Call
-            $this->EA_ImpulsRepository->updateImpulseCache();
+            $this->EA_HitRepository->updateImpulseCache();
             
             switch ($_GET['doc']) {
                 case "dashboard":
@@ -43,7 +43,7 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $dashboardController->getPageDashboard();
                     break;
                 case "db":
-                    $datenbankController = new EA_DatenbankController( $this->EA_Repository);
+                    $datenbankController = new EA_DatabaseController( $this->EA_Repository);
                     $innercontent .= $datenbankController->getPageDb();
                     break;
                 case "users":
@@ -79,11 +79,11 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $importController->getPageImport();
                     break;
                 case "buchungsuebersicht":
-                    $buchungsuebersichtController = new EA_BuchungsuebersichtController( $this->entityManager);
+                    $buchungsuebersichtController = new EA_HitOverviewController( $this->entityManager);
                     $innercontent .= $buchungsuebersichtController->getPageBuchungsuebersicht();
                     break;
                 case "teilnehmeruebersicht":
-                    $teilnehmeruebersichtController = new EA_StarteruebersichtController( $this->entityManager);
+                    $teilnehmeruebersichtController = new EA_StarterOverviewController( $this->entityManager);
                     $innercontent .= $teilnehmeruebersichtController->getPageTeilnehmeruebersicht();
                     break;
                 case "teilnehmer":
@@ -99,19 +99,19 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $vereineController->getPageVereine();
                     break;
                 case "startzeiten":
-                    $startzeitenController = new EA_StartzeitenController( $this->entityManager);
+                    $startzeitenController = new EA_StartTimeController( $this->entityManager);
                     $innercontent .= $startzeitenController->getPageStartzeiten();
                     break;
                 case "buchungenstarter":
-                    $buchungenEinesStartesControllers = new EA_BuchungenEinesTeilnehmersController($this->EA_Repository);
+                    $buchungenEinesStartesControllers = new EA_StarterHitOverviewController($this->EA_Repository);
                     $innercontent .= $buchungenEinesStartesControllers->getPageBuchungenStarter();
                     break;
                 case "manuelleeingabe":
-                    $manuelleEingabeController = new EA_ManuelleEingabeController( $this->entityManager);
+                    $manuelleEingabeController = new EA_HitManualController( $this->entityManager);
                     $innercontent .= $manuelleEingabeController->getPageManuelleEingabe();
                     break;
                 case "statusverwalten":
-                    $statusVerwaltenController = new EA_StatusVerwaltenController( $this->entityManager);
+                    $statusVerwaltenController = new EA_StarterStatusAdminController( $this->entityManager);
                     $innercontent .= $statusVerwaltenController->getPageStatusVerwalten();
                     break;
                 case "transponderrueckgabe":
@@ -119,15 +119,15 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $transponderrueckgabeController->getPageTransponderrueckgabe();
                     break;
                 case "fehlbuchungen":
-                    $fehlbuchungenController = new EA_FehlbuchungenController( $this->entityManager);
+                    $fehlbuchungenController = new EA_HitFalseEntryController( $this->entityManager);
                     $innercontent .= $fehlbuchungenController->getPageFehlbuchungen();
                     break;
                 case "spezialabfragen":
-                    $spezialabfragenController = new EA_SpezialabfragenController( $this->entityManager);
+                    $spezialabfragenController = new EA_SpecialInformation( $this->entityManager);
                     $innercontent .= $spezialabfragenController->getPageSpezialabfragen();
                     break;
                 case "ergebnisse":
-                    $ergebnisController = new EA_ErgebnisController( $this->entityManager);
+                    $ergebnisController = new EA_ResultController( $this->entityManager);
                     $innercontent .= $ergebnisController->getPageErgebnisse();
                     break;
                 case "urkunden":
@@ -135,15 +135,15 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $urkundeController->getPageUrkunden();
                     break;
                 case "meldelisten":
-                    $meldelistenController = new EA_MeldelistenController( $this->entityManager);
+                    $meldelistenController = new EA_ReportListController( $this->entityManager);
                     $innercontent .= $meldelistenController->getPageMeldelisten();
                     break;
                 case "statistik":
-                    $statistikController = new EA_StatistikController( $this->EA_Repository);
+                    $statistikController = new EA_StatsticsController( $this->EA_Repository);
                     $innercontent .= $statistikController->getPageStatistik();
                     break;
                 case "selbstanmeldung":
-                    $selbstanmeldungController = new EA_SelbstanmeldungController( $this->entityManager);
+                    $selbstanmeldungController = new EA_SelfCheckInController( $this->entityManager);
                     $innercontent .= $selbstanmeldungController->getPageSelbstanmeldung();
                     break;
                 case "kurzauskunft":

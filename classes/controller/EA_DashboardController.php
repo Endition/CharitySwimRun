@@ -17,7 +17,7 @@ class EA_DashboardController extends EA_Controller
     {
         $content = "";
 
-        $globaleLeistungsdaten = $this->EA_ImpulsRepository->getGlobaleVeranstaltungsleistungsdaten(count($this->EA_StarterRepository->loadList(null,null,null,null,null,null,null,"id","ASC",true)),$this->konfiguration);
+        $globaleLeistungsdaten = $this->EA_HitRepository->getGlobaleVeranstaltungsleistungsdaten(count($this->EA_StarterRepository->loadList(null,null,null,null,null,null,null,"id","ASC",true)),$this->konfiguration);
 
         $teilnehmerWrongStreckeList = $this->EA_StarterRepository->getDataCheckWrongStrecke();
         $teilnehmerWrongAltersklasseList = $this->EA_StarterRepository->getDataCheckWrongAltersklasse();
@@ -66,7 +66,7 @@ class EA_DashboardController extends EA_Controller
         $factor = 1;
         
         //get meter
-        $meter = $this->EA_ImpulsRepository->getNumberOfEntries()*$this->konfiguration->getRundenlaenge();
+        $meter = $this->EA_HitRepository->getNumberOfEntries()*$this->konfiguration->getRundenlaenge();
         //get 100%
         $zielMeterFuerSpendensumme = $this->konfiguration->getGeld()/$this->konfiguration->getEuroprometer();
         //calc meter per minute

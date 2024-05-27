@@ -6,7 +6,7 @@ use CharitySwimRun\classes\helper\EA_StatistikHelper;
 use CharitySwimRun\classes\model\EA_Repository;
 
 
-class EA_StatistikController extends EA_Controller
+class EA_StatsticsController extends EA_Controller
 {
     private EA_StatistikHelper $EA_StatistikHelper;
 

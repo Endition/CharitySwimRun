@@ -3,7 +3,7 @@ namespace CharitySwimRun\classes\controller;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
-use CharitySwimRun\classes\model\EA_Impuls;
+use CharitySwimRun\classes\model\EA_Hit;
 use CharitySwimRun\classes\model\EA_Team;
 use CharitySwimRun\classes\model\EA_Simulator;
 use CharitySwimRun\classes\model\EA_Starter;
@@ -106,11 +106,11 @@ class EA_SimulatorController extends EA_Controller
     public function createRandomImpuls(&$messages, array $teilnehmerList): void
     {
         $teilnehmerZufall = $teilnehmerList[array_rand($teilnehmerList)];
-        $impuls = new EA_Impuls();
+        $impuls = new EA_Hit();
         $impuls->setTimestamp(time());
         $impuls->setTeilnehmer($teilnehmerZufall);
         $impuls->setLeser(rand(1,5));
-        $this->EA_ImpulsRepository->create($impuls);
+        $this->EA_HitRepository->create($impuls);
         $messages[] =  "Zufälligen Impuls für einen Teilnehmer {$teilnehmerZufall->getGesamtname()} mit der Startnummer {$teilnehmerZufall->getStartnummer()} erzeugt";
     }
 

@@ -3,7 +3,7 @@ namespace CharitySwimRun\classes\controller;
 
 use CharitySwimRun\classes\model\EA_Repository;
 use CharitySwimRun\classes\model\EA_User;
-use CharitySwimRun\classes\model\EA_Impuls;
+use CharitySwimRun\classes\model\EA_Hit;
 use CharitySwimRun\classes\controller\EA_SimulatorController;
 
 class EA_ApiController extends EA_Controller
@@ -13,7 +13,7 @@ class EA_ApiController extends EA_Controller
     {
         parent::__construct($EA_Repository->getEntityManager());
         //update Cache on every call
-        $this->EA_ImpulsRepository->updateImpulseCache();
+        $this->EA_HitRepository->updateImpulseCache();
     }
 
     public function handleRequest(string $requestMethod, string $route, array $paramList) : string
@@ -142,13 +142,13 @@ class EA_ApiController extends EA_Controller
             }
 
             $EA_T = $this->EA_StarterRepository->loadById($teilnehmerId);
-            $EA_I = new EA_Impuls();
+            $EA_I = new EA_Hit();
             $EA_I->setTeilnehmer($EA_T);
             date_default_timezone_set("Europe/Berlin");
             $EA_I->setTimestamp(time());
             $EA_I->setTransponderId($EA_T->getTransponder());
             $EA_I->setLeser(99);
-            $this->EA_ImpulsRepository->create($EA_I);
+            $this->EA_HitRepository->create($EA_I);
         }
 
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
@@ -312,7 +312,7 @@ class EA_ApiController extends EA_Controller
         }
         if($paramList[0] === "livebuchungen"){
             $biggerAsTimestamp = (isset($paramList[1]) && $paramList[1] !== "") ? (int)$paramList[1] : null;
-            $impulseList = $this->EA_ImpulsRepository->loadList("i.timestamp","DESC",20,"i.timestamp", $biggerAsTimestamp );
+            $impulseList = $this->EA_HitRepository->loadList("i.timestamp","DESC",20,"i.timestamp", $biggerAsTimestamp );
             foreach($impulseList as $impuls){
                     //costs 200% performance, calculates the time per round
                     $impuls->getTeilnehmer()->getImpulseListGueltige(true);
@@ -358,7 +358,7 @@ class EA_ApiController extends EA_Controller
         }
         if($paramList[0] === "livebuchungen"){
             $biggerAsTimestamp = (isset($paramList[1]) && $paramList[1] !== "") ? (int)$paramList[1] : null;
-            $impulseList = $this->EA_ImpulsRepository->loadList("i.timestamp","DESC",20,"i.timestamp", $biggerAsTimestamp );
+            $impulseList = $this->EA_HitRepository->loadList("i.timestamp","DESC",20,"i.timestamp", $biggerAsTimestamp );
             foreach($impulseList as $impuls){
                     //costs 200% performance, calculates the time per round
                     $impuls->getTeilnehmer()->getImpulseListGueltige(true);

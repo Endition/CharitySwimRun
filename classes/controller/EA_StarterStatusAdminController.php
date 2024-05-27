@@ -4,7 +4,7 @@ namespace CharitySwimRun\classes\controller;
 use Doctrine\ORM\EntityManager;
 
 
-class EA_StatusVerwaltenController  extends EA_Controller
+class EA_StarterStatusAdminController  extends EA_Controller
 {
     public function __construct( EntityManager $entityManager)
     {

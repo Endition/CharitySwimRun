@@ -3,13 +3,13 @@ namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\model\EA_Impuls;
+use CharitySwimRun\classes\model\EA_Hit;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Message;
 use CharitySwimRun\classes\helper\EA_StatistikHelper;
 use CharitySwimRun\classes\model\EA_Repository;
 
-class EA_BuchungenEinesTeilnehmersController extends EA_Controller
+class EA_StarterHitOverviewController extends EA_Controller
 {
     private EA_StatistikHelper $EA_StatistikHelper;
 
@@ -81,7 +81,7 @@ class EA_BuchungenEinesTeilnehmersController extends EA_Controller
             return;
         }
         $impuls = $this->initiateImpuls($EA_Starter);
-        $this->EA_ImpulsRepository->create($impuls);
+        $this->EA_HitRepository->create($impuls);
         $this->EA_StarterRepository->resetPlaetzeTeilnehmer($EA_Starter);
         $this->EA_Messages->addMessage("Impuls für TN-ID " . $impuls->getTeilnehmer()->getId() . " - um " . $impuls->getTimestamp("d.m.Y H:i:s") . " gespeichert",17322443535,EA_Message::MESSAGE_SUCCESS);
 
@@ -89,8 +89,8 @@ class EA_BuchungenEinesTeilnehmersController extends EA_Controller
 
     private function deleteImpuls(): void
     {
-        $impuls = $this->EA_ImpulsRepository->loadById(filter_input(INPUT_GET, "impulsid", FILTER_SANITIZE_NUMBER_INT));
-        $this->EA_ImpulsRepository->delete($impuls);
+        $impuls = $this->EA_HitRepository->loadById(filter_input(INPUT_GET, "impulsid", FILTER_SANITIZE_NUMBER_INT));
+        $this->EA_HitRepository->delete($impuls);
         $this->EA_StarterRepository->resetPlaetzeTeilnehmer($impuls->getTeilnehmer());
         $this->EA_Messages->addMessage("Impuls für TN-ID " . $impuls->getTeilnehmer()->getId() . " - um " . $impuls->getTimestamp("d.m.Y H:i:s") . " gelöscht",17322443535,EA_Message::MESSAGE_SUCCESS);
     }
@@ -98,14 +98,14 @@ class EA_BuchungenEinesTeilnehmersController extends EA_Controller
     private function deleteAllImpuls(): void
     {
         $EA_Starter = $this->EA_StarterRepository->loadById(filter_input(INPUT_GET, "teilnehmerid", FILTER_SANITIZE_NUMBER_INT));
-        $this->EA_ImpulsRepository->deleteAllByTeilnehmer($EA_Starter);
+        $this->EA_HitRepository->deleteAllByTeilnehmer($EA_Starter);
         $this->EA_StarterRepository->resetPlaetzeTeilnehmer($EA_Starter );
         $this->EA_Messages->addMessage("Alle Buchungen für Teilnehmer " . $EA_Starter->getGesamtname() . " gelöscht",15632124455,EA_Message::MESSAGE_SUCCESS);
     }
 
-    private function initiateImpuls(EA_Starter $EA_Starter): EA_Impuls
+    private function initiateImpuls(EA_Starter $EA_Starter): EA_Hit
     {
-        $impuls = new EA_Impuls();
+        $impuls = new EA_Hit();
         $impuls->setTeilnehmer($EA_Starter);
         $impuls->setTransponderId($EA_Starter->getTransponder());
         $impuls->setTimestamp(time());

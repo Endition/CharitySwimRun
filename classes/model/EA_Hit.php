@@ -14,7 +14,7 @@ use Doctrine\DBAL\Types\Types;
 #[ORM\Index(name: "berechnet", columns: ["berechnet"])]
 #[ORM\Index(name: "geloescht", columns: ["geloescht"])]
 
-class EA_Impuls
+class EA_Hit
 {
     #[ORM\Column(type: Types::INTEGER,name:"ImpulsId")]
     #[ORM\GeneratedValue]

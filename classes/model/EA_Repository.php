@@ -148,7 +148,7 @@ class EA_Repository{
         $classes = [
             //CREATE VALUES
             $this->entityManager->getClassMetadata(EA_AgeGroup::class),
-            $this->entityManager->getClassMetadata(EA_Impuls::class),
+            $this->entityManager->getClassMetadata(EA_Hit::class),
             $this->entityManager->getClassMetadata(EA_Configuration::class),
             $this->entityManager->getClassMetadata(EA_Team::class),
             $this->entityManager->getClassMetadata(EA_TeamCategory::class),

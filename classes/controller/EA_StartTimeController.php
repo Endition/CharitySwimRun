@@ -7,7 +7,7 @@ use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Message;
 
 
-class EA_StartzeitenController  extends EA_Controller
+class EA_StartTimeController  extends EA_Controller
 {
     public function __construct( EntityManager $entityManager)
     {

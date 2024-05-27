@@ -150,7 +150,7 @@ class EA_StarterRepository extends EA_Repository
             ->select('t')
             ->from(EA_Starter::class, 't',"t.id");
         if($specialEvaluation){
-             $queryBuilder->leftjoin(EA_Impuls::class,'i','WITH', 'i.teilnehmer = t.id');
+             $queryBuilder->leftjoin(EA_Hit::class,'i','WITH', 'i.teilnehmer = t.id');
         }    
           
         if($strecke){
@@ -620,7 +620,7 @@ class EA_StarterRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('i')
-            ->from(EA_Impuls::class, 'i')
+            ->from(EA_Hit::class, 'i')
             ->where('i.teilnehmer  IS NULL')
             ->andWhere('i.geloescht = 0')
             ->groupBy('i.transponderId')

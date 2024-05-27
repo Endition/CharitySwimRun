@@ -3,13 +3,13 @@ namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\model\EA_Impuls;
+use CharitySwimRun\classes\model\EA_Hit;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Message;
 
 
 
-class EA_ManuelleEingabeController extends EA_Controller
+class EA_HitManualController extends EA_Controller
 {
     public function __construct( EntityManager $entityManager)
     {
@@ -34,7 +34,7 @@ class EA_ManuelleEingabeController extends EA_Controller
                 for ($i = 1; $i <= $anzahlimpulse; $i++) {
                     //keep origin entity clean. If we hand over $impulse no multiple entities will be created
                     $impuls2 = clone $impuls;
-                    $this->EA_ImpulsRepository->create($impuls2);
+                    $this->EA_HitRepository->create($impuls2);
                 }
                 $this->EA_Messages->addMessage($anzahlimpulse . " Impulse für TN-ID " . $impuls->getTeilnehmer()->getId() . " - um " . $impuls->getTimestamp("d.m.Y H:i:s") . " gespeichert",133553548936,EA_Message::MESSAGE_SUCCESS);
             } else {
@@ -45,9 +45,9 @@ class EA_ManuelleEingabeController extends EA_Controller
         return $content;
     }
 
-    private function initiateImpuls(EA_Starter $EA_Starter): EA_Impuls
+    private function initiateImpuls(EA_Starter $EA_Starter): EA_Hit
     {
-        $impuls = new EA_Impuls();
+        $impuls = new EA_Hit();
         $impuls->setTeilnehmer($EA_Starter);
         $impuls->setTransponderId($EA_Starter->getTransponder());
         $impuls->setTimestamp(time());

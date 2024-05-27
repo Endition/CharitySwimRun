@@ -11,7 +11,7 @@ use CharitySwimRun\classes\model\EA_RfidChip;
 use CharitySwimRun\classes\model\EA_CertificateElementRepository;
 
 //Because this controller creates the DB connection, no heritage
-class EA_DatenbankController
+class EA_DatabaseController
 {
     protected EA_FormRenderer $EA_FR;
     private EA_Repository $EA_Repository;

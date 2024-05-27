@@ -7,19 +7,19 @@ use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_SpecialEvaluation;
 use CharitySwimRun\classes\model\EA_StarterRepository;
 use CharitySwimRun\classes\model\EA_ConfigurationRepository;
-use CharitySwimRun\classes\model\EA_ImpulsRepository;
+use CharitySwimRun\classes\model\EA_HitRepository;
 
 class EA_PlatzierungBerechner
 {
     private EA_StarterRepository $EA_StarterRepository;
     private EA_ConfigurationRepository $EA_ConfigurationRepository;   
-    private EA_ImpulsRepository $EA_ImpulsRepository;   
+    private EA_HitRepository $EA_HitRepository;   
 
     public function __construct(EntityManager $entityManager)
     {
         $this->EA_StarterRepository = new EA_StarterRepository($entityManager);
         $this->EA_ConfigurationRepository = new EA_ConfigurationRepository($entityManager);
-        $this->EA_ImpulsRepository = new EA_ImpulsRepository($entityManager);
+        $this->EA_HitRepository = new EA_HitRepository($entityManager);
 
     }
 
@@ -29,7 +29,7 @@ class EA_PlatzierungBerechner
     private function checkIfCalculationIsNecassary(): bool
     {
         $konfiguration = $this->EA_ConfigurationRepository->load();
-        $numberOfImpulse =  $this->EA_ImpulsRepository->getNumberOfEntries();
+        $numberOfImpulse =  $this->EA_HitRepository->getNumberOfEntries();
         $result = false;
 
         if($numberOfImpulse > $konfiguration->getLastCalculationResultsNumber()){
@@ -114,7 +114,7 @@ class EA_PlatzierungBerechner
     public function quicksort(array $unsortedList, string $funcName = "getImpulse", ?EA_SpecialEvaluation $specialEvaluation = null)
     {
         //This method can be called directly, update cache necassary
-        $this->EA_ImpulsRepository->updateImpulseCache();
+        $this->EA_HitRepository->updateImpulseCache();
         
         $params = [$specialEvaluation];
             usort($unsortedList, function($a, $b) use ($funcName, $params) {

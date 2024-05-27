@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 use \CharitySwimRun\classes\core\EA_MenueRenderer;
 use \CharitySwimRun\classes\controller\EA_AdminController;
 use \CharitySwimRun\classes\model\EA_Repository;
-use \CharitySwimRun\classes\controller\EA_DatenbankController;
+use \CharitySwimRun\classes\controller\EA_DatabaseController;
 
 require_once 'config/config.php';
 require_once CORE_PATH . 'EA_Autoloader.php';
@@ -29,7 +29,7 @@ $EA_Repository = new EA_Repository($EA_SQL["benutzer"],$EA_SQL["passwort"],$EA_S
 if($EA_Repository->isDoctrineConnected() === true){
     $EA_AC = new EA_AdminController($EA_Repository);
 }else{
-    $EA_DatenbankController = new EA_DatenbankController(null);
+    $EA_DatabaseController = new EA_DatabaseController(null);
 }
 
 ?>
@@ -134,7 +134,7 @@ if($EA_Repository->isDoctrineConnected() === true){
 if($EA_Repository->isDoctrineConnected() === true){
     echo $EA_AC->getAdmin();
 }else{
-    echo $EA_DatenbankController->getPageDb();
+    echo $EA_DatabaseController->getPageDb();
 }
        
  ?>

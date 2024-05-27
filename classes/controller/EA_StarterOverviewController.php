@@ -5,7 +5,7 @@ use Doctrine\ORM\EntityManager;
 
 
 
-class EA_StarteruebersichtController extends EA_Controller
+class EA_StarterOverviewController extends EA_Controller
 {
 
     public function __construct( EntityManager $entityManager)

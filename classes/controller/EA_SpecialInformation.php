@@ -5,7 +5,7 @@ use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\helper\EA_PlatzierungBerechner;
 
-class EA_SpezialabfragenController extends EA_Controller
+class EA_SpecialInformation extends EA_Controller
 {
     private EA_PlatzierungBerechner $EA_PlatzierungBerechner;
 
@@ -23,7 +23,7 @@ class EA_SpezialabfragenController extends EA_Controller
         $this->EA_PlatzierungBerechner->berechnePlatzierung($teilnehmerList);
         
         $content = "";
-        $globaleVeranstaltungsdaten = $this->EA_ImpulsRepository->getGlobaleVeranstaltungsleistungsdaten(count($teilnehmerList),$this->konfiguration);
+        $globaleVeranstaltungsdaten = $this->EA_HitRepository->getGlobaleVeranstaltungsleistungsdaten(count($teilnehmerList),$this->konfiguration);
         $gemeldeteTeilnemer = count($teilnehmerList);
         $besterTeilnehmer = $teilnehmerList[array_key_first($teilnehmerList)]; //Den TN mit den meisten Buchungen auslesen
         $medaillenspiegel = $this->EA_StarterRepository->loadMedaillenspiegel($teilnehmerList);

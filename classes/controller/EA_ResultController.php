@@ -5,7 +5,7 @@ use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\helper\EA_PlatzierungBerechner;
 
-class EA_ErgebnisController extends EA_Controller
+class EA_ResultController extends EA_Controller
 {
     public function __construct( EntityManager $entityManager)
     {
