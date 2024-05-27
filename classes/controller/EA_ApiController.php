@@ -114,7 +114,7 @@ class EA_ApiController extends EA_Controller
         $responseList = [];
         switch ($route) {
             case 'urkunden':
-                $EA_UrkundeController = new EA_UrkundeController($this->entityManager);
+                $EA_CertificateController = new EA_CertificateController($this->entityManager);
                 $responseList = $this->handlePostUrkundenAdministrativ($paramList);
                 break;
             case 'status':
@@ -161,7 +161,7 @@ class EA_ApiController extends EA_Controller
         $responseList = [];
 
         if($paramList[0] === "update"){
-            $EA_U = $this->EA_UrkundenelementRepository->loadById($_POST['id']);
+            $EA_U = $this->EA_CertificateElementRepository->loadById($_POST['id']);
 
             $x_wert = (isset($_POST['x_wert'])) ? htmlspecialchars($_POST['x_wert']) : $EA_U->getX_wert();
             $y_wert = (isset($_POST['y_wert'])) ? htmlspecialchars($_POST['y_wert']) : $EA_U->getY_wert();
@@ -173,7 +173,7 @@ class EA_ApiController extends EA_Controller
             $EA_U->setBreite($breite);
             $EA_U->setHoehe($hoehe);
 
-            $this->EA_UrkundenelementRepository->update();
+            $this->EA_CertificateElementRepository->update();
         }
 
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';

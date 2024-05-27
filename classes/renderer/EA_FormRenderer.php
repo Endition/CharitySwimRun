@@ -22,8 +22,8 @@ use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_Club;
 use CharitySwimRun\classes\model\EA_Teilnehmer;
 use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
-use CharitySwimRun\classes\model\EA_Urkunde;
-use CharitySwimRun\classes\model\EA_Urkundenelement;
+use CharitySwimRun\classes\model\EA_Certificate;
+use CharitySwimRun\classes\model\EA_CertificateElement;
 use CharitySwimRun\classes\model\EA_User;
 use CharitySwimRun\classes\model\EA_ClubRepository;
 use Smarty\Smarty;
@@ -139,13 +139,13 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormUrkundenelement(EA_Urkundenelement $EA_U): string
+    public function getFormUrkundenelement(EA_CertificateElement $EA_U): string
     {
         $content = "";
-        $this->smarty->assign('inhalt_selectvalues', EA_Urkunde::INHALT_SELECTVALUES);
-        $this->smarty->assign('schrifttyp_selectvalues', EA_Urkunde::SCHRIFTTYP_SELECTVALUES);
-        $this->smarty->assign('ausrichtung_selectvalues', EA_Urkunde::AUSRICHTUNG_SELECTVALUES);
-        $this->smarty->assign('schriftart_selectvalues', EA_Urkunde::SCHRIFTART_SELECTVALUES);
+        $this->smarty->assign('inhalt_selectvalues', EA_Certificate::INHALT_SELECTVALUES);
+        $this->smarty->assign('schrifttyp_selectvalues', EA_Certificate::SCHRIFTTYP_SELECTVALUES);
+        $this->smarty->assign('ausrichtung_selectvalues', EA_Certificate::AUSRICHTUNG_SELECTVALUES);
+        $this->smarty->assign('schriftart_selectvalues', EA_Certificate::SCHRIFTART_SELECTVALUES);
         $this->smarty->assign('urkundenelement', $EA_U);
         $this->smarty->assign('actionurl', 'index.php?doc=urkundengenerator');
         $content .= $this->smarty->fetch('FormUrkundenelement.tpl');

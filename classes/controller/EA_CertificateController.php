@@ -5,7 +5,7 @@ use Doctrine\ORM\EntityManager;
 
 
 
-class EA_UrkundeController extends EA_Controller
+class EA_CertificateController extends EA_Controller
 {
     
     public function __construct( EntityManager $entityManager)

@@ -17,7 +17,7 @@ use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
 use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_TeamCategoryRepository;
 use CharitySwimRun\classes\model\EA_UserRepository;
-use CharitySwimRun\classes\model\EA_UrkundenelementRepository;
+use CharitySwimRun\classes\model\EA_CertificateElementRepository;
 
 class EA_Controller
 {
@@ -36,7 +36,7 @@ class EA_Controller
     protected EA_DistanceRepository $EA_DistanceRepository;
     protected EA_TeamCategoryRepository $EA_TeamCategoryRepository;
     protected EA_UserRepository $EA_UserRepository;
-    protected EA_UrkundenelementRepository $EA_UrkundenelementRepository;  
+    protected EA_CertificateElementRepository $EA_CertificateElementRepository;  
   
 
     protected EA_Messages $EA_Messages;
@@ -59,7 +59,7 @@ class EA_Controller
         $this->EA_ClubRepository = new EA_ClubRepository($entityManager);
         $this->EA_DistanceRepository = new EA_DistanceRepository($entityManager);
         $this->EA_TeamCategoryRepository = new EA_TeamCategoryRepository($entityManager);
-        $this->EA_UrkundenelementRepository = new EA_UrkundenelementRepository($entityManager);
+        $this->EA_CertificateElementRepository = new EA_CertificateElementRepository($entityManager);
         $this->konfiguration = $this->EA_KonfigurationRepository->load();
 
     }

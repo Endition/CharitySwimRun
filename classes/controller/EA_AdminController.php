@@ -71,7 +71,7 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $mannschaftskategorieController->getPageMannschaftskategorie();
                     break;
                 case "urkundengenerator":
-                    $urkundengeneratorController = new EA_UrkundengeneratorController( $this->entityManager);
+                    $urkundengeneratorController = new EA_CertificateGeneratorController( $this->entityManager);
                     $innercontent .= $urkundengeneratorController->getPageUrkundengenerator();
                     break;
                 case "import":
@@ -131,7 +131,7 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $ergebnisController->getPageErgebnisse();
                     break;
                 case "urkunden":
-                    $urkundeController = new EA_UrkundeController( $this->entityManager);
+                    $urkundeController = new EA_CertificateController( $this->entityManager);
                     $innercontent .= $urkundeController->getPageUrkunden();
                     break;
                 case "meldelisten":

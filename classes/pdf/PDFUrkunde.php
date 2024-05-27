@@ -6,12 +6,12 @@ use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\core\EA_AbstractPDF;
 
 use CharitySwimRun\classes\model\EA_Teilnehmer;
-use CharitySwimRun\classes\model\EA_UrkundenelementRepository;
+use CharitySwimRun\classes\model\EA_CertificateElementRepository;
 
 
 class PDFUrkunde extends EA_AbstractPDF
 {
-    private EA_UrkundenelementRepository $EA_UrkundenelementRepository;
+    private EA_CertificateElementRepository $EA_CertificateElementRepository;
 
     private $urkundenelemente;
 
@@ -23,8 +23,8 @@ class PDFUrkunde extends EA_AbstractPDF
         parent::__construct("P", "A4", $entiyManager);
         $this->filter = $filter;
 
-        $this->EA_UrkundenelementRepository = new EA_UrkundenelementRepository($entiyManager);
-        $this->urkundenelemente = $this->EA_UrkundenelementRepository->loadListQueryBuilder();
+        $this->EA_CertificateElementRepository = new EA_CertificateElementRepository($entiyManager);
+        $this->urkundenelemente = $this->EA_CertificateElementRepository->loadListQueryBuilder();
         $this->typ = "Urkunde";
 
         // Setzten der Dokumenteninformationen

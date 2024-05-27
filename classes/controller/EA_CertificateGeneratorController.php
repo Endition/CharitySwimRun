@@ -4,10 +4,10 @@ namespace CharitySwimRun\classes\controller;
 use Doctrine\ORM\EntityManager;
 
 
-use CharitySwimRun\classes\model\EA_Urkundenelement;
+use CharitySwimRun\classes\model\EA_CertificateElement;
 use CharitySwimRun\classes\model\EA_Message;
 
-class EA_UrkundengeneratorController  extends EA_Controller
+class EA_CertificateGeneratorController  extends EA_Controller
 {
     public function __construct( EntityManager $entityManager)
     {
@@ -18,7 +18,7 @@ class EA_UrkundengeneratorController  extends EA_Controller
     public function getPageUrkundengenerator(): string
     {
         $content = "";
-        $urkundenelement = new EA_Urkundenelement();
+        $urkundenelement = new EA_CertificateElement();
 
         if (isset($_POST['sendUrkundenelementData'])) {
             $this->createAndUpdateUrkundenelement();
@@ -27,12 +27,12 @@ class EA_UrkundengeneratorController  extends EA_Controller
         } elseif (isset($_GET['action']) && $_GET['action'] === "delete") {
             $this->deleteUrkundenelement();
         } else {
-            $urkundenelement = new EA_Urkundenelement();
+            $urkundenelement = new EA_CertificateElement();
         }
 
         $content .= $this->getUrkundenelementList();
         $content .= $this->EA_FR->getFormUrkundenelement($urkundenelement);
-        $content .= $this->EA_R->renderUrkundengeneratorJavascript($this->EA_UrkundenelementRepository->loadList());
+        $content .= $this->EA_R->renderUrkundengeneratorJavascript($this->EA_CertificateElementRepository->loadList());
         return $content;
     }
 
@@ -52,7 +52,7 @@ class EA_UrkundengeneratorController  extends EA_Controller
 
 
         //intinalize Object
-        $urkundenelement = ($id === null || $id === false || $id === "") ? new EA_Urkundenelement() : $this->EA_UrkundenelementRepository->loadById((int)$id);
+        $urkundenelement = ($id === null || $id === false || $id === "") ? new EA_CertificateElement() : $this->EA_CertificateElementRepository->loadById((int)$id);
 
         //checks for update und create case
         if($x_wert === ""){
@@ -80,21 +80,21 @@ class EA_UrkundengeneratorController  extends EA_Controller
         
         //create case
         if($urkundenelement->getId() === null){
-            $this->EA_UrkundenelementRepository->create($urkundenelement);
+            $this->EA_CertificateElementRepository->create($urkundenelement);
             $this->EA_Messages->addMessage("Eintrag angelegt",194375345444,EA_Message::MESSAGE_SUCCESS);
         //update case
         }else{
-            $this->EA_UrkundenelementRepository->update();
+            $this->EA_CertificateElementRepository->update();
             $this->EA_Messages->addMessage("Eintrag geupdated",194375345444,EA_Message::MESSAGE_SUCCESS);
 
         }
         
     }
 
-    private function editUrkundenelement(): ?EA_Urkundenelement
+    private function editUrkundenelement(): ?EA_CertificateElement
     {
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-        $urkundenelement = $this->EA_UrkundenelementRepository->loadById($id);
+        $urkundenelement = $this->EA_CertificateElementRepository->loadById($id);
         if($urkundenelement === null){
             $this->EA_Messages->addMessage("Keine Urkundenelement gefunden.",195474377777,EA_Message::MESSAGE_WARNINIG);
         }
@@ -104,7 +104,7 @@ class EA_UrkundengeneratorController  extends EA_Controller
     private function getUrkundenelementList():  string
     {
         $content = "";
-        $urkundenelementList = $this->EA_UrkundenelementRepository->loadList();
+        $urkundenelementList = $this->EA_CertificateElementRepository->loadList();
         if ($urkundenelementList !== []) {
             $content = $this->EA_R->renderTabelleUrkundenelemente($urkundenelementList);
         } else {
@@ -116,11 +116,11 @@ class EA_UrkundengeneratorController  extends EA_Controller
     private function deleteUrkundenelement(): void
     {
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-        $mannschaft = $this->EA_UrkundenelementRepository->loadById($id);
+        $mannschaft = $this->EA_CertificateElementRepository->loadById($id);
         if($mannschaft === null){
             $this->EA_Messages->addMessage("Kein Urkundenelement gefunden.",19237657777,EA_Message::MESSAGE_WARNINIG);
         }else{
-            $this->EA_UrkundenelementRepository->delete($mannschaft);
+            $this->EA_CertificateElementRepository->delete($mannschaft);
             $this->EA_Messages->addMessage("Urkundenelement gelöscht.",1953547777,EA_Message::MESSAGE_SUCCESS);
         }
     }

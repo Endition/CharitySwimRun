@@ -2,10 +2,10 @@
 namespace CharitySwimRun\classes\model;
 
 use Doctrine\ORM\EntityManager;
-use CharitySwimRun\classes\model\EA_Urkundenelement;
+use CharitySwimRun\classes\model\EA_CertificateElement;
 
 
-class EA_UrkundenelementRepository extends EA_Repository
+class EA_CertificateElementRepository extends EA_Repository
 {
     private EntityManager $entityManager;
 
@@ -17,21 +17,21 @@ class EA_UrkundenelementRepository extends EA_Repository
                 parent::setEntityManager($entitymanager); 
     }
 
-    public function create(EA_Urkundenelement $urkundenelement): EA_Urkundenelement
+    public function create(EA_CertificateElement $urkundenelement): EA_CertificateElement
     {
         $this->entityManager->persist($urkundenelement);
         $this->update();
         return $urkundenelement;
     }
 
-    public function loadById(int $id): ?EA_Urkundenelement
+    public function loadById(int $id): ?EA_CertificateElement
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Urkundenelement')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_CertificateElement')->find($id);
     }
 
     public function loadList(): array
     {
-        return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_Urkundenelement")->findAll();
+        return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_CertificateElement")->findAll();
     }
 
     public function loadListQueryBuilder(): array
@@ -39,11 +39,11 @@ class EA_UrkundenelementRepository extends EA_Repository
         //https://www.doctrine-project.org/projects/doctrine-orm/en/3.1/reference/query-builder.html
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('u')
-            ->from(EA_Urkundenelement::class, 'u');
+            ->from(EA_CertificateElement::class, 'u');
         return $qb->getQuery()->getResult();
     }
 
-    public function delete(EA_Urkundenelement $urkundenelement): void
+    public function delete(EA_CertificateElement $urkundenelement): void
     {
         $this->entityManager->remove($urkundenelement);
         $this->update();

@@ -3,12 +3,12 @@ namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Message;
-use CharitySwimRun\classes\model\EA_Urkunde;
+use CharitySwimRun\classes\model\EA_Certificate;
 use CharitySwimRun\classes\renderer\EA_FormRenderer;
 use CharitySwimRun\classes\model\EA_Repository;
 use CharitySwimRun\classes\model\EA_Messages;
 use CharitySwimRun\classes\model\EA_Transponder;
-use CharitySwimRun\classes\model\EA_UrkundenelementRepository;
+use CharitySwimRun\classes\model\EA_CertificateElementRepository;
 
 //Because this controller creates the DB connection, no heritage
 class EA_DatenbankController
@@ -62,7 +62,7 @@ class EA_DatenbankController
 
     private function createUrkundeStandardentries(EntityManager $entityManager): void
     {
-        foreach(EA_Urkunde::getStandardElemente() as $urkundenelement){
+        foreach(EA_Certificate::getStandardElemente() as $urkundenelement){
             $entityManager->persist($urkundenelement);
         }
         $entityManager->flush();

@@ -1,13 +1,13 @@
 <?php
 
 namespace CharitySwimRun\classes\model;
-use CharitySwimRun\classes\model\EA_Urkunde;
+use CharitySwimRun\classes\model\EA_Certificate;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'urkunden')]
-class EA_Urkundenelement extends EA_Urkunde
+class EA_CertificateElement extends EA_Certificate
 {
     #[ORM\Column(type: Types::INTEGER, name:"ID")]
     #[ORM\GeneratedValue]
