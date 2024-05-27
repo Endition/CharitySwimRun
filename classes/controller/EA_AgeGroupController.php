@@ -6,11 +6,11 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\helper\EA_Helper;
 
-use CharitySwimRun\classes\model\EA_Altersklasse;
+use CharitySwimRun\classes\model\EA_AgeGroup;
 use CharitySwimRun\classes\model\EA_Message;
 
 
-class EA_AltersklassenController extends EA_Controller
+class EA_AgeGroupController extends EA_Controller
 {
     public function __construct(EntityManager $entityManager)
     {
@@ -20,7 +20,7 @@ class EA_AltersklassenController extends EA_Controller
     public function getPageAltersklassen(): string
     {
         $content = "";
-        $altersklasse = new EA_Altersklasse();
+        $altersklasse = new EA_AgeGroup();
 
         if (isset($_POST['sendAltersklasseData'])) {
             $this->createAndUpdateAltersklasse();
@@ -33,7 +33,7 @@ class EA_AltersklassenController extends EA_Controller
         } elseif(isset($_POST['sendBerechneZuordnungNeu'])){
             $this->berechneZuordnungNeu();
         }else {
-            $altersklasse = new EA_Altersklasse();
+            $altersklasse = new EA_AgeGroup();
         }
 
         $content .= $this->getAltersklasseList();
@@ -55,7 +55,7 @@ class EA_AltersklassenController extends EA_Controller
 
     private function checkZuordnung(): void
     {
-        $altersklasseList = $this->EA_AltersklasseRepository->loadListOrderBy("uDatum");
+        $altersklasseList = $this->EA_AgeGroupRepository->loadListOrderBy("uDatum");
 
         $news = [];
         if (count($altersklasseList) > 0) {
@@ -76,7 +76,7 @@ class EA_AltersklassenController extends EA_Controller
 
     private function createAltersklasseFromDraft(): void
     {
-        $altersklasse = new EA_Altersklasse();
+        $altersklasse = new EA_AgeGroup();
         if (isset($_POST['sendDLO2017Data'])) {
             $altersklasseVorlageList = $altersklasse->getAkBezGemDLO2017();
         } elseif (isset($_POST['sendPCSData'])) {
@@ -84,7 +84,7 @@ class EA_AltersklassenController extends EA_Controller
         }
 
         foreach ($altersklasseVorlageList as $singleak) {
-            $altersklasse = new EA_Altersklasse();
+            $altersklasse = new EA_AgeGroup();
             $altersklasse->setAltersklasse($singleak['Name']);
             $altersklasse->setAltersklasseKurz($singleak['Kurz']);
             $oDatum = date("Y") - $singleak['oDatum-minus'];
@@ -97,7 +97,7 @@ class EA_AltersklassenController extends EA_Controller
             $altersklasse->setBronze($singleak['Bronze']);
             $altersklasse->setSilber($singleak['Silber']);
             $altersklasse->setGold($singleak['Gold']);
-            $this->EA_AltersklasseRepository->create($altersklasse);
+            $this->EA_AgeGroupRepository->create($altersklasse);
             $this->EA_Messages->addMessage( "Altersklasse " . $altersklasse->getAltersklasse() . " gespeichert",134542642224,EA_Message::MESSAGE_SUCCESS);            
         }
     }
@@ -127,7 +127,7 @@ class EA_AltersklassenController extends EA_Controller
         $gold = filter_input(INPUT_POST,'gold',FILTER_SANITIZE_NUMBER_INT);
 
         //intinalize Object
-        $altersklasse = ($id === null || $id === false || $id === "") ? new EA_Altersklasse() : $this->EA_AltersklasseRepository->loadById((int)$id);
+        $altersklasse = ($id === null || $id === false || $id === "") ? new EA_AgeGroup() : $this->EA_AgeGroupRepository->loadById((int)$id);
 
         //checks for update und create case
         if($bezeichnungLang === ""){
@@ -161,11 +161,11 @@ class EA_AltersklassenController extends EA_Controller
 
         //checks only for create case
         if($altersklasse->getId() === null){
-            if($this->EA_AltersklasseRepository->isAvailable("bezLang", $bezeichnungLang) === false){
+            if($this->EA_AgeGroupRepository->isAvailable("bezLang", $bezeichnungLang) === false){
                 $this->EA_Messages->addMessage("Die Bezeichnung {$bezeichnungLang} für die Altersklasse ist schon vergeben",1459789787,EA_Message::MESSAGE_ERROR);
                 return;
             }
-            if($this->EA_AltersklasseRepository->isAvailable("bezKurz", $bezeichnungKurz) === false){
+            if($this->EA_AgeGroupRepository->isAvailable("bezKurz", $bezeichnungKurz) === false){
                 $this->EA_Messages->addMessage("Die Bezeichnung {$bezeichnungKurz} für die Altersklasse ist schon vergeben",1456787777,EA_Message::MESSAGE_ERROR);
                 return;
             }
@@ -190,20 +190,20 @@ class EA_AltersklassenController extends EA_Controller
         
         //create case
         if($altersklasse->getId() === null){
-            $this->EA_AltersklasseRepository->create($altersklasse);
+            $this->EA_AgeGroupRepository->create($altersklasse);
             $this->EA_Messages->addMessage("Eintrag angelegt",193478775454,EA_Message::MESSAGE_SUCCESS);
         //update case
         }else{
-            $this->EA_AltersklasseRepository->update();
+            $this->EA_AgeGroupRepository->update();
             $this->EA_Messages->addMessage("Eintrag geändert",19233777772,EA_Message::MESSAGE_SUCCESS);
         }
         
     }
 
-    private function editAltersklasse(): ?EA_Altersklasse
+    private function editAltersklasse(): ?EA_AgeGroup
     {
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-        $altersklasse = $this->EA_AltersklasseRepository->loadById($id);
+        $altersklasse = $this->EA_AgeGroupRepository->loadById($id);
         if($altersklasse === null){
             $this->EA_Messages->addMessage("Keine Altersklasse gefunden.",156567875,EA_Message::MESSAGE_WARNINIG);
         }
@@ -213,7 +213,7 @@ class EA_AltersklassenController extends EA_Controller
     private function getAltersklasseList():  string
     {
         $content = "";
-        $altersklasseList = $this->EA_AltersklasseRepository->loadList();
+        $altersklasseList = $this->EA_AgeGroupRepository->loadList();
         if ($altersklasseList !== []) {
             $content = $this->EA_R->renderTabelleAltersklassen($altersklasseList, $this->EA_KonfigurationRepository->load());
         } else {
@@ -225,18 +225,18 @@ class EA_AltersklassenController extends EA_Controller
     private function deleteAltersklasse(): void
     {
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-        $altersklasse = $this->EA_AltersklasseRepository->loadById($id);
+        $altersklasse = $this->EA_AgeGroupRepository->loadById($id);
 
         if($altersklasse === null){
             $this->EA_Messages->addMessage("Keine Altersklasse gefunden.",1956354634562,EA_Message::MESSAGE_ERROR);
             return;
         }
-        if($this->EA_AltersklasseRepository->isInUse($altersklasse) === true){
+        if($this->EA_AgeGroupRepository->isInUse($altersklasse) === true){
             $this->EA_Messages->addMessage("Altersklasse ist noch in Benutzung.",18345345322,EA_Message::MESSAGE_ERROR);
             return;
         }
 
-        $this->EA_AltersklasseRepository->delete($altersklasse);
+        $this->EA_AgeGroupRepository->delete($altersklasse);
         $this->recalculateAltersklassen();
         $this->EA_TeilnehmerRepository->resetPlaetzeTeilnehmer();
 
@@ -249,7 +249,7 @@ class EA_AltersklassenController extends EA_Controller
         $teilnehmerList = $this->EA_TeilnehmerRepository->loadList();
         foreach ($teilnehmerList as $tn) {
             $altersklasseAlt = $tn->getAltersklasse();
-            $altersklasse = $this->EA_AltersklasseRepository->findByGeburtsjahr($tn->getGeburtsdatum());
+            $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($tn->getGeburtsdatum());
             if($altersklasse === null){
                 $this->EA_Messages->addMessage("Teilnehmer {$tn->getGesamtname()} {$tn->getGeburtsdatum()->format('d.m.Y')}  keine passende Altersklasse gefunden ",11723654343,EA_Message::MESSAGE_WARNINIG);
             }else{

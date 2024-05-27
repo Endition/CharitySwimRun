@@ -4,7 +4,7 @@ namespace CharitySwimRun\classes\controller;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\model\EA_AltersklasseRepository;
+use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 
 use CharitySwimRun\classes\model\EA_TeamRepository;
 use CharitySwimRun\classes\model\EA_KonfigurationRepository;
@@ -102,7 +102,7 @@ class EA_ImportController extends EA_Controller
          $geburtsdatum = (is_numeric($data[4]) && strlen($data[4]) == 4) ? "01.01." . $data[4] : $data[4];
          $EA_T->setGeburtsdatum(new DateTimeImmutable($geburtsdatum));
         
-         $altersklasse = $this->EA_AltersklasseRepository->findByGeburtsjahr($EA_T->getGeburtsdatum());
+         $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($EA_T->getGeburtsdatum());
          $EA_T->setAltersklasse($altersklasse);
          
          $EA_T->setGeschlecht(strtoupper(trim($data[5])));

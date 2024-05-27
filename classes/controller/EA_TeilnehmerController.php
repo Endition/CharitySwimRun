@@ -143,9 +143,9 @@ class EA_TeilnehmerController extends EA_Controller
         $teilnehmer->setGeburtsdatum($geburtsdatum);
 
         if ($this->konfiguration->getAltersklassen() === 1) {
-            $altersklasse = $this->EA_AltersklasseRepository->findByAlter($geburtsdatum, $this->konfiguration ->getEnde());
+            $altersklasse = $this->EA_AgeGroupRepository->findByAlter($geburtsdatum, $this->konfiguration ->getEnde());
         } else {
-            $altersklasse = $this->EA_AltersklasseRepository->findByGeburtsjahr($teilnehmer->getGeburtsdatum());
+            $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($teilnehmer->getGeburtsdatum());
         }
         $teilnehmer->setAltersklasse($altersklasse);
         $teilnehmer->setGeschlecht($geschlecht);

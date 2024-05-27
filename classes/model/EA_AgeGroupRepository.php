@@ -2,12 +2,12 @@
 namespace CharitySwimRun\classes\model;
 
 use DateTimeInterface;
-use CharitySwimRun\classes\model\EA_Altersklasse;
+use CharitySwimRun\classes\model\EA_AgeGroup;
 use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
 
-class EA_AltersklasseRepository extends EA_Repository
+class EA_AgeGroupRepository extends EA_Repository
 {
     
     private EntityManager $entityManager;
@@ -22,19 +22,19 @@ class EA_AltersklasseRepository extends EA_Repository
 
     public function isAvailable(string $field,string $bezeichnung): int
     {
-        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Altersklasse')->count([$field => $bezeichnung]);
+        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_AgeGroup')->count([$field => $bezeichnung]);
     }
     
-    public function create(EA_Altersklasse $altersklasse): EA_Altersklasse
+    public function create(EA_AgeGroup $altersklasse): EA_AgeGroup
     {
         $this->entityManager->persist($altersklasse);
         $this->update();
         return $altersklasse;
     }
 
-    public function loadById(int $id): ?EA_Altersklasse
+    public function loadById(int $id): ?EA_AgeGroup
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Altersklasse')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_AgeGroup')->find($id);
     }
 
     public function loadList(string $orderBy = "id"): array
@@ -42,16 +42,16 @@ class EA_AltersklasseRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('a')
-            ->from(EA_Altersklasse::class, 'a',"a.id")
+            ->from(EA_AgeGroup::class, 'a',"a.id")
             ->orderBy('a.'.$orderBy);        
         return $queryBuilder->getQuery()->getResult();
     }
 
-    public function findByGeburtsjahr(DateTimeInterface $geburtsdatum): ?EA_Altersklasse
+    public function findByGeburtsjahr(DateTimeInterface $geburtsdatum): ?EA_AgeGroup
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('ak')
-            ->from(EA_Altersklasse::class, 'ak')
+            ->from(EA_AgeGroup::class, 'ak')
             ->where("ak.uDatum <= :geburtsjahr AND ak.oDatum >= :geburtsjahr ")
             ->setMaxResults(1)
             ->setParameter(":geburtsjahr",$geburtsdatum->format("Y-m-d"));
@@ -60,12 +60,12 @@ class EA_AltersklasseRepository extends EA_Repository
         return $result;  
     }
 
-    public function findByAlter(DateTimeInterface $gebDate, DateTimeInterface $referenzDate): ?EA_Altersklasse
+    public function findByAlter(DateTimeInterface $gebDate, DateTimeInterface $referenzDate): ?EA_AgeGroup
     {
         $alter = $this->calcAlter($gebDate, $referenzDate);
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('ak')
-            ->from(EA_Altersklasse::class, 'ak')
+            ->from(EA_AgeGroup::class, 'ak')
             ->where("`StartAlter` <= :alter  AND `EndeAlter` >= :alter")
             ->setMaxResults(1)
             ->setParameter(":alter",$alter);
@@ -78,7 +78,7 @@ class EA_AltersklasseRepository extends EA_Repository
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('ak')
-            ->from(EA_Altersklasse::class, 'ak')
+            ->from(EA_AgeGroup::class, 'ak')
             ->where("1=1")
             ->orderBy('ak.'.$orderBy, 'ASC');
         $query = $qb->getQuery();
@@ -87,12 +87,12 @@ class EA_AltersklasseRepository extends EA_Repository
     }
 
     
-    public function isInUse(EA_Altersklasse $altersklasse): bool
+    public function isInUse(EA_AgeGroup $altersklasse): bool
     {
         return ($altersklasse->getMitgliederList()->count() > 0);
     }
 
-    public function delete(EA_Altersklasse $altersklasse): void
+    public function delete(EA_AgeGroup $altersklasse): void
     {
         $this->entityManager->remove($altersklasse);
         $this->update();

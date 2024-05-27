@@ -94,7 +94,7 @@ class EA_SimulatorController extends EA_Controller
         
             }
         
-            $newTeilnehmer->setAltersklasse($this->EA_AltersklasseRepository->findByGeburtsjahr($geburtsdatum));
+            $newTeilnehmer->setAltersklasse($this->EA_AgeGroupRepository->findByGeburtsjahr($geburtsdatum));
             $newTeilnehmer->setKonfiguration($this->EA_KonfigurationRepository->load());
             $this->EA_TeilnehmerRepository->create($newTeilnehmer);  
             $messages[] =  "neuen Teilnehmer {$newTeilnehmer->getGesamtname()} angelegt";

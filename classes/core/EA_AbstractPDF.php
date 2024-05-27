@@ -6,13 +6,13 @@ use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\model\EA_Teilnehmer;
 use Smarty\Smarty;
-use CharitySwimRun\classes\model\EA_AltersklasseRepository;
+use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_Konfiguration;
 use CharitySwimRun\classes\model\EA_KonfigurationRepository;
 use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
 use CharitySwimRun\classes\model\EA_Distance;
-use CharitySwimRun\classes\model\EA_Altersklasse;
+use CharitySwimRun\classes\model\EA_AgeGroup;
 use CharitySwimRun\classes\model\EA_TeamRepository;
 use CharitySwimRun\classes\model\EA_ClubRepository;
 require_once (ROOT_PATH.'/vendor/autoload.php');
@@ -28,7 +28,7 @@ abstract class EA_AbstractPDF extends \TCPDF
     protected Smarty $smarty;
     protected string $ds;
     protected string $typ;
-    protected EA_AltersklasseRepository $altersklasseRepository;
+    protected EA_AgeGroupRepository $altersklasseRepository;
     protected EA_DistanceRepository $streckeRepository;
     protected EA_KonfigurationRepository $EA_KonfigurationRepository;
     protected EA_TeilnehmerRepository $teilnehmerRepository;
@@ -47,7 +47,7 @@ abstract class EA_AbstractPDF extends \TCPDF
         $this->SetCreator("CharitySwimRun");
         $this->SetAuthor('');
 
-        $this->altersklasseRepository = new EA_AltersklasseRepository($entityManager);
+        $this->altersklasseRepository = new EA_AgeGroupRepository($entityManager);
         $this->streckeRepository = new EA_DistanceRepository($entityManager);
         $this->EA_ClubRepository = new EA_ClubRepository($entityManager);
         $this->EA_TeamRepository = new EA_TeamRepository($entityManager);
@@ -137,7 +137,7 @@ abstract class EA_AbstractPDF extends \TCPDF
                 $strecke->setId($this->filter['strecke']);
             }
             if($this->filter['altersklasse']){
-                $altersklasse = new EA_Altersklasse();
+                $altersklasse = new EA_AgeGroup();
                 $altersklasse->setId($this->filter['altersklasse']);
             }
             $ergebnisse = $this->teilnehmerRepository->loadList($strecke,$altersklasse,$this->filter['geschlecht'],null,null,null,null,$this->filter["order"],"ASC",null,null,null, $this->filter['status'],$this->filter['id']);   
@@ -174,7 +174,7 @@ abstract class EA_AbstractPDF extends \TCPDF
             foreach ($verteilung as $streckekey => $streckenunterteilung) {
                 foreach ($streckenunterteilung['Unterteilung'] as $akkey => $akunterteilung) {
                     foreach ($akunterteilung['Unterteilung'] as $geschlechtkey => $geschlechtunterteilung) {
-                        $altersklasse = new EA_Altersklasse();
+                        $altersklasse = new EA_AgeGroup();
                         $altersklasse->setId($akkey);
                         $strecke = new EA_Distance();
                         $strecke->setId($streckekey);

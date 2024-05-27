@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use CharitySwimRun\classes\helper\EA_Helper;
-use CharitySwimRun\classes\model\EA_Altersklasse;
+use CharitySwimRun\classes\model\EA_AgeGroup;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
@@ -59,9 +59,9 @@ class EA_Teilnehmer
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE,name:'Startzeit',nullable:true,options:["default"=>null])]
     private ?DateTimeImmutable $startzeit = null;
 
-    #[ORM\ManyToOne(targetEntity: EA_Altersklasse::class)]
+    #[ORM\ManyToOne(targetEntity: EA_AgeGroup::class)]
     #[ORM\JoinColumn(name: 'Altersklasse', referencedColumnName: 'Id',nullable:true,options:["default"=>null])]
-    private ?EA_Altersklasse $altersklasse = null;
+    private ?EA_AgeGroup $altersklasse = null;
 
     #[ORM\ManyToOne(targetEntity: EA_Team::class)]
     #[ORM\JoinColumn(name: 'Mannschaft', referencedColumnName: 'MannschaftId',nullable:true,options:["default"=>null])]
@@ -276,16 +276,16 @@ class EA_Teilnehmer
 
     }
 
-    public function getAltersklasse(): EA_Altersklasse
+    public function getAltersklasse(): EA_AgeGroup
     {
         if ($this->altersklasse !== null) {
             return $this->altersklasse;
         } else {
-            return new EA_Altersklasse();
+            return new EA_AgeGroup();
         }
     }
 
-    public function setAltersklasse(?EA_Altersklasse $altersklasse)
+    public function setAltersklasse(?EA_AgeGroup $altersklasse)
     {
         $this->altersklasse = $altersklasse;
 

@@ -78,9 +78,9 @@ class EA_SelbstanmeldungController extends EA_Controller
         $EA_T->setGeburtsdatum($geburtsdatum);
 
         if ($this->konfiguration->getAltersklassen() === 1) {
-            $altersklasse = $this->EA_AltersklasseRepository->findByAlter($geburtsdatum, $this->konfiguration->getEnde());
+            $altersklasse = $this->EA_AgeGroupRepository->findByAlter($geburtsdatum, $this->konfiguration->getEnde());
         } else {
-            $altersklasse = $this->EA_AltersklasseRepository->findByGeburtsjahr($EA_T->getGeburtsdatum());
+            $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($EA_T->getGeburtsdatum());
         }
         $EA_T->setAltersklasse($altersklasse);
         $EA_T->setGeschlecht($geschlecht);

@@ -147,7 +147,7 @@ class EA_Repository{
         // Metadaten für die Entitäten abrufen
         $classes = [
             //CREATE VALUES
-            $this->entityManager->getClassMetadata(EA_Altersklasse::class),
+            $this->entityManager->getClassMetadata(EA_AgeGroup::class),
             $this->entityManager->getClassMetadata(EA_Impuls::class),
             $this->entityManager->getClassMetadata(EA_Konfiguration::class),
             $this->entityManager->getClassMetadata(EA_Team::class),

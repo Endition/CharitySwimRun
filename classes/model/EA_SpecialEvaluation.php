@@ -29,9 +29,9 @@ class EA_SpecialEvaluation
     #[ORM\JoinColumn(name: 'strecke', referencedColumnName: 'id',nullable:true,options:["default"=>null])]
     private ?EA_Distance $strecke = null;
 
-    #[ORM\ManyToOne(targetEntity: EA_Altersklasse::class)]
+    #[ORM\ManyToOne(targetEntity: EA_AgeGroup::class)]
     #[ORM\JoinColumn(name: 'altersklasse', referencedColumnName: 'Id',nullable:true,options:["default"=>null])]
-    private ?EA_Altersklasse $altersklasse = null;
+    private ?EA_AgeGroup $altersklasse = null;
 
     #[ORM\Column(type: Types::STRING,nullable:true,options:["default"=>null])]
     private ?string $geschlecht = null;
@@ -103,12 +103,12 @@ class EA_SpecialEvaluation
 
     }
 
-    public function getAltersklasse(): ?EA_Altersklasse 
+    public function getAltersklasse(): ?EA_AgeGroup 
     {
         return $this->altersklasse;
     }
 
-    public function setAltersklasse(?EA_Altersklasse $altersklasse) : void
+    public function setAltersklasse(?EA_AgeGroup $altersklasse) : void
     {
         $this->altersklasse = $altersklasse;
     }

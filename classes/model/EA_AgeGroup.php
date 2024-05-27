@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'aks')]
-class EA_Altersklasse
+class EA_AgeGroup
 {
     #[ORM\Column(type: Types::INTEGER,name:"Id")]
     #[ORM\GeneratedValue]

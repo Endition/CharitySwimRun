@@ -125,7 +125,7 @@ class EA_TeilnehmerRepository extends EA_Repository
 
     public function loadList(
         ?EA_Distance $strecke = null, 
-        ?EA_Altersklasse $altersklasse = null, 
+        ?EA_AgeGroup $altersklasse = null, 
         ?string $geschlecht = null, 
         ?EA_Team $mannschaft = null, 
         ?EA_Club $verein = null,
@@ -249,7 +249,7 @@ class EA_TeilnehmerRepository extends EA_Repository
             $strecke->setId($streckeId);
         }
         if($altersklasseId){
-            $altersklasse = new EA_Altersklasse();
+            $altersklasse = new EA_AgeGroup();
             $altersklasse->setId($altersklasseId);
         }
         if($platzfilter){
@@ -534,7 +534,7 @@ class EA_TeilnehmerRepository extends EA_Repository
             ->select('t.geschlecht, a.id AS altersklasseId, s.id AS streckeId, s.bezLang, a.altersklasse, count(t.id) AS anzahl')
             ->from(EA_Teilnehmer::class, 't')
             ->innerJoin(EA_Distance::class, 's','WITH', 's.id = t.strecke')
-            ->innerJoin(EA_Altersklasse::class, 'a','WITH', 'a.id = t.altersklasse');
+            ->innerJoin(EA_AgeGroup::class, 'a','WITH', 'a.id = t.altersklasse');
             if ($streckenId) {
                 $queryBuilder->where('s.id = :streckenid')
                 ->setParameter(":streckenid", $streckenId);   

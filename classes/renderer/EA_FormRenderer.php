@@ -6,8 +6,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\helper\EA_Helper;
-use CharitySwimRun\classes\model\EA_Altersklasse;
-use CharitySwimRun\classes\model\EA_AltersklasseRepository;
+use CharitySwimRun\classes\model\EA_AgeGroup;
+use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 
 use CharitySwimRun\classes\model\EA_Konfiguration;
 use CharitySwimRun\classes\model\EA_KonfigurationRepository;
@@ -48,7 +48,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
     }
 
     private function getStandardIncludes(EntityManager $entityManager, array $includes = []) {
-        $altersklasseRepository = new EA_AltersklasseRepository($entityManager);
+        $altersklasseRepository = new EA_AgeGroupRepository($entityManager);
         $streckeRepository = new EA_DistanceRepository($entityManager);
         $vereinRepository = new EA_ClubRepository($entityManager);
         $mannschaftRepository = new EA_TeamRepository($entityManager);
@@ -112,7 +112,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormAltersklasse(EntityManager $entityManager, EA_Altersklasse $EA_AK, EA_Konfiguration $konfiguration): string
+    public function getFormAltersklasse(EntityManager $entityManager, EA_AgeGroup $EA_AK, EA_Konfiguration $konfiguration): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, ["konfiguration" => true]);

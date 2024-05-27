@@ -8,7 +8,7 @@ use CharitySwimRun\classes\model\EA_KonfigurationRepository;
 use CharitySwimRun\classes\renderer\EA_FormRenderer;
 use CharitySwimRun\classes\renderer\EA_Renderer;
 use CharitySwimRun\classes\model\EA_Messages;
-use CharitySwimRun\classes\model\EA_AltersklasseRepository;
+use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 use CharitySwimRun\classes\model\EA_ImpulsRepository;
 use CharitySwimRun\classes\model\EA_Konfiguration;
 use CharitySwimRun\classes\model\EA_ClubRepository;
@@ -25,7 +25,7 @@ class EA_Controller
 
     protected EA_Renderer $EA_R;
     protected EA_FormRenderer $EA_FR;
-    protected EA_AltersklasseRepository $EA_AltersklasseRepository;
+    protected EA_AgeGroupRepository $EA_AgeGroupRepository;
     protected EA_TeilnehmerRepository $EA_TeilnehmerRepository;
     protected EA_KonfigurationRepository $EA_KonfigurationRepository;
     protected EA_ImpulsRepository $EA_ImpulsRepository;
@@ -50,7 +50,7 @@ class EA_Controller
         $this->EA_R = new EA_Renderer();
         $this->EA_Messages = new EA_Messages();
         $this->EA_UserRepository = new EA_UserRepository($entityManager);
-        $this->EA_AltersklasseRepository = new EA_AltersklasseRepository($entityManager);
+        $this->EA_AgeGroupRepository = new EA_AgeGroupRepository($entityManager);
         $this->EA_TeilnehmerRepository = new EA_TeilnehmerRepository($entityManager);
         $this->EA_KonfigurationRepository = new EA_KonfigurationRepository($entityManager);
         $this->EA_ImpulsRepository = new EA_ImpulsRepository($entityManager);
