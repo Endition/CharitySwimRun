@@ -81,7 +81,7 @@ class EA_SimulatorController extends EA_Controller
         
              //in 10% create new team
             if($mannschaftzufall > 90){
-                $mannschaftsKategorieList = $this->EA_MannschaftskategorieRepository->loadList();
+                $mannschaftsKategorieList = $this->EA_TeamCategoryRepository->loadList();
                 $mannschaft = new EA_Mannschaft();
                 $mannschaft->setStartnummer(rand(1,20000));
                 $mannschaft->setMannschaftskategorie($mannschaftsKategorieList[array_rand($mannschaftsKategorieList)]);

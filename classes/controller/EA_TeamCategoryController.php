@@ -4,10 +4,10 @@ namespace CharitySwimRun\classes\controller;
 use Doctrine\ORM\EntityManager;
 
 
-use CharitySwimRun\classes\model\EA_Mannschaftskategorie;
+use CharitySwimRun\classes\model\EA_TeamCategory;
 use CharitySwimRun\classes\model\EA_Message;
 
-class EA_MannschaftskategorieController extends EA_Controller
+class EA_TeamCategoryController extends EA_Controller
 {
     public function __construct( EntityManager $entityManager)
     {
@@ -17,7 +17,7 @@ class EA_MannschaftskategorieController extends EA_Controller
     public function getPageMannschaftskategorie(): string
     {
         $content = "";
-        $mannschaftskategorieBez = new EA_Mannschaftskategorie();
+        $mannschaftskategorieBez = new EA_TeamCategory();
 
         if (isset($_POST['sendMannschaftskategorieData'])) {
             $this->createAndUpdateMannschaftskategorie();
@@ -26,7 +26,7 @@ class EA_MannschaftskategorieController extends EA_Controller
         } elseif (isset($_GET['action']) && $_GET['action'] === "delete") {
             $this->deleteMannschaftskategorie();
         } else {
-            $mannschaftskategorieBez = new EA_Mannschaftskategorie();
+            $mannschaftskategorieBez = new EA_TeamCategory();
         }
 
         $content .= $this->getMannschaftskategorieList();
@@ -47,29 +47,29 @@ class EA_MannschaftskategorieController extends EA_Controller
         }
 
         if($id === null || $id === false || $id === ""){
-            if($this->EA_MannschaftskategorieRepository->loadByBezeichnung($mannschaftskategorieBez) !== null){
+            if($this->EA_TeamCategoryRepository->loadByBezeichnung($mannschaftskategorieBez) !== null){
                 $this->EA_Messages->addMessage("Diese Bezeichnung für die Kategorie ist schon vergeben",17893452345,EA_Message::MESSAGE_ERROR);
                 return;
             }else{
-                $mannschaftskategorie = new EA_Mannschaftskategorie();
+                $mannschaftskategorie = new EA_TeamCategory();
                 $mannschaftskategorie->setMannschaftskategorie($mannschaftskategorieBez);
-                $this->EA_MannschaftskategorieRepository->create($mannschaftskategorie);
+                $this->EA_TeamCategoryRepository->create($mannschaftskategorie);
                 $this->EA_Messages->addMessage("Eintrag angelegt",1235437737,EA_Message::MESSAGE_SUCCESS);
 
             }
         }else{
-            $mannschaftskategorie = $this->EA_MannschaftskategorieRepository->loadById((int)$id);
+            $mannschaftskategorie = $this->EA_TeamCategoryRepository->loadById((int)$id);
             $mannschaftskategorie->setMannschaftskategorie($mannschaftskategorieBez);
-            $this->EA_MannschaftskategorieRepository->update();
+            $this->EA_TeamCategoryRepository->update();
             $this->EA_Messages->addMessage("Eintrag geändert",1257677777,EA_Message::MESSAGE_SUCCESS);
 
         }
     }
 
-    private function editMannschaftskategorie(): ?EA_Mannschaftskategorie
+    private function editMannschaftskategorie(): ?EA_TeamCategory
     {
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-        $mannschaftskategorieBez = $this->EA_MannschaftskategorieRepository->loadById($id);
+        $mannschaftskategorieBez = $this->EA_TeamCategoryRepository->loadById($id);
         if($mannschaftskategorieBez === null){
             $this->EA_Messages->addMessage("Keine Kategorie gefunden.",12434523452,EA_Message::MESSAGE_WARNINIG);
         }
@@ -79,7 +79,7 @@ class EA_MannschaftskategorieController extends EA_Controller
     private function getMannschaftskategorieList():  string
     {
         $content = "";
-        $mannschaftskategorieList = $this->EA_MannschaftskategorieRepository->loadList();
+        $mannschaftskategorieList = $this->EA_TeamCategoryRepository->loadList();
         if ($mannschaftskategorieList !== []) {
             $content = $this->EA_R->renderTabelleMannschaftskategorien($mannschaftskategorieList);
         } else {
@@ -91,11 +91,11 @@ class EA_MannschaftskategorieController extends EA_Controller
     private function deleteMannschaftskategorie(): void
     {
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-        $mannschaftskategorieBez = $this->EA_MannschaftskategorieRepository->loadById($id);
+        $mannschaftskategorieBez = $this->EA_TeamCategoryRepository->loadById($id);
         if($mannschaftskategorieBez === null){
             $this->EA_Messages->addMessage("Kein Mannschaftskategorie gefunden.",1624435643,EA_Message::MESSAGE_WARNINIG);
         }else{
-            $this->EA_MannschaftskategorieRepository->delete($mannschaftskategorieBez);
+            $this->EA_TeamCategoryRepository->delete($mannschaftskategorieBez);
             $this->EA_Messages->addMessage("Mannschaftskategorie gelöscht.",123456,EA_Message::MESSAGE_SUCCESS);
         }
     }

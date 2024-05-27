@@ -1,11 +1,11 @@
 <?php
 namespace CharitySwimRun\classes\model;
 
-use CharitySwimRun\classes\model\EA_Mannschaftskategorie;
+use CharitySwimRun\classes\model\EA_TeamCategory;
 use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
-class EA_MannschaftskategorieRepository extends EA_Repository
+class EA_TeamCategoryRepository extends EA_Repository
 {
     
     private EntityManager $entityManager;
@@ -18,26 +18,26 @@ class EA_MannschaftskategorieRepository extends EA_Repository
                 parent::setEntityManager($entitymanager); 
     }
     
-    public function create(EA_Mannschaftskategorie $user): EA_Mannschaftskategorie
+    public function create(EA_TeamCategory $user): EA_TeamCategory
     {
         $this->entityManager->persist($user);
         $this->update();
         return $user;
     }
 
-    public function loadByBezeichnung(string $bezeichnung): ?EA_Mannschaftskategorie
+    public function loadByBezeichnung(string $bezeichnung): ?EA_TeamCategory
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Mannschaftskategorie')->findOneBy(array('mannschaftskategorie' => $bezeichnung));
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_TeamCategory')->findOneBy(array('mannschaftskategorie' => $bezeichnung));
     }
 
-    public function loadById(int $id): ?EA_Mannschaftskategorie
+    public function loadById(int $id): ?EA_TeamCategory
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Mannschaftskategorie')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_TeamCategory')->find($id);
     }
 
     public function loadList(): array
     {
-        return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_Mannschaftskategorie")->findAll();
+        return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_TeamCategory")->findAll();
     }
 
     public function loadListForSelect(): array
@@ -50,7 +50,7 @@ class EA_MannschaftskategorieRepository extends EA_Repository
         return $selectArray;
     }
 
-    public function delete(EA_Mannschaftskategorie $user): void
+    public function delete(EA_TeamCategory $user): void
     {
         $this->entityManager->remove($user);
         $this->update();

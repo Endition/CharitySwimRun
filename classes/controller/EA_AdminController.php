@@ -67,7 +67,7 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $specialEvaluationController->getPageSpecialEvaluationn();
                     break;
                 case "mannschaftskategorie":
-                    $mannschaftskategorieController = new EA_MannschaftskategorieController( $this->entityManager);
+                    $mannschaftskategorieController = new EA_TeamCategoryController( $this->entityManager);
                     $innercontent .= $mannschaftskategorieController->getPageMannschaftskategorie();
                     break;
                 case "urkundengenerator":

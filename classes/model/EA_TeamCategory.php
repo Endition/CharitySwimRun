@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'mannschaft_kategorien')]
-class EA_Mannschaftskategorie
+class EA_TeamCategory
 {
     #[ORM\Column(type: Types::INTEGER, name: "MannschaftskategorieId")]
     #[ORM\GeneratedValue]

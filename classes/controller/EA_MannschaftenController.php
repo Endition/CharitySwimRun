@@ -32,7 +32,7 @@ class EA_MannschaftenController extends EA_Controller
 
         $content .= $this->getMannschaftList();
 
-        $content .= $this->EA_FR->getFormMannschaft($mannschaft,$this->EA_MannschaftskategorieRepository->loadListForSelect());
+        $content .= $this->EA_FR->getFormMannschaft($mannschaft,$this->EA_TeamCategoryRepository->loadListForSelect());
         return $content;
     }
 
@@ -45,7 +45,7 @@ class EA_MannschaftenController extends EA_Controller
         $verantwortlicherVorname =  htmlspecialchars($_POST['ver_vorname']);
         $verantwortlicherEmail =    htmlspecialchars($_POST['ver_mail']);
         $mannschaftskategorieId = filter_input(INPUT_POST, "mannschaftskategorieId", FILTER_SANITIZE_NUMBER_INT);
-        $mannschaftskategorie = $this->EA_MannschaftskategorieRepository->loadById($mannschaftskategorieId);
+        $mannschaftskategorie = $this->EA_TeamCategoryRepository->loadById($mannschaftskategorieId);
         
         //intinalize Object
         $mannschaft = ($id === null || $id === false || $id === "") ? new EA_Mannschaft() : $this->EA_MannschaftRepository->loadById((int)$id);

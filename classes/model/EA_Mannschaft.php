@@ -36,9 +36,9 @@ class EA_Mannschaft
     #[ORM\Column(type: Types::STRING, name: "Kennwort")]
     private ?string $kennwort = "nichtBenutzt";
 
-    #[ORM\ManyToOne(targetEntity: EA_Mannschaftskategorie::class, inversedBy:'mannschaftListNeu')]
+    #[ORM\ManyToOne(targetEntity: EA_TeamCategory::class, inversedBy:'mannschaftListNeu')]
     #[ORM\JoinColumn(name: 'Mannschaftskategorie', referencedColumnName: 'MannschaftskategorieId',nullable:true)]
-    private ?EA_Mannschaftskategorie $mannschaftskategorie = null;
+    private ?EA_TeamCategory $mannschaftskategorie = null;
 
     private int $gesamtimpulseCache = 0;
     private float $gesamtGeldCache = 0;
@@ -51,7 +51,7 @@ class EA_Mannschaft
     public function __construct()
     {
         $this->mitgliederList = new ArrayCollection();
-        $this->mannschaftskategorie = new EA_Mannschaftskategorie();
+        $this->mannschaftskategorie = new EA_TeamCategory();
         
     }
 
@@ -125,12 +125,12 @@ class EA_Mannschaft
         $this->ver_mail = $ver_mail;
     }
 
-    public function getMannschaftskategorie(): ?EA_Mannschaftskategorie
+    public function getMannschaftskategorie(): ?EA_TeamCategory
     {
         return $this->mannschaftskategorie;
     }
 
-    public function setMannschaftskategorie(?EA_Mannschaftskategorie $mannschaftskategorie)
+    public function setMannschaftskategorie(?EA_TeamCategory $mannschaftskategorie)
     {
         $this->mannschaftskategorie = $mannschaftskategorie;
     }

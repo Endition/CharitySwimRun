@@ -13,7 +13,7 @@ use CharitySwimRun\classes\model\EA_Konfiguration;
 use CharitySwimRun\classes\model\EA_KonfigurationRepository;
 use CharitySwimRun\classes\model\EA_Mannschaft;
 use CharitySwimRun\classes\model\EA_MannschaftRepository;
-use CharitySwimRun\classes\model\EA_Mannschaftskategorie;
+use CharitySwimRun\classes\model\EA_TeamCategory;
 use CharitySwimRun\classes\model\EA_Repository;
 use CharitySwimRun\classes\model\EA_SpecialEvaluation;
 use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
@@ -188,7 +188,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormMannschaftskategorie(EA_Mannschaftskategorie $EA_MK): string
+    public function getFormMannschaftskategorie(EA_TeamCategory $EA_MK): string
     {
         $content = "";       
         $this->smarty->assign('mannschaftskategorie', $EA_MK);
