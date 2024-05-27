@@ -36,9 +36,9 @@ class EA_Urkunde
         $list[4] = new EA_Urkundenelement();
         $list[4]->setStandardValues(65, 353, 202, 22, 'Freitext', 'zu Gunsten der', 24, 'Helvetica', ' ', 'C');
         $list[5] = new EA_Urkundenelement();
-        $list[5]->setStandardValues( 136, 256, 54, 30, 'Freitext', ' 20. Pro-Cent-Schwimmen', 28, 'Helvetica', 'B', 'C');
+        $list[5]->setStandardValues( 136, 256, 54, 30, 'Freitext', ' VERANSTALTUNG', 28, 'Helvetica', 'B', 'C');
         $list[6] = new EA_Urkundenelement();
-        $list[6]->setStandardValues(64, 385, 209, 19, 'Freitext', 'TSV Bisperode', 25, 'Helvetica', ' ', 'C');
+        $list[6]->setStandardValues(64, 385, 209, 19, 'Freitext', 'VEREIN', 25, 'Helvetica', ' ', 'C');
         $list[7] = new EA_Urkundenelement();
         $list[7]->setStandardValues(69, 418, 194, 30, 'Freitext', 'erschwommen.', 25, 'Helvetica', ' ', 'C');
         $list[8] = new EA_Urkundenelement();

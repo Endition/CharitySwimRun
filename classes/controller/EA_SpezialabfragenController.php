@@ -28,7 +28,7 @@ class EA_SpezialabfragenController extends EA_Controller
         $besterTeilnehmer = $teilnehmerList[array_key_first($teilnehmerList)]; //Den TN mit den meisten Buchungen auslesen
         $medaillenspiegel = $this->EA_TeilnehmerRepository->loadMedaillenspiegel($teilnehmerList);
         $statiVerteilung = $this->EA_TeilnehmerRepository->loadStatiVerteilung();
-        $vereineLeistung = $this->EA_VereinRepository->loadList("verein");
+        $vereineLeistung = $this->EA_ClubRepository->loadList("verein");
         $StreckenTeilnehmerVerteilung = $this->EA_TeilnehmerRepository->loadStreckenTeilnehmerVerteilung();
         $StreckenAltersklassenTeilnehmerVerteilung = $this->EA_TeilnehmerRepository->loadStreckenAltersklassenTeilnehmerVerteilung();
 

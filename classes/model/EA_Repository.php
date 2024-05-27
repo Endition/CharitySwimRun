@@ -157,7 +157,7 @@ class EA_Repository{
             $this->entityManager->getClassMetadata(EA_Teilnehmer::class),
             $this->entityManager->getClassMetadata(EA_Urkundenelement::class),
             $this->entityManager->getClassMetadata(EA_User::class),
-            $this->entityManager->getClassMetadata(EA_Verein::class),
+            $this->entityManager->getClassMetadata(EA_Club::class),
             //only relevant in admin's project
             $this->entityManager->getClassMetadata(EA_Cache::class),
             $this->entityManager->getClassMetadata(EA_Transponder::class),

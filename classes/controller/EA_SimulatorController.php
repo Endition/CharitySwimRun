@@ -7,7 +7,7 @@ use CharitySwimRun\classes\model\EA_Impuls;
 use CharitySwimRun\classes\model\EA_Mannschaft;
 use CharitySwimRun\classes\model\EA_Simulator;
 use CharitySwimRun\classes\model\EA_Teilnehmer;
-use CharitySwimRun\classes\model\EA_Verein;
+use CharitySwimRun\classes\model\EA_Club;
 
 class EA_SimulatorController extends EA_Controller
 {
@@ -47,7 +47,7 @@ class EA_SimulatorController extends EA_Controller
             }
             //in 40% existing club
             if($vereinszufall > 50 && $vereinszufall < 90){
-                $vereinList = $this->EA_VereinRepository->loadList();
+                $vereinList = $this->EA_ClubRepository->loadList();
                 if(count($vereinList) > 0){
                     $newTeilnehmer->setVerein($vereinList[array_rand($vereinList)]);
                 }
@@ -57,9 +57,9 @@ class EA_SimulatorController extends EA_Controller
                 $newVereinBez = $EA_Simulator->fiktiveVereine[array_rand($EA_Simulator->fiktiveVereine)];
                 $verein = $this->vereinRepository->loadByBezeichnung($newVereinBez);
                 if($verein === null){
-                    $verein = new EA_Verein();
+                    $verein = new EA_Club();
                     $verein->setVerein($newVereinBez);
-                    $this->EA_VereinRepository->create($verein);
+                    $this->EA_ClubRepository->create($verein);
                 }
   
                 $newTeilnehmer->setVerein($verein);

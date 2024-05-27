@@ -67,9 +67,9 @@ class EA_Teilnehmer
     #[ORM\JoinColumn(name: 'Mannschaft', referencedColumnName: 'MannschaftId',nullable:true,options:["default"=>null])]
     private ?EA_Mannschaft $mannschaft = null;
 
-    #[ORM\ManyToOne(targetEntity: EA_Verein::class)]
+    #[ORM\ManyToOne(targetEntity: EA_Club::class)]
     #[ORM\JoinColumn(name: 'Verein', referencedColumnName: 'VereinId',nullable:true,options:["default"=>null])]
-    private ?EA_Verein $verein = null;
+    private ?EA_Club $verein = null;
 
     #[ORM\ManyToOne(targetEntity: EA_Strecke::class)]
     #[ORM\JoinColumn(name: 'Strecke', referencedColumnName: 'id',nullable:true,options:["default"=>null])]
@@ -306,16 +306,16 @@ class EA_Teilnehmer
 
     }
 
-    public function getVerein(): EA_Verein
+    public function getVerein(): EA_Club
     {
         if ($this->verein !==null) {
             return $this->verein;
         } else {
-            return new EA_Verein();
+            return new EA_Club();
         }
     }
 
-    public function setVerein(?EA_Verein$verein)
+    public function setVerein(?EA_Club$verein)
     {
         $this->verein = $verein;
 

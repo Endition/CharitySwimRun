@@ -99,7 +99,7 @@ class EA_ApiController extends EA_Controller
                 $responseList = $this->handleGetTeilnehmerAdministrativ($paramList);
                 break;
             case 'verein':
-                $EA_VereinController = new EA_VereineController($this->entityManager);
+                $EA_ClubController = new EA_ClubController($this->entityManager);
                 $responseList = $this->handleGetVereinAdministrativ($paramList);
                 break;
             default:
@@ -210,7 +210,7 @@ class EA_ApiController extends EA_Controller
         if($paramList[0] === "search"){
             $searchName = $paramList[0] === "search" ? htmlspecialchars($paramList[1]) : null;
 
-            $vereinList = $this->EA_VereinRepository->loadList("verein",$searchName);            
+            $vereinList = $this->EA_ClubRepository->loadList("verein",$searchName);            
             if ($vereinList === null) {
                 return $this->notFoundresponseList();
             }

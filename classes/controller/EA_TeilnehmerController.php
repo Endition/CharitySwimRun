@@ -5,7 +5,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\model\EA_Teilnehmer;
-use CharitySwimRun\classes\model\EA_Verein;
+use CharitySwimRun\classes\model\EA_Club;
 
 use CharitySwimRun\classes\model\EA_Message;
 
@@ -73,13 +73,13 @@ class EA_TeilnehmerController extends EA_Controller
         
         if (isset($_POST['verein']) && $_POST['verein'] !== "") {
             if(isset($_POST['vereinid']) && is_numeric($_POST['vereinid']) && $_POST['vereinid'] > 0){
-                $verein = $this->EA_VereinRepository->loadById(filter_input(INPUT_POST,"vereinid",FILTER_SANITIZE_NUMBER_INT));
+                $verein = $this->EA_ClubRepository->loadById(filter_input(INPUT_POST,"vereinid",FILTER_SANITIZE_NUMBER_INT));
             }else{
-                $verein = $this->EA_VereinRepository->loadByBezeichnung(htmlspecialchars($_POST['verein']));
+                $verein = $this->EA_ClubRepository->loadByBezeichnung(htmlspecialchars($_POST['verein']));
                 if($verein === null){
-                    $verein = new EA_Verein();
+                    $verein = new EA_Club();
                     $verein->setVerein(htmlspecialchars($_POST['verein']));
-                    $this->EA_VereinRepository->create($verein);
+                    $this->EA_ClubRepository->create($verein);
                 }
             }
         } else {

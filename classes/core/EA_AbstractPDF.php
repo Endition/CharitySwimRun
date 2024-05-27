@@ -14,7 +14,7 @@ use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
 use CharitySwimRun\classes\model\EA_Strecke;
 use CharitySwimRun\classes\model\EA_Altersklasse;
 use CharitySwimRun\classes\model\EA_MannschaftRepository;
-use CharitySwimRun\classes\model\EA_VereinRepository;
+use CharitySwimRun\classes\model\EA_ClubRepository;
 require_once (ROOT_PATH.'/vendor/autoload.php');
 
 abstract class EA_AbstractPDF extends \TCPDF
@@ -32,7 +32,7 @@ abstract class EA_AbstractPDF extends \TCPDF
     protected EA_StreckeRepository $streckeRepository;
     protected EA_KonfigurationRepository $EA_KonfigurationRepository;
     protected EA_TeilnehmerRepository $teilnehmerRepository;
-    protected EA_VereinRepository $EA_VereinRepository;
+    protected EA_ClubRepository $EA_ClubRepository;
     protected EA_MannschaftRepository $EA_MannschaftRepository;
 
 
@@ -49,7 +49,7 @@ abstract class EA_AbstractPDF extends \TCPDF
 
         $this->altersklasseRepository = new EA_AltersklasseRepository($entityManager);
         $this->streckeRepository = new EA_StreckeRepository($entityManager);
-        $this->EA_VereinRepository = new EA_VereinRepository($entityManager);
+        $this->EA_ClubRepository = new EA_ClubRepository($entityManager);
         $this->EA_MannschaftRepository = new EA_MannschaftRepository($entityManager);
         $this->teilnehmerRepository = new EA_TeilnehmerRepository($entityManager);
         $this->EA_KonfigurationRepository = new EA_KonfigurationRepository($entityManager);
@@ -126,7 +126,7 @@ abstract class EA_AbstractPDF extends \TCPDF
     private function loadDataAlleIsNull(): array
     {
         if ($this->filter['typ'] === "Vereine") {
-            $ergebnisse = $this->EA_VereinRepository->loadList();
+            $ergebnisse = $this->EA_ClubRepository->loadList();
         } elseif ($this->filter['typ'] === "Mannschaften") {
             $ergebnisse = $this->EA_MannschaftRepository->loadList();
         } else {

@@ -95,7 +95,7 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $mannschaftenController->getPageMannschaften();
                     break;
                 case "vereine":
-                    $vereineController = new EA_VereineController( $this->entityManager);
+                    $vereineController = new EA_ClubController( $this->entityManager);
                     $innercontent .= $vereineController->getPageVereine();
                     break;
                 case "startzeiten":

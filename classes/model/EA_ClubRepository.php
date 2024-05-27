@@ -2,10 +2,10 @@
 namespace CharitySwimRun\classes\model;
 
 use Doctrine\ORM\EntityManager;
-use CharitySwimRun\classes\model\EA_Verein;
+use CharitySwimRun\classes\model\EA_Club;
 
 
-class EA_VereinRepository extends EA_Repository
+class EA_ClubRepository extends EA_Repository
 {
     private EntityManager $entityManager;
 
@@ -17,38 +17,38 @@ class EA_VereinRepository extends EA_Repository
                 parent::setEntityManager($entitymanager); 
     }
 
-    public function create(EA_Verein $Verein): EA_Verein
+    public function create(EA_Club $Verein): EA_Club
     {
         $this->entityManager->persist($Verein);
         $this->update();
         return $Verein;
     }
 
-    public function fusion(EA_Verein $quellVerein, EA_Verein $zielVerein): bool
+    public function fusion(EA_Club $quellVerein, EA_Club $zielVerein): bool
     {
         $query = "UPDATE " . EA_Repository::TB_TEILNEHMER . " SET Verein = :zielverein WHERE Verein = :ausgangsverein ";
         $result = $this->entityManager->getConnection()->executeQuery($query,["ausgangsverein"=>$quellVerein->getId(),"zielverein"=>$zielVerein->getId()]);
         return true;
     }
 
-    public function loadById(int $id): ?EA_Verein
+    public function loadById(int $id): ?EA_Club
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Verein')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Club')->find($id);
     }
 
     public function isAvailable(string $field,string $bezeichnung): int
     {
-        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Verein')->count([$field => $bezeichnung]);
+        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Club')->count([$field => $bezeichnung]);
     }
 
-    public function isInUse(EA_Verein $verein): bool
+    public function isInUse(EA_Club $verein): bool
     {
         return ($verein->getMitgliederList()->count() > 0);
     }
 
-    public function loadByBezeichnung(string $bezeichnung): ?EA_Verein
+    public function loadByBezeichnung(string $bezeichnung): ?EA_Club
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Verein')->findOneBy(["verein"=>$bezeichnung]);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Club')->findOneBy(["verein"=>$bezeichnung]);
     }
 
     public function loadList(string $orderBy = "id", ?string $searchVerein = null): array
@@ -56,7 +56,7 @@ class EA_VereinRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('v')
-            ->from(EA_Verein::class, 'v',"v.id");
+            ->from(EA_Club::class, 'v',"v.id");
         if($searchVerein){
             $queryBuilder->where("v.verein LIKE :verein")
             ->setParameter(":verein", $searchVerein."%");
@@ -65,7 +65,7 @@ class EA_VereinRepository extends EA_Repository
         return $queryBuilder->getQuery()->getResult();
     }
 
-    public function delete(EA_Verein $Verein): void
+    public function delete(EA_Club $Verein): void
     {
         $this->entityManager->remove($Verein);
         $this->update();

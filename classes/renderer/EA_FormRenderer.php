@@ -19,13 +19,13 @@ use CharitySwimRun\classes\model\EA_SpecialEvaluation;
 use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
 use CharitySwimRun\classes\model\EA_Strecke;
 use CharitySwimRun\classes\model\EA_StreckeRepository;
-use CharitySwimRun\classes\model\EA_Verein;
+use CharitySwimRun\classes\model\EA_Club;
 use CharitySwimRun\classes\model\EA_Teilnehmer;
 use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
 use CharitySwimRun\classes\model\EA_Urkunde;
 use CharitySwimRun\classes\model\EA_Urkundenelement;
 use CharitySwimRun\classes\model\EA_User;
-use CharitySwimRun\classes\model\EA_VereinRepository;
+use CharitySwimRun\classes\model\EA_ClubRepository;
 use Smarty\Smarty;
 
 class EA_FormRenderer extends EA_AbstractRenderer {
@@ -50,7 +50,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
     private function getStandardIncludes(EntityManager $entityManager, array $includes = []) {
         $altersklasseRepository = new EA_AltersklasseRepository($entityManager);
         $streckeRepository = new EA_StreckeRepository($entityManager);
-        $vereinRepository = new EA_VereinRepository($entityManager);
+        $vereinRepository = new EA_ClubRepository($entityManager);
         $mannschaftRepository = new EA_MannschaftRepository($entityManager);
         $konfigurationRepository = new EA_KonfigurationRepository($entityManager);
         $konfiguration = $konfigurationRepository->load();
@@ -291,7 +291,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormVerein(EA_Verein $EA_V): string
+    public function getFormVerein(EA_Club $EA_V): string
     {
         $content = "";
         $this->smarty->assign('verein', $EA_V);

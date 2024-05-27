@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 
 
 use CharitySwimRun\classes\model\EA_Teilnehmer;
-use CharitySwimRun\classes\model\EA_Verein;
+use CharitySwimRun\classes\model\EA_Club;
 use CharitySwimRun\classes\model\EA_Message;
 
 class EA_SelbstanmeldungController extends EA_Controller
@@ -52,14 +52,14 @@ class EA_SelbstanmeldungController extends EA_Controller
         $geschlecht = htmlspecialchars($_POST['geschlecht']);
         $mannschaft = (isset($_POST['mannschaft']) && $_POST['mannschaft'] > 0) ? $this->EA_MannschaftRepository->loadById(htmlspecialchars($_POST['mannschaft'])) : null;
         if (isset($_POST['verein']) && $_POST['verein'] !== "") {
-            $verein = $this->EA_VereinRepository->loadByBezeichnung(htmlspecialchars($_POST['verein']));
+            $verein = $this->EA_ClubRepository->loadByBezeichnung(htmlspecialchars($_POST['verein']));
             if($verein === null){
-                $verein = new EA_Verein();
+                $verein = new EA_Club();
                 $verein->setVerein(htmlspecialchars($_POST['verein']));
-                $this->EA_VereinRepository->create($verein);
+                $this->EA_ClubRepository->create($verein);
             }
         } elseif (isset($_POST['vereinid']) && is_numeric($_POST['vereinid']) && $_POST['vereinid'] > 0) {
-            $verein = $this->EA_VereinRepository->loadById(htmlspecialchars($_POST['vereinid']));
+            $verein = $this->EA_ClubRepository->loadById(htmlspecialchars($_POST['vereinid']));
         } else {
             $verein = null;
         }

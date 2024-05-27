@@ -32,7 +32,7 @@ class EA_ErgebnisController extends EA_Controller
             $ergebnisse = $platzierungBerechnenHelper->quicksort($ergebnisseUnsorted,"getGesamtImpulse");
         } elseif (isset($_POST['ergebnisliste_typ']) && $_POST['ergebnisliste_typ'] === "Vereine") {
             $filter['typ'] = "Vereine";
-            $ergebnisseUnsorted = $this->EA_VereinRepository->loadList();
+            $ergebnisseUnsorted = $this->EA_ClubRepository->loadList();
             $ergebnisse = $platzierungBerechnenHelper->quicksort($ergebnisseUnsorted,"getGesamtImpulse");
         } elseif (isset($_POST['ergebnisliste_typ']) && $_POST['ergebnisliste_typ'] === "specialEvaluation") {
             $specialEvaluation = $this->EA_SpecialEvaluationRepository->loadById((int)filter_input(INPUT_POST,"specialEvaluation",FILTER_SANITIZE_NUMBER_INT));

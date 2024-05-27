@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'verein')]
-class EA_Verein
+class EA_Club
 {
 
 
