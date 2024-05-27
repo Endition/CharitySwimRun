@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\model\EA_AltersklasseRepository;
 
-use CharitySwimRun\classes\model\EA_MannschaftRepository;
+use CharitySwimRun\classes\model\EA_TeamRepository;
 use CharitySwimRun\classes\model\EA_KonfigurationRepository;
 use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_Teilnehmer;
@@ -107,7 +107,7 @@ class EA_ImportController extends EA_Controller
          
          $EA_T->setGeschlecht(strtoupper(trim($data[5])));
          
-         $mannschaft = $this->EA_MannschaftRepository->loadById($data[13]);
+         $mannschaft = $this->EA_TeamRepository->loadById($data[13]);
          $EA_T->setMannschaft($mannschaft);
         
          $verein = $this->EA_ClubRepository->loadByBezeichnung(mb_convert_encoding(trim($data[11]), 'UTF-8'));

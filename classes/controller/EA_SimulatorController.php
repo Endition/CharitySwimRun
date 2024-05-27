@@ -4,7 +4,7 @@ namespace CharitySwimRun\classes\controller;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Impuls;
-use CharitySwimRun\classes\model\EA_Mannschaft;
+use CharitySwimRun\classes\model\EA_Team;
 use CharitySwimRun\classes\model\EA_Simulator;
 use CharitySwimRun\classes\model\EA_Teilnehmer;
 use CharitySwimRun\classes\model\EA_Club;
@@ -73,7 +73,7 @@ class EA_SimulatorController extends EA_Controller
         
              //in 40% existing team
             if($mannschaftzufall > 50 && $mannschaftzufall < 90){
-                $mannschaftList = $this->EA_MannschaftRepository->loadList();
+                $mannschaftList = $this->EA_TeamRepository->loadList();
                 if(count($mannschaftList) > 0){
                     $newTeilnehmer->setMannschaft($mannschaftList[array_rand($mannschaftList)]);
                 }
@@ -82,13 +82,13 @@ class EA_SimulatorController extends EA_Controller
              //in 10% create new team
             if($mannschaftzufall > 90){
                 $mannschaftsKategorieList = $this->EA_TeamCategoryRepository->loadList();
-                $mannschaft = new EA_Mannschaft();
+                $mannschaft = new EA_Team();
                 $mannschaft->setStartnummer(rand(1,20000));
                 $mannschaft->setMannschaftskategorie($mannschaftsKategorieList[array_rand($mannschaftsKategorieList)]);
                 $mannschaft->setVer_name($EA_Simulator->lastname[array_rand($EA_Simulator->lastname)]);
                 $mannschaft->setVer_vorname($EA_Simulator->firstname[array_rand($EA_Simulator->firstname)]);
                 $mannschaft->setMannschaft($EA_Simulator->fiktiveMannschaften[array_rand($EA_Simulator->fiktiveMannschaften)]);
-                $this->EA_MannschaftRepository->create($mannschaft);
+                $this->EA_TeamRepository->create($mannschaft);
                 $newTeilnehmer->setMannschaft($mannschaft);
                 $messages[] =  "Mannschaft {$mannschaft->getMannschaft()} angelegt";
         

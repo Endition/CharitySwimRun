@@ -50,7 +50,7 @@ class EA_SelbstanmeldungController extends EA_Controller
         $vorname = htmlspecialchars($_POST['vorname']);
         $geburtsdatum = (isset($_POST['geburtsdatum'])) ? new \DateTimeImmutable(htmlspecialchars($_POST['geburtsdatum'])) : null;
         $geschlecht = htmlspecialchars($_POST['geschlecht']);
-        $mannschaft = (isset($_POST['mannschaft']) && $_POST['mannschaft'] > 0) ? $this->EA_MannschaftRepository->loadById(htmlspecialchars($_POST['mannschaft'])) : null;
+        $mannschaft = (isset($_POST['mannschaft']) && $_POST['mannschaft'] > 0) ? $this->EA_TeamRepository->loadById(htmlspecialchars($_POST['mannschaft'])) : null;
         if (isset($_POST['verein']) && $_POST['verein'] !== "") {
             $verein = $this->EA_ClubRepository->loadByBezeichnung(htmlspecialchars($_POST['verein']));
             if($verein === null){

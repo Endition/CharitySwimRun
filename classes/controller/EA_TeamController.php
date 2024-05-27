@@ -3,11 +3,11 @@ namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\model\EA_Mannschaft;
+use CharitySwimRun\classes\model\EA_Team;
 use CharitySwimRun\classes\model\EA_Message;
 
 
-class EA_MannschaftenController extends EA_Controller
+class EA_TeamController extends EA_Controller
 {
    
     public function __construct( EntityManager $entityManager)
@@ -18,7 +18,7 @@ class EA_MannschaftenController extends EA_Controller
     public function getPageMannschaften(): string
     {
         $content = "";
-        $mannschaft = new EA_Mannschaft();
+        $mannschaft = new EA_Team();
 
         if (isset($_POST['sendMannschaftData'])) {
             $this->createAndUpdateMannschaft();
@@ -27,7 +27,7 @@ class EA_MannschaftenController extends EA_Controller
         } elseif (isset($_GET['action']) && $_GET['action'] === "delete") {
             $this->deleteMannschaft();
         } else {
-            $mannschaft = new EA_Mannschaft();
+            $mannschaft = new EA_Team();
         }
 
         $content .= $this->getMannschaftList();
@@ -48,7 +48,7 @@ class EA_MannschaftenController extends EA_Controller
         $mannschaftskategorie = $this->EA_TeamCategoryRepository->loadById($mannschaftskategorieId);
         
         //intinalize Object
-        $mannschaft = ($id === null || $id === false || $id === "") ? new EA_Mannschaft() : $this->EA_MannschaftRepository->loadById((int)$id);
+        $mannschaft = ($id === null || $id === false || $id === "") ? new EA_Team() : $this->EA_TeamRepository->loadById((int)$id);
 
         //checks for update und create case
         if(strlen($bezeichnung) < 8){
@@ -62,11 +62,11 @@ class EA_MannschaftenController extends EA_Controller
 
         //checks only for create case
         if($mannschaft->getId() === null){
-            if($this->EA_MannschaftRepository->isAvailable("mannschaft", $bezeichnung) === false){
+            if($this->EA_TeamRepository->isAvailable("mannschaft", $bezeichnung) === false){
                 $this->EA_Messages->addMessage("Die Bezeichnung {$bezeichnung} für die Mannschaft ist schon vergeben",1834344545,EA_Message::MESSAGE_ERROR);
                 return;
             }
-            if($this->EA_MannschaftRepository->isAvailable("startnummer", $startnummer) === false){
+            if($this->EA_TeamRepository->isAvailable("startnummer", $startnummer) === false){
                 $this->EA_Messages->addMessage("Die Startnummer {$startnummer} für die Mannschaft ist schon vergeben",17534546457,EA_Message::MESSAGE_ERROR);
                 return;
             }
@@ -82,20 +82,20 @@ class EA_MannschaftenController extends EA_Controller
         
         //create case
         if($mannschaft->getId() === null){
-            $this->EA_MannschaftRepository->create($mannschaft);
+            $this->EA_TeamRepository->create($mannschaft);
             $this->EA_Messages->addMessage("Eintrag angelegt",14357555467,EA_Message::MESSAGE_SUCCESS);
         //update case
         }else{
-            $this->EA_MannschaftRepository->update();
+            $this->EA_TeamRepository->update();
             $this->EA_Messages->addMessage("Eintrag geändert",1235777317,EA_Message::MESSAGE_SUCCESS);
         }
         
     }
 
-    private function editMannschaft(): ?EA_Mannschaft
+    private function editMannschaft(): ?EA_Team
     {
         $id = filter_input(INPUT_POST,'mannschaftsid',FILTER_SANITIZE_NUMBER_INT);
-        $mannschaft = $this->EA_MannschaftRepository->loadById($id);
+        $mannschaft = $this->EA_TeamRepository->loadById($id);
         if($mannschaft === null){
             $this->EA_Messages->addMessage("Keine Mannschaft gefunden.",18323134,EA_Message::MESSAGE_WARNINIG);
         }
@@ -105,7 +105,7 @@ class EA_MannschaftenController extends EA_Controller
     private function getMannschaftList():  string
     {
         $content = "";
-        $mannschaftList = $this->EA_MannschaftRepository->loadList();
+        $mannschaftList = $this->EA_TeamRepository->loadList();
         if ($mannschaftList !== []) {
             $content = $this->EA_FR->getFormSelectMannschaften($mannschaftList);
         } else {
@@ -117,11 +117,11 @@ class EA_MannschaftenController extends EA_Controller
     private function deleteMannschaft(): void
     {
         $id = filter_input(INPUT_GET,'mannschaftsid',FILTER_SANITIZE_NUMBER_INT);
-        $mannschaft = $this->EA_MannschaftRepository->loadById($id);
+        $mannschaft = $this->EA_TeamRepository->loadById($id);
         if($mannschaft === null){
             $this->EA_Messages->addMessage("Kein Mannschaft gefunden.",1864322742,EA_Message::MESSAGE_WARNINIG);
         }else{
-            $this->EA_MannschaftRepository->delete($mannschaft);
+            $this->EA_TeamRepository->delete($mannschaft);
             $this->EA_Messages->addMessage("Mannschaft gelöscht.",1833747377,EA_Message::MESSAGE_SUCCESS);
         }
     }

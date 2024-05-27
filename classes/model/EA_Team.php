@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'mannschaft')]
-class EA_Mannschaft
+class EA_Team
 {
     #[ORM\Column(type: Types::INTEGER, name: "MannschaftId")]
     #[ORM\GeneratedValue]

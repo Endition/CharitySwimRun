@@ -88,7 +88,7 @@ class EA_PDFController extends EA_Controller
             $filter['alle'] = isset($_GET['alle']) ? htmlspecialchars($_GET['alle']) : null;
         } elseif (isset($_GET['typ']) && $_GET['typ'] === "Mannschaften" && $_GET['Strecke']) {
             $filter['typ'] = "Mannschaften";
-            $this->EA_MannschaftRepository->MannschaftPunkteBerechnen(null,$this->konfiguration);
+            $this->EA_TeamRepository->MannschaftPunkteBerechnen(null,$this->konfiguration);
         } elseif (isset($_GET['typ']) && $_GET['typ'] === "Vereine" && $_GET['Strecke']) {
             $filter['typ'] = "Vereine";
         }

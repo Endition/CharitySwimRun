@@ -27,8 +27,8 @@ class EA_ErgebnisController extends EA_Controller
             $ergebnisse = $platzierungBerechnenHelper->berechnePlatzierung($teilnehmerList);
         } elseif (isset($_POST['ergebnisliste_typ']) && $_POST['ergebnisliste_typ'] === "Mannschaften") {
             $filter['typ'] = "Mannschaften";
-            $this->EA_MannschaftRepository->MannschaftPunkteBerechnen(null,$this->EA_KonfigurationRepository->load());
-            $ergebnisseUnsorted = $this->EA_MannschaftRepository->loadList();
+            $this->EA_TeamRepository->MannschaftPunkteBerechnen(null,$this->EA_KonfigurationRepository->load());
+            $ergebnisseUnsorted = $this->EA_TeamRepository->loadList();
             $ergebnisse = $platzierungBerechnenHelper->quicksort($ergebnisseUnsorted,"getGesamtImpulse");
         } elseif (isset($_POST['ergebnisliste_typ']) && $_POST['ergebnisliste_typ'] === "Vereine") {
             $filter['typ'] = "Vereine";

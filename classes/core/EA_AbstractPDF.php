@@ -13,7 +13,7 @@ use CharitySwimRun\classes\model\EA_KonfigurationRepository;
 use CharitySwimRun\classes\model\EA_TeilnehmerRepository;
 use CharitySwimRun\classes\model\EA_Distance;
 use CharitySwimRun\classes\model\EA_Altersklasse;
-use CharitySwimRun\classes\model\EA_MannschaftRepository;
+use CharitySwimRun\classes\model\EA_TeamRepository;
 use CharitySwimRun\classes\model\EA_ClubRepository;
 require_once (ROOT_PATH.'/vendor/autoload.php');
 
@@ -33,7 +33,7 @@ abstract class EA_AbstractPDF extends \TCPDF
     protected EA_KonfigurationRepository $EA_KonfigurationRepository;
     protected EA_TeilnehmerRepository $teilnehmerRepository;
     protected EA_ClubRepository $EA_ClubRepository;
-    protected EA_MannschaftRepository $EA_MannschaftRepository;
+    protected EA_TeamRepository $EA_TeamRepository;
 
 
     public function __construct(string $orientierung, string  $format, EntityManager $entityManager)
@@ -50,7 +50,7 @@ abstract class EA_AbstractPDF extends \TCPDF
         $this->altersklasseRepository = new EA_AltersklasseRepository($entityManager);
         $this->streckeRepository = new EA_DistanceRepository($entityManager);
         $this->EA_ClubRepository = new EA_ClubRepository($entityManager);
-        $this->EA_MannschaftRepository = new EA_MannschaftRepository($entityManager);
+        $this->EA_TeamRepository = new EA_TeamRepository($entityManager);
         $this->teilnehmerRepository = new EA_TeilnehmerRepository($entityManager);
         $this->EA_KonfigurationRepository = new EA_KonfigurationRepository($entityManager);
         $this->konfiguration = $this->EA_KonfigurationRepository->load();
@@ -128,7 +128,7 @@ abstract class EA_AbstractPDF extends \TCPDF
         if ($this->filter['typ'] === "Vereine") {
             $ergebnisse = $this->EA_ClubRepository->loadList();
         } elseif ($this->filter['typ'] === "Mannschaften") {
-            $ergebnisse = $this->EA_MannschaftRepository->loadList();
+            $ergebnisse = $this->EA_TeamRepository->loadList();
         } else {
             $strecke = null;
             $altersklasse = null;

@@ -23,7 +23,7 @@ class EA_TeamCategory
     
     private array $mannschaftList = [];
 
-    #[ORM\OneToMany(targetEntity: EA_Mannschaft::class, mappedBy: 'mannschaftskategorie')]
+    #[ORM\OneToMany(targetEntity: EA_Team::class, mappedBy: 'mannschaftskategorie')]
     private Collection $mannschaftListNeu;
 
 

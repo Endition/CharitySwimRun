@@ -11,8 +11,8 @@ use CharitySwimRun\classes\model\EA_AltersklasseRepository;
 
 use CharitySwimRun\classes\model\EA_Konfiguration;
 use CharitySwimRun\classes\model\EA_KonfigurationRepository;
-use CharitySwimRun\classes\model\EA_Mannschaft;
-use CharitySwimRun\classes\model\EA_MannschaftRepository;
+use CharitySwimRun\classes\model\EA_Team;
+use CharitySwimRun\classes\model\EA_TeamRepository;
 use CharitySwimRun\classes\model\EA_TeamCategory;
 use CharitySwimRun\classes\model\EA_Repository;
 use CharitySwimRun\classes\model\EA_SpecialEvaluation;
@@ -51,7 +51,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $altersklasseRepository = new EA_AltersklasseRepository($entityManager);
         $streckeRepository = new EA_DistanceRepository($entityManager);
         $vereinRepository = new EA_ClubRepository($entityManager);
-        $mannschaftRepository = new EA_MannschaftRepository($entityManager);
+        $mannschaftRepository = new EA_TeamRepository($entityManager);
         $konfigurationRepository = new EA_KonfigurationRepository($entityManager);
         $konfiguration = $konfigurationRepository->load();
         if (isset($includes['konfiguration'])) {
@@ -281,7 +281,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormMannschaft(EA_Mannschaft $mannschaft, array $mannschaftKategorieListForSelect): string
+    public function getFormMannschaft(EA_Team $mannschaft, array $mannschaftKategorieListForSelect): string
     {
         $content = "";
         $this->smarty->assign('mannschaftkategorieList', $mannschaftKategorieListForSelect);

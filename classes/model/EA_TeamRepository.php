@@ -2,11 +2,11 @@
 namespace CharitySwimRun\classes\model;
 
 
-use CharitySwimRun\classes\model\EA_Mannschaft;
+use CharitySwimRun\classes\model\EA_Team;
 use CharitySwimRun\classes\model\EA_Repository;
 use Doctrine\ORM\EntityManager;
 
-class EA_MannschaftRepository extends EA_Repository
+class EA_TeamRepository extends EA_Repository
 {
     
     private EntityManager $entityManager;
@@ -18,7 +18,7 @@ class EA_MannschaftRepository extends EA_Repository
         //we need the same entityManager in the motherclass
         parent::setEntityManager($entitymanager); 
     }
-    public function create(EA_Mannschaft $mannschaft): EA_Mannschaft
+    public function create(EA_Team $mannschaft): EA_Team
     {
         $this->entityManager->persist($mannschaft);
         $this->update();
@@ -27,12 +27,12 @@ class EA_MannschaftRepository extends EA_Repository
 
     public function isAvailable(string $field,string $bezeichnung): int
     {
-        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Mannschaft')->count([$field => $bezeichnung]);
+        return 0 === $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Team')->count([$field => $bezeichnung]);
     }
 
-    public function loadById(int $id): ?EA_Mannschaft
+    public function loadById(int $id): ?EA_Team
     {
-        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Mannschaft')->find($id);
+        return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Team')->find($id);
     }
 
     public function loadList(string $orderBy = "id"): array
@@ -40,10 +40,10 @@ class EA_MannschaftRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select("m")
-            ->from(EA_Mannschaft::class, 'm',"m.id")
+            ->from(EA_Team::class, 'm',"m.id")
             ->orderBy('m.'.$orderBy);        
         return $queryBuilder->getQuery()->getResult();
-        //return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_Mannschaft")->findAll();
+        //return $this->entityManager->getRepository("CharitySwimRun\classes\model\EA_Team")->findAll();
     }
 
     public function getListForSelectField(): array
@@ -55,13 +55,13 @@ class EA_MannschaftRepository extends EA_Repository
         return $list;
     }
 
-    public function delete(EA_Mannschaft $user): void
+    public function delete(EA_Team $user): void
     {
         $this->entityManager->remove($user);
         $this->update();
     }
 
-    public function MannschaftPunkteBerechnen(?EA_Mannschaft $mannschaft2, EA_Konfiguration $konfiguration): void
+    public function MannschaftPunkteBerechnen(?EA_Team $mannschaft2, EA_Konfiguration $konfiguration): void
     {
         $punkte = 0;
         $mannschaftList = [];

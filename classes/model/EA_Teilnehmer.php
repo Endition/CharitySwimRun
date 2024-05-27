@@ -63,9 +63,9 @@ class EA_Teilnehmer
     #[ORM\JoinColumn(name: 'Altersklasse', referencedColumnName: 'Id',nullable:true,options:["default"=>null])]
     private ?EA_Altersklasse $altersklasse = null;
 
-    #[ORM\ManyToOne(targetEntity: EA_Mannschaft::class)]
+    #[ORM\ManyToOne(targetEntity: EA_Team::class)]
     #[ORM\JoinColumn(name: 'Mannschaft', referencedColumnName: 'MannschaftId',nullable:true,options:["default"=>null])]
-    private ?EA_Mannschaft $mannschaft = null;
+    private ?EA_Team $mannschaft = null;
 
     #[ORM\ManyToOne(targetEntity: EA_Club::class)]
     #[ORM\JoinColumn(name: 'Verein', referencedColumnName: 'VereinId',nullable:true,options:["default"=>null])]
@@ -291,16 +291,16 @@ class EA_Teilnehmer
 
     }
 
-    public function getMannschaft(): EA_Mannschaft
+    public function getMannschaft(): EA_Team
     {
         if ($this->mannschaft !== null) {
             return $this->mannschaft;
         } else {
-            return new EA_Mannschaft();
+            return new EA_Team();
         }
     }
 
-    public function setMannschaft(?EA_Mannschaft $mannschaft)
+    public function setMannschaft(?EA_Team $mannschaft)
     {
         $this->mannschaft = $mannschaft;
 

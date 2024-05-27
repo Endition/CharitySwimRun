@@ -69,7 +69,7 @@ class EA_TeilnehmerController extends EA_Controller
         $geschlecht = htmlspecialchars($_POST['geschlecht']); 
         
         $mannschaftId = filter_input(INPUT_POST,"mannschaft",FILTER_SANITIZE_NUMBER_INT);
-        $mannschaft = $mannschaftId !== null ? $this->EA_MannschaftRepository->loadById($mannschaftId) : null;
+        $mannschaft = $mannschaftId !== null ? $this->EA_TeamRepository->loadById($mannschaftId) : null;
         
         if (isset($_POST['verein']) && $_POST['verein'] !== "") {
             if(isset($_POST['vereinid']) && is_numeric($_POST['vereinid']) && $_POST['vereinid'] > 0){

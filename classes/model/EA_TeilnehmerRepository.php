@@ -127,7 +127,7 @@ class EA_TeilnehmerRepository extends EA_Repository
         ?EA_Distance $strecke = null, 
         ?EA_Altersklasse $altersklasse = null, 
         ?string $geschlecht = null, 
-        ?EA_Mannschaft $mannschaft = null, 
+        ?EA_Team $mannschaft = null, 
         ?EA_Club $verein = null,
         ?int $startgruppe = null,
         ?bool $transponderIsNull = null, 
