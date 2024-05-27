@@ -1,0 +1,10 @@
+.idea/
+classes/renderer/templates_c/
+vendor/
+/nbproject/private/
+/dbConfigDaten.php
+.settings/
+nbproject/
+.project
+.buildpath
+/doctrineMetaDataCache

@@ -1,0 +1,72 @@
+{
+  "name": "ende/charityswimrun",
+  "description": "Count lanes and rounds at charity events",
+  "type": "project",
+  "homepage": "https://github.com/Endition/CharitySwimRun",
+  "version": "3.0",
+  "authors": [
+    {
+      "name": "",
+      "homepage": "https://github.com"
+    }
+  ],
+  "repositories": {
+    "filesave": {
+      "type": "package",
+      "package": {
+        "name": "eligrey/filesaver",
+        "version": "2.0.0-rc.3",
+        "source": {
+          "url": "https://github.com/eligrey/FileSaver.js",
+          "type": "git",
+          "reference": "master"
+        }
+      }
+    },
+    "jspdf": {
+      "type": "package",
+      "package": {
+        "name": "parallax/jspdf",
+        "version": "2.5.1",
+        "source": {
+          "url": "https://github.com/parallax/jsPDF",
+          "type": "git",
+          "reference": "master"
+        }
+      }
+    }
+  },
+  "require": {
+    "php": "8.*",
+    "ext-pdo": "*",
+    "tecnickcom/tcpdf": "6.*",
+    "smarty/smarty": "5.*",
+    "phpoffice/phpexcel" : "1.*",
+    "components/jquery": "3.*",
+    "components/jqueryui": "1.*",
+    "hhurz/tableexport.jquery.plugin": "dev-master",
+    "twbs/bootstrap": "v5.*",
+    "wenzhixin/bootstrap-table": "1.*",
+    "fortawesome/font-awesome": "6.*",
+    "doctrine/orm": "3.*",
+    "doctrine/dbal": "4.*",
+    "symfony/yaml": "6.*",
+    "symfony/cache": "6.*",
+    "nnnick/chartjs": "4.*",
+    "eligrey/filesaver": "2.0.0-rc.3",
+    "parallax/jspdf": "2.5.1"
+
+  },
+
+  "autoload": {
+    "psr-0": {"": "src/"}
+  },
+  "config": {
+    "preferred-install": "dist", 
+    "comment": "Weil der Admin php in Xampp/laragon auf Windows nutzt, erkennt comoposer die PHP Version falsch. Hier einfach setzten",
+    "platform": {
+        "php": "8.1"
+    }
+  }
+}
+
