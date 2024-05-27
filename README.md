@@ -2,9 +2,11 @@
 <a href="https://github.com/Endition/CharitySwimRun/blob/main/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/main/README.md">Readme in English</a>
 
 <h1>CharitySwimRun</h1>
-Organize 24-hour/charity swims and runs. Manage participants, count lanes/laps, evaluate results and print certificates. The software is intended for temporary use on a web server in a local network. The software runs in the browser and is responsive, meaning it can be used by all devices in the network without additional requirements.
+Organize 24-hour/charity swims and runs. Manage participants, count lanes/laps, evaluate results and print certificates.
+The software is intended for temporary use on a web server in a local network. 
+The software runs in the browser and is responsive, meaning it can be used by all devices in the network without additional requirements.
 
-The user interface is in German.
+The user interface is in German. (For historical reasions the code is also in German. I will change that continuously)
 
 <h2>Features</h2>
 <ul>

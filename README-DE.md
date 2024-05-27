@@ -2,11 +2,11 @@
 <a href="https://github.com/Endition/CharitySwimRun/blob/main/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/main/README.md">Readme in English</a>
 
 <h1>CharitySwimRun</h1>
-Bahnen und Runden für 24-h Schwimmen/Läufe oder Benefiz-Schwimmen/Läufen zählen und auswerten. 
+24h/Benefiz-Schwimmen und -Läufe abwickeln. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken.
 Gedacht ist die Software für den temporären Einsatz auf einem Webserver in einem lokalen Netzwerk. 
 Die Software läuft im Browser und ist responsive. Sie kann also von allen Geräten im Netzwerk ohne weitere Voraussetzungen benutzt werden.
 
-Das Userinferface ist in deutsch
+Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch in deutsch. Wird stetig umgebaut)
 
 <h2>Features</h2>
 <ul>
