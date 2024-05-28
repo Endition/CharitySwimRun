@@ -26,7 +26,7 @@
                                                 <th>TP</th>
                                                 <th>Name</th>
                                             </tr>
-                                            {foreach from=$mitglieder key=schluessel item=value}
+                                            {foreach from=$mannschaft->getMitgliederList() key=schluessel item=value}
                                                 <tr>
                                                     <td>{$value->getStartnummer()}</td>
                                                     <td>{$value->getTransponder()}</td>

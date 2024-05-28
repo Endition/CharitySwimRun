@@ -8,7 +8,7 @@ class EA_Message extends EA_Messages
     private string $message = "";
     private string $type = self::MESSAGE_SUCCESS;
 
-    private int $code = 1;
+    private int $code = 12345679890;
 
     public const MESSAGE_SUCCESS = "S";
     public const MESSAGE_INFO = "I";
