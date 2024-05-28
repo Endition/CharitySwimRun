@@ -155,11 +155,15 @@
             <div class="card-body alert-success">
                 <div class="row">
                     <div class="col-lg-12">
+                    {if count($nichtgestarteteteilnehmer) > 0}
                         {if is_array($gestarteteteilnehmer) == true}
                             {foreach from=$gestarteteteilnehmer key=schluessel item=teilnehmerGestartet}
                                 {$teilnehmerGestartet->getStartnummer()},
                             {/foreach}
                         {/if}	
+                    {else}
+                        Alle Teilnehmer sind gestartet    
+                    {/if}	
                     </div>
                 </div>
             </div>

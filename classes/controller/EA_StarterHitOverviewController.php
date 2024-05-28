@@ -22,7 +22,6 @@ class EA_StarterHitOverviewController extends EA_Controller
 
     public function getPageBuchungenStarter(): string
     {
-        $messages = [];
         $content = "";
         $content .= $this->EA_FR->getFormSelectTeilnehmer();
         
@@ -69,7 +68,7 @@ class EA_StarterHitOverviewController extends EA_Controller
             return "";
         }
 
-        return $this->EA_FR->getFormBuchungenStarter($this->entityManager, $teilnehmer, $teilnehmer->getImpulseListGueltige(true), $this->EA_StatisticsHelper->loadStatistikData("BuchungenProStunde", $teilnehmer->getId()));
+        return $this->EA_FR->getFormBuchungenStarter($this->entityManager, $teilnehmer, $this->EA_StatisticsHelper->loadStatistikData("BuchungenProStunde", $teilnehmer->getId()));
     }
 
     private function addImpuls(): void

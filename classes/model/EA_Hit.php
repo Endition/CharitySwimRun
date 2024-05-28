@@ -93,10 +93,13 @@ class EA_Hit
 
     public function getRundenzeit(string $format = "ts"): string
     {
+        if($this->rundenzeit === null){
+            $this->rundenzeit = 0;
+        }
         if ($format === "ts") {
-            return $this->rundenzeit;
+            return $this->rundenzeit === null ? 0 : $this->rundenzeit;
         } elseif ($format === "H:i:s") {
-            return EA_Helper::FormatterRundenzeit($this->rundenzeit);
+            return $this->gesamtzeit === null ? 0 : EA_Helper::FormatterRundenzeit($this->rundenzeit);
         }else{
             return "";
         }
@@ -110,9 +113,9 @@ class EA_Hit
     public function getGesamtzeit(string $format = "ts"): string
     {
         if ($format === "ts") {
-            return $this->gesamtzeit;
+            return $this->gesamtzeit === null ? 0 : $this->gesamtzeit;
         } elseif ($format === "H:i:s") {
-            return EA_Helper::FormatterRundenzeit($this->gesamtzeit);
+            return $this->gesamtzeit === null ? 0 : EA_Helper::FormatterRundenzeit($this->gesamtzeit);
         }else{
             return "";
         }
