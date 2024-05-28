@@ -53,7 +53,26 @@ class EA_Simulator
         "Bogenschützen Silbersee",
         "Jugendgruppe Wolkenstein",
         "Seniorentreff Sonnenheim",
-        "Gartenbauverein Blautal"
+        "Gartenbauverein Blautal",
+        "Heimatverein Altstadt München",
+        "Heimat- und Geschichtsverein Köln",
+        "Heimatverein Oberfranken",
+        "Heimatverein Leipzig",
+        "Heimat- und Kulturverein Hamburg",
+        "Heimatverein Baden-Württemberg",
+        "Heimat- und Brauchtumsverein Düsseldorf",
+        "Schwimmverein Wasserfreunde Berlin",
+        "Schwimm-Club Düsseldorf",
+        "Schwimmgemeinschaft München",
+        "Schwimmverein Delphin Hamburg",
+        "Schwimmfreunde Köln",
+        "Schwimmclub Poseidon Leipzig",
+        "Schwimmverein Neptun Bremen",
+        "Turn- und Sportverein Eintracht Frankfurt",
+        "Sportverein Fortuna Düsseldorf",
+        "Turn- und Sportgemeinschaft Hannover",
+        "Sportverein Viktoria Berlin",
+        "Turnverein Jahn Regensburg"
     );
     
     public array $fiktiveMannschaften = array(
@@ -76,6 +95,26 @@ class EA_Simulator
         "Silbersee Sharks",
         "Wolkenstein Wolves",
         "Sonnenheim Strikers",
-        "Blautal Braves"
+        "Blautal Braves",
+        "Die Blauen Löwen",
+        "Die Flinken Füchse",
+        "Die Roten Adler",
+        "Die Grünen Drachen",
+        "Gelben Tiger",
+        "Die Schwarzen Panther",
+        "Die Silbernen Wölfe",
+        "Die Goldenen Falken",
+        "Die Wilden Bären",
+        "Die Flammengeister",
+        "Die Blitzkrieger",
+        "Nebelkrieger",
+        "Die Schattenläufer",
+        "Sturmschwingen",
+        "Die Donnerschläger",
+        "Eiswölfe",
+        "Die Feuerfüchse",
+        "Die Wasserotter",
+        "Steinriesen",
+        "Windreiter"
     );
 }
