@@ -303,7 +303,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormStartzeiten(EntityManager $entityManager, $nichtgestarteteteilnehmer, $gestarteteteilnehmer): string
+    public function getFormStartzeiten(EntityManager $entityManager, array $nichtgestarteteteilnehmer, array $gestarteteteilnehmer): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("streckenV1" => true, "startgruppen" => true, "geschlechter" => true, "stati" => true,'altersklassen'=>true));
@@ -324,12 +324,15 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormBuchungenStarter(EntityManager $entityManager, EA_Starter $teilnehmer, Collection $impulse, array $daten): string
-    {
+    public function getFormBuchungenStarter(EntityManager $entityManager, EA_Starter $teilnehmer, array $statisticsDaten): string
+    {   
+        
+        //important to call here. When it is called in the assign method, roundtimes are not calculated
+        $hitList = $teilnehmer->getImpulseListGueltige(true);
         $content = "";
-        $content .= $this->getInfoTeilnehmer($entityManager,$teilnehmer);
+        $content .= $this->getInfoTeilnehmer($entityManager, $teilnehmer);
         // Buchungstabelle
-        $this->smarty->assign('impulse', $impulse);
+        $this->smarty->assign('impulse', $hitList);
         $this->smarty->assign('teilnehmerId', $teilnehmer->getId());
         $this->smarty->assign('actionurl', 'index.php?doc=buchungenstarter');
         $this->getStandardIncludes($entityManager, array("konfiguration" => true));
@@ -337,7 +340,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
 
         // Diagramm
         $this->getStandardIncludes($entityManager, array("konfiguration" => true));
-        $this->smarty->assign('daten', $daten);
+        $this->smarty->assign('daten', $statisticsDaten);
         $content .= $this->smarty->fetch('StatisticsLine.tpl');
         return $content;
     }
