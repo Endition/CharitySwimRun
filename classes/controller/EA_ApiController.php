@@ -161,7 +161,7 @@ class EA_ApiController extends EA_Controller
         $responseList = [];
 
         if($paramList[0] === "update"){
-            $EA_U = $this->EA_CertificateElementRepository->loadById($_POST['id']);
+            $EA_U = $this->EA_CertificateElementRepository->loadById(filter_input(INPUT_POST,"id",FILTER_SANITIZE_NUMBER_INT));
 
             $x_wert = (isset($_POST['x_wert'])) ? htmlspecialchars($_POST['x_wert']) : $EA_U->getX_wert();
             $y_wert = (isset($_POST['y_wert'])) ? htmlspecialchars($_POST['y_wert']) : $EA_U->getY_wert();
@@ -187,7 +187,7 @@ class EA_ApiController extends EA_Controller
 
         if($paramList[0] === "update"){
             if (isset($_POST['status']) && $_POST['status'] > 0 && isset($_POST['id']) && $_POST['id'] > 0) {
-                $id = filter_input(INPUT_POST,"id",FILTER_SANITIZE_NUMBER_INT);
+                $id = (int)filter_input(INPUT_POST,"id",FILTER_SANITIZE_NUMBER_INT);
                 $status = (int)filter_input(INPUT_POST,"status",FILTER_SANITIZE_NUMBER_INT);
             } else {
                 return $this->unprocessableEntityresponseList();
@@ -262,7 +262,7 @@ class EA_ApiController extends EA_Controller
         }
         if($paramList[0] === "strecke"){
             $strecke = $this->EA_DistanceRepository->loadById((int)$paramList[1]);
-            $teilnehmerList = $this->EA_StarterRepository->loadList($strecke);            
+            $teilnehmerList = $this->EA_StarterRepository->loadList($strecke,null,null,null,null,null,null,"startnummer","ASC");            
             if ($teilnehmerList === []) {
                 return $this->notFoundresponseList();
             }

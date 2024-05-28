@@ -34,7 +34,7 @@ class EA_PDFController extends EA_Controller
         $pdf->Inhalt();
         //OB_Clean entfernt viele Ausgaben, verhinert aber die Ausgabe von xprint();
         ob_clean();
-        $dateiname = $_GET['doc'] . "_" . $filter['typ'] . "_" . $filter['strecke'] . "_" . $filter['altersklasse'] . "_" . $filter['geschlecht'];
+        $dateiname = htmlspecialchars($_GET['doc']) . "_" . $filter['typ'] . "_" . $filter['strecke'] . "_" . $filter['altersklasse'] . "_" . $filter['geschlecht'];
         $pdfdestination = "D";
         return $pdf->Output($dateiname . '.pdf', $pdfdestination);
     }
@@ -60,11 +60,11 @@ class EA_PDFController extends EA_Controller
         //Hier den Sonderfall Einzelurkunde abfangen
         if ((isset($_POST['id']) && isset($_POST['sendTeilnehmerDruckenData']))) {
           $filter['typ'] = "Einzelstarter";
-          $filter['id'] = $_POST['id'];
+          $filter['id'] = filter_input(INPUT_POST,"id",FILTER_SANITIZE_NUMBER_INT);
         } elseif ((isset($_GET['id']) && ctype_digit($_GET['id']))) {
           $filter['typ'] = "Einzelstarter";
-                        $filter['id'] = $_GET['id'];
-                    }
+                 $filter['id'] = filter_input(INPUT_GET,"id",FILTER_SANITIZE_NUMBER_INT);
+        }
         return new PDFUrkunde($this->entityManager, $filter);
     }
 
