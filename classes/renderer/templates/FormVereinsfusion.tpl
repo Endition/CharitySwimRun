@@ -10,7 +10,7 @@
 									<select name="zielverein" class="form-control" required>
 										{foreach from=$vereine key=schluessel item=value}
 											<option value="{$value->getId()}">
-												{$value->getVerein()}
+												{$value->getVerein()} (Id: {$value->getId()})
 											</option>
 										{/foreach}
 									</select>
@@ -20,7 +20,7 @@
 									<select name="ausgangsverein" class="form-control" required>
 										{foreach from=$vereine key=schluessel item=value}
 											<option value="{$value->getId()}">
-												{$value->getVerein()}
+												{$value->getVerein()} (Id: {$value->getId()})
 											</option>
 										{/foreach}
 									</select>
