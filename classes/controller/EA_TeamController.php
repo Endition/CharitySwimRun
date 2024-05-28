@@ -97,7 +97,7 @@ class EA_TeamController extends EA_Controller
         $id = filter_input(INPUT_POST,'mannschaftsid',FILTER_SANITIZE_NUMBER_INT);
         $mannschaft = $this->EA_TeamRepository->loadById($id);
         if($mannschaft === null){
-            $this->EA_Messages->addMessage("Keine Mannschaft gefunden.",18323134,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Keine Mannschaft gefunden.",18323134,EA_Message::MESSAGE_WARNING);
         }
         return $mannschaft;
     }
@@ -109,7 +109,7 @@ class EA_TeamController extends EA_Controller
         if ($mannschaftList !== []) {
             $content = $this->EA_FR->getFormSelectMannschaften($mannschaftList);
         } else {
-            $this->EA_Messages->addMessage("Es sind noch keine Mannschaften angelegt.",184135773,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Es sind noch keine Mannschaften angelegt.",184135773,EA_Message::MESSAGE_WARNING);
         } 
         return $content;
     }
@@ -119,7 +119,7 @@ class EA_TeamController extends EA_Controller
         $id = filter_input(INPUT_GET,'mannschaftsid',FILTER_SANITIZE_NUMBER_INT);
         $mannschaft = $this->EA_TeamRepository->loadById($id);
         if($mannschaft === null){
-            $this->EA_Messages->addMessage("Kein Mannschaft gefunden.",1864322742,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Kein Mannschaft gefunden.",1864322742,EA_Message::MESSAGE_WARNING);
         }else{
             $this->EA_TeamRepository->delete($mannschaft);
             $this->EA_Messages->addMessage("Mannschaft gelöscht.",1833747377,EA_Message::MESSAGE_SUCCESS);

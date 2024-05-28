@@ -106,7 +106,7 @@ class EA_SpecialEvaluationController extends EA_Controller
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
         $specialEvaluation = $this->EA_SpecialEvaluationRepository->loadById($id);
         if($specialEvaluation === null){
-            $this->EA_Messages->addMessage("Keine SpecialEvaluation gefunden.",373465645345,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Keine SpecialEvaluation gefunden.",373465645345,EA_Message::MESSAGE_WARNING);
         }
         return $specialEvaluation;
     }
@@ -118,7 +118,7 @@ class EA_SpecialEvaluationController extends EA_Controller
         if ($specialEvaluationList !== []) {
             $content = $this->EA_R->renderTabelleSpecialEvaluation($specialEvaluationList);
         } else {
-            $this->EA_Messages->addMessage("Es sind noch keine SpecialEvaluationen angelegt.",3534567674,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Es sind noch keine SpecialEvaluationen angelegt.",3534567674,EA_Message::MESSAGE_WARNING);
         } 
         return $content;
     }

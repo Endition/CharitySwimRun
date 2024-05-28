@@ -68,7 +68,7 @@ class EA_AgeGroupController extends EA_Controller
             }
             $this->EA_Messages->addMessage(implode("<br/>\n",$zuordnung),13325534342,EA_Message::MESSAGE_INFO);            
         } else {
-            $this->EA_Messages->addMessage("Zuordnung prüfen nicht notwendig",14343556353,EA_Message::MESSAGE_WARNINIG);   
+            $this->EA_Messages->addMessage("Zuordnung prüfen nicht notwendig",14343556353,EA_Message::MESSAGE_WARNING);   
         }
     }
 
@@ -203,7 +203,7 @@ class EA_AgeGroupController extends EA_Controller
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
         $altersklasse = $this->EA_AgeGroupRepository->loadById($id);
         if($altersklasse === null){
-            $this->EA_Messages->addMessage("Keine Altersklasse gefunden.",156567875,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Keine Altersklasse gefunden.",156567875,EA_Message::MESSAGE_WARNING);
         }
         return $altersklasse;
     }
@@ -215,7 +215,7 @@ class EA_AgeGroupController extends EA_Controller
         if ($altersklasseList !== []) {
             $content = $this->EA_R->renderTabelleAltersklassen($altersklasseList, $this->EA_ConfigurationRepository->load());
         } else {
-            $this->EA_Messages->addMessage("Es sind noch keine Altersklasseen angelegt.",155677878,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Es sind noch keine Altersklasseen angelegt.",155677878,EA_Message::MESSAGE_WARNING);
         } 
         return $content;
     }
@@ -249,7 +249,7 @@ class EA_AgeGroupController extends EA_Controller
             $altersklasseAlt = $tn->getAltersklasse();
             $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($tn->getGeburtsdatum());
             if($altersklasse === null){
-                $this->EA_Messages->addMessage("Teilnehmer {$tn->getGesamtname()} {$tn->getGeburtsdatum()->format('d.m.Y')}  keine passende Altersklasse gefunden ",11723654343,EA_Message::MESSAGE_WARNINIG);
+                $this->EA_Messages->addMessage("Teilnehmer {$tn->getGesamtname()} {$tn->getGeburtsdatum()->format('d.m.Y')}  keine passende Altersklasse gefunden ",11723654343,EA_Message::MESSAGE_WARNING);
             }else{
                 $tn->setAltersklasse($altersklasse);
                 if($altersklasseAlt !== $altersklasse){

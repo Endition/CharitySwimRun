@@ -85,12 +85,12 @@ class EA_DatabaseController
 			\n";
         $fp = fOpen($path, "w");
         if ($fp === false) {
-            $this->EA_Messages->addMessage("Fehler beim Öffnen der Config-Datei unter " . $path . ". Bitte manuell die Datei config\dbConfigDaten.php bearbeiten.",15563213123,EA_Message::MESSAGE_WARNINIG);            
+            $this->EA_Messages->addMessage("Fehler beim Öffnen der Config-Datei unter " . $path . ". Bitte manuell die Datei config\dbConfigDaten.php bearbeiten.",15563213123,EA_Message::MESSAGE_WARNING);            
             return null;
         }
         
         if (fWrite($fp, $text) === false) {
-            $this->EA_Messages->addMessage("Fehler beim Schreiben der SQL Daten unter Pfad " . $path . ". Bitte manuell die Datei config\dbConfigDaten.php bearbeiten.",324345786777,EA_Message::MESSAGE_WARNINIG);            
+            $this->EA_Messages->addMessage("Fehler beim Schreiben der SQL Daten unter Pfad " . $path . ". Bitte manuell die Datei config\dbConfigDaten.php bearbeiten.",324345786777,EA_Message::MESSAGE_WARNING);            
             return null;
         }
         $this->EA_Messages->addMessage("Kann die Datei trotz erfolgreich nicht geschrieben werden wurde der Server unter Windows auf C:/ installiert. Durch die Windowspartion extieren dort keine Schreibrechte, esseidenn der Server wird als Admin ausgeführt.",13577459667,EA_Message::MESSAGE_INFO);

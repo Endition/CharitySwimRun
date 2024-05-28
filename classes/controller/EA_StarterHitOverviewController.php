@@ -64,7 +64,7 @@ class EA_StarterHitOverviewController extends EA_Controller
         }
 
         if($teilnehmer === null){
-            $this->EA_Messages->addMessage("Keine Teilnehmer gefunden.",156567875,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Keine Teilnehmer gefunden.",156567875,EA_Message::MESSAGE_WARNING);
             return "";
         }
 

@@ -33,7 +33,7 @@ class EA_LoginController extends EA_Controller
                     $_SESSION['name'] = $userFound->getUsername();
                     $_SESSION['id'] = $userFound->getId();
                     $_SESSION['userroleId'] = $userFound->getUserroleId(); 
-                    $this->EA_Messages->addMessage("Erfolgreich eingloggt ".htmlspecialchars($_SESSION['name'], ENT_QUOTES)."",1213456457,EA_Message::MESSAGE_WARNINIG);
+                    $this->EA_Messages->addMessage("Erfolgreich eingloggt ".htmlspecialchars($_SESSION['name'], ENT_QUOTES)."",1213456457,EA_Message::MESSAGE_SUCCESS);
                     if(isset($_SERVER['HTTP_REFERER'])) {
                         header('Location: '.$_SERVER['HTTP_REFERER']);  
                        } else {
@@ -41,7 +41,7 @@ class EA_LoginController extends EA_Controller
                        }
                 } else {
                     // Incorrect password
-                    $this->EA_Messages->addMessage("Passwort oder Username falsch",5376574321,EA_Message::MESSAGE_WARNINIG);
+                    $this->EA_Messages->addMessage("Passwort oder Username falsch",5376574321,EA_Message::MESSAGE_WARNING);
                 }
             }
         }

@@ -12,13 +12,13 @@ class EA_Message extends EA_Messages
 
     public const MESSAGE_SUCCESS = "S";
     public const MESSAGE_INFO = "I";
-    public const MESSAGE_WARNINIG = "W";
+    public const MESSAGE_WARNING = "W";
     public const MESSAGE_ERROR = "E";
 
     public const ALERT_CLASS = [
         self::MESSAGE_SUCCESS => "alert-success",
         self::MESSAGE_INFO => "alert-info",
-        self::MESSAGE_WARNINIG => "alert-warning",
+        self::MESSAGE_WARNING => "alert-warning",
         self::MESSAGE_ERROR => "alert-danger",
     ];
 
