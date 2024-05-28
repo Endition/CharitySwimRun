@@ -345,8 +345,6 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "strecken" => true));
         $this->smarty->assign('strecken', $streckeListForSelect);
-        $anzuzeigendeStrecken = (isset($_POST['strecken'])) ? $_POST['strecken'] : "";
-        $this->smarty->assign('anzuzeigendeStrecken', json_encode($anzuzeigendeStrecken));
         $this->smarty->assign('actionurl', 'index.php?doc=manuelleeingabe');
         $content .= $this->smarty->fetch('FormManuelleEingabe.tpl');
         return $content;

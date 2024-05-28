@@ -1,10 +1,7 @@
 <?php
 namespace CharitySwimRun\classes\controller;
 
-use DateTime;
 use Doctrine\ORM\EntityManager;
-
-
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Club;
 use CharitySwimRun\classes\model\EA_Message;
@@ -24,7 +21,7 @@ class EA_SelfCheckInController extends EA_Controller
 
         if (isset($_POST['sendeSelbstanmeldung'])) {
             $EA_T = $this->initiateTeilnehmer();
-            $error = $this->securityChecksTeilnehmer($messages, $EA_T);
+            $error = $this->securityChecksTeilnehmer($EA_T);
 
             if ($error === false) {
                 $this->EA_StarterRepository->create($EA_T);
@@ -99,7 +96,7 @@ class EA_SelfCheckInController extends EA_Controller
         return $EA_T;
     }
 
-    private function securityChecksTeilnehmer(&$messages, EA_Starter $teilnehmer): bool
+    private function securityChecksTeilnehmer(EA_Starter $teilnehmer): bool
     {
         $error = false;
             //avoid double number

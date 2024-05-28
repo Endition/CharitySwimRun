@@ -24,7 +24,7 @@ class EA_AdminController extends EA_Controller
 
             //Alle SmartyTemplates löschen
             $this->EA_R->deleteSmartyCache();
-            $_GET['doc'] = (isset($_GET['doc'])) ? $_GET['doc'] : null;
+            $_GET['doc'] = (isset($_GET['doc'])) ? htmlspecialchars($_GET['doc']) : null;
             if(!$this->isAuthenticated()){
                 return "keine Rechte";
             }

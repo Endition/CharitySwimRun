@@ -10,8 +10,8 @@ use \CharitySwimRun\classes\controller\EA_DatabaseController;
 
 require_once 'config/config.php';
 require_once CORE_PATH . 'EA_Autoloader.php';
-if (file_exists(ROOT_PATH . '\dbConfigDaten.php')) {
-    include_once(ROOT_PATH . '\dbConfigDaten.php');
+if (file_exists(ROOT_PATH . '\config\dbConfigDaten.php')) {
+    include_once(ROOT_PATH . '\config\dbConfigDaten.php');
 } 
 if(!isset($EA_SQL) || $EA_SQL === []){
     $EA_SQL = ["datenbank"=>"information_schema", "benutzer"=>"","passwort"=>"","server"=>""];

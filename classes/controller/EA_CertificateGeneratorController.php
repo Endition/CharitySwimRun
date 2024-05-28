@@ -2,8 +2,6 @@
 namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
-
-
 use CharitySwimRun\classes\model\EA_CertificateElement;
 use CharitySwimRun\classes\model\EA_Message;
 

@@ -2,7 +2,6 @@
 namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
-
 use CharitySwimRun\classes\model\EA_User;
 use CharitySwimRun\classes\model\EA_Message;
 
@@ -12,7 +11,7 @@ class EA_UserController  extends EA_Controller
 
 
     
-    public function __construct( EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager)
     {
         parent::__construct($entityManager);
     }

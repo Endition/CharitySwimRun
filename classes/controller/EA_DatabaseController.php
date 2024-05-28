@@ -8,7 +8,6 @@ use CharitySwimRun\classes\renderer\EA_FormRenderer;
 use CharitySwimRun\classes\model\EA_Repository;
 use CharitySwimRun\classes\model\EA_Messages;
 use CharitySwimRun\classes\model\EA_RfidChip;
-use CharitySwimRun\classes\model\EA_CertificateElementRepository;
 
 //Because this controller creates the DB connection, no heritage
 class EA_DatabaseController
@@ -51,7 +50,7 @@ class EA_DatabaseController
         $this->EA_Repository->createDatabase();
 
         if ($this->EA_Repository->isDoctrineConnected() === true) {
-            $this->writeDbConfigDatenFile(ROOT_PATH . '\..\..\dbConfigDaten.php');
+            $this->writeDbConfigDatenFile(ROOT_PATH . '\..\..\config\dbConfigDaten.php');
             $this->EA_Repository->createDatabaseTables();
             $this->createUrkundeStandardentries($this->EA_Repository->getEntityManager());
             $this->createTransponderStandardentries($this->EA_Repository->getEntityManager());
@@ -86,18 +85,18 @@ class EA_DatabaseController
 			\n";
         $fp = fOpen($path, "w");
         if ($fp === false) {
-            $this->EA_Messages->addMessage("Fehler beim Öffnen der Config-Datei unter " . $path . ". Bitte manuell die Datei dbConfigDaten.php bearbeiten.",15563213123,EA_Message::MESSAGE_WARNINIG);            
+            $this->EA_Messages->addMessage("Fehler beim Öffnen der Config-Datei unter " . $path . ". Bitte manuell die Datei config\dbConfigDaten.php bearbeiten.",15563213123,EA_Message::MESSAGE_WARNINIG);            
             return null;
         }
         
         if (fWrite($fp, $text) === false) {
-            $this->EA_Messages->addMessage("Fehler beim Schreiben der SQL Daten unter Pfad " . $path . ". Bitte manuell die Datei dbConfigDaten.php bearbeiten.",324345786777,EA_Message::MESSAGE_WARNINIG);            
+            $this->EA_Messages->addMessage("Fehler beim Schreiben der SQL Daten unter Pfad " . $path . ". Bitte manuell die Datei config\dbConfigDaten.php bearbeiten.",324345786777,EA_Message::MESSAGE_WARNINIG);            
             return null;
         }
         $this->EA_Messages->addMessage("Kann die Datei trotz erfolgreich nicht geschrieben werden wurde der Server unter Windows auf C:/ installiert. Durch die Windowspartion extieren dort keine Schreibrechte, esseidenn der Server wird als Admin ausgeführt.",13577459667,EA_Message::MESSAGE_INFO);
 
         fClose($fp);
-        $this->EA_Messages->addMessage("Datenbankdaten unter " . ROOT_PATH . "\..\..\dbConfigDaten.php erfolgreich gespeichert",13577449667,EA_Message::MESSAGE_SUCCESS);
+        $this->EA_Messages->addMessage("Datenbankdaten unter " . ROOT_PATH . "\..\..\config\dbConfigDaten.php erfolgreich gespeichert",13577449667,EA_Message::MESSAGE_SUCCESS);
         return true;
     } 
 

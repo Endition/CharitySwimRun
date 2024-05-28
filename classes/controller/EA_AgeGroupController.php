@@ -4,8 +4,6 @@ namespace CharitySwimRun\classes\controller;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
-use CharitySwimRun\classes\helper\EA_Helper;
-
 use CharitySwimRun\classes\model\EA_AgeGroup;
 use CharitySwimRun\classes\model\EA_Message;
 

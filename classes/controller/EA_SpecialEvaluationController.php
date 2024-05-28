@@ -4,13 +4,7 @@ namespace CharitySwimRun\classes\controller;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_SpecialEvaluation;
-use CharitySwimRun\classes\renderer\EA_FormRenderer;
-use CharitySwimRun\classes\renderer\EA_Renderer;
 use CharitySwimRun\classes\model\EA_Message;
-use CharitySwimRun\classes\model\EA_Messages;
-use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
-use CharitySwimRun\classes\model\EA_DistanceRepository;
-use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 
 
 
@@ -43,9 +37,6 @@ class EA_SpecialEvaluationController extends EA_Controller
 
     private function createAndUpdateSpecialEvaluation(): void
     {
-        $streckeRepository = new EA_DistanceRepository($this->entityManager);
-        $altersklasseRepository = new EA_AgeGroupRepository($this->entityManager);
-        
         $id = filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
         $name = htmlspecialchars($_POST['name']);
         $start = htmlspecialchars($_POST['start']);
@@ -82,10 +73,10 @@ class EA_SpecialEvaluationController extends EA_Controller
         }
         
         if(is_numeric($streckeId)){
-            $strecke = $streckeRepository->loadById($streckeId);
+            $strecke = $this->EA_DistanceRepository->loadById($streckeId);
         }
         if(is_numeric($altersklasseId)){
-            $altersklasse = $altersklasseRepository->loadById($altersklasseId);
+            $altersklasse = $this->EA_AgeGroupRepository->loadById($altersklasseId);
         }
 
 

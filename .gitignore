@@ -2,7 +2,7 @@
 classes/renderer/templates_c/
 vendor/
 /nbproject/private/
-/dbConfigDaten.php
+config/dbConfigDaten.php
 .settings/
 nbproject/
 .project

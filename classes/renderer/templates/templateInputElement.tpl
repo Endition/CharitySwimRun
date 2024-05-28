@@ -23,6 +23,9 @@ $type === "date" }
             {if $onkeyup } onkeyup="{$onkeyup}" {/if} 
         >
     </div>
+    {if $description } 
+        <div class="form-text" id="basic-addon4">{$description}</div>
+    {/if} 
 </div>
 {elseif $type == "select"} 
 <div class="form-group">
@@ -36,7 +39,7 @@ $type === "date" }
                 {if $multiple === true} multiple {/if} 
 
         >
-        {if emptyElement===true}
+        {if emptyElement==true}
             <option>bitte auswählen</option>
         {/if} 
         {html_options options=$selectValueList selected=$selectedElement}

@@ -6,11 +6,8 @@ use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 
-use CharitySwimRun\classes\model\EA_TeamRepository;
 use CharitySwimRun\classes\model\EA_ConfigurationRepository;
-use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_Starter;
-use CharitySwimRun\classes\model\EA_ClubRepository;
 use CharitySwimRun\classes\model\EA_Message;
 
 class EA_ImportController extends EA_Controller
@@ -87,11 +84,7 @@ class EA_ImportController extends EA_Controller
 
      private function initiateTeilnehmerFromCSV(&$messages, $data): EA_Starter
      {
-         #echo "<pre>";
-         #print_r($data);
-         #echo "</pre>";
-         $EA_ConfigurationRepository = new EA_ConfigurationRepository($this->entityManager);
-         $konfiguration = $EA_ConfigurationRepository->load();
+         $konfiguration = $this->EA_ConfigurationRepository->load();
          $EA_T = null;
          $EA_T = new EA_Starter();
          $EA_T->setStartnummer(trim($data[0]));
