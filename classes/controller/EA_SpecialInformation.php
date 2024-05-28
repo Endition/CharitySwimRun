@@ -3,16 +3,16 @@ namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Starter;
-use CharitySwimRun\classes\helper\EA_PlatzierungBerechner;
+use CharitySwimRun\classes\helper\EA_PlacementHelper;
 
 class EA_SpecialInformation extends EA_Controller
 {
-    private EA_PlatzierungBerechner $EA_PlatzierungBerechner;
+    private EA_PlacementHelper $EA_PlacementHelper;
 
     public function __construct(EntityManager $entityManager)
     {
         parent::__construct($entityManager);
-        $this->EA_PlatzierungBerechner = new EA_PlatzierungBerechner($entityManager);
+        $this->EA_PlacementHelper = new EA_PlacementHelper($entityManager);
 
     }
 
@@ -20,7 +20,7 @@ class EA_SpecialInformation extends EA_Controller
     {     
         $this->EA_StarterRepository->berechneStati();
         $teilnehmerList = $this->EA_StarterRepository->loadList(null,null,null,null,null,null,null,"impulseCache","DESC");
-        $this->EA_PlatzierungBerechner->berechnePlatzierung($teilnehmerList);
+        $this->EA_PlacementHelper->berechnePlatzierung($teilnehmerList);
         
         $content = "";
         $globaleVeranstaltungsdaten = $this->EA_HitRepository->getGlobaleVeranstaltungsleistungsdaten(count($teilnehmerList),$this->konfiguration);

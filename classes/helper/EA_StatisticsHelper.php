@@ -6,7 +6,7 @@ use CharitySwimRun\classes\model\EA_Configuration;
 use CharitySwimRun\classes\model\EA_Repository;
 use CharitySwimRun\classes\model\EA_StarterRepository;
 
-class EA_StatistikHelper
+class EA_StatisticsHelper
 {
 
     private Connection $DbalConn;

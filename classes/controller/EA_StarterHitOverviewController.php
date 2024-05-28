@@ -6,17 +6,17 @@ use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Hit;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Message;
-use CharitySwimRun\classes\helper\EA_StatistikHelper;
+use CharitySwimRun\classes\helper\EA_StatisticsHelper;
 use CharitySwimRun\classes\model\EA_Repository;
 
 class EA_StarterHitOverviewController extends EA_Controller
 {
-    private EA_StatistikHelper $EA_StatistikHelper;
+    private EA_StatisticsHelper $EA_StatisticsHelper;
 
     public function __construct(EA_Repository $EA_Repository)
     {
         parent::__construct($EA_Repository->getEntityManager());
-        $this->EA_StatistikHelper = new EA_StatistikHelper($EA_Repository,$this->EA_ConfigurationRepository->load());
+        $this->EA_StatisticsHelper = new EA_StatisticsHelper($EA_Repository,$this->EA_ConfigurationRepository->load());
 
     }
 
@@ -69,7 +69,7 @@ class EA_StarterHitOverviewController extends EA_Controller
             return "";
         }
 
-        return $this->EA_FR->getFormBuchungenStarter($this->entityManager, $teilnehmer, $teilnehmer->getImpulseListGueltige(true), $this->EA_StatistikHelper->loadStatistikData("BuchungenProStunde", $teilnehmer->getId()));
+        return $this->EA_FR->getFormBuchungenStarter($this->entityManager, $teilnehmer, $teilnehmer->getImpulseListGueltige(true), $this->EA_StatisticsHelper->loadStatistikData("BuchungenProStunde", $teilnehmer->getId()));
     }
 
     private function addImpuls(): void
