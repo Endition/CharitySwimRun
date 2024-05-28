@@ -9,7 +9,7 @@ use CharitySwimRun\classes\model\EA_StarterRepository;
 use CharitySwimRun\classes\model\EA_ConfigurationRepository;
 use CharitySwimRun\classes\model\EA_HitRepository;
 
-class EA_PlatzierungBerechner
+class EA_PlacementHelper
 {
     private EA_StarterRepository $EA_StarterRepository;
     private EA_ConfigurationRepository $EA_ConfigurationRepository;   

@@ -206,20 +206,20 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getInfoSelbstanmeldung(EntityManager $entityManager, EA_Starter $EA_T): string
+    public function getInfoSelbstanmeldung(EntityManager $entityManager, EA_Starter $EA_Starter): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "stati" => true));
-        $this->smarty->assign('EA_T', $EA_T);
+        $this->smarty->assign('EA_Starter', $EA_Starter);
         $content .= $this->smarty->fetch('DisplayInfoSelbstanmeldung.tpl');
         return $content;
     }
 
-    public function getInfoTeilnehmer(EntityManager $entityManager, EA_Starter $EA_T): string
+    public function getInfoTeilnehmer(EntityManager $entityManager, EA_Starter $EA_Starter): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "stati" => true));
-        $this->smarty->assign('EA_T', $EA_T);
+        $this->smarty->assign('EA_Starter', $EA_Starter);
         $content .= $this->smarty->fetch('DisplayInfoTeilnehmer.tpl');
         return $content;
     }
@@ -247,35 +247,37 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormTeilnehmer(EntityManager $entityManager, EA_Starter $EA_T, EA_Configuration $konfiguration): string
+    public function getFormTeilnehmer(EntityManager $entityManager, EA_Starter $EA_Starter, EA_Configuration $configuration): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "mannschaften" => true, "strecken" => true, "startgruppen" => true, "geschlechter" => true, "stati" => true));
+        $distanceRepository = new EA_DistanceRepository($entityManager);
 
-
-
-        if($konfiguration->getAltersklassen() === 1){
+        //if there ist only one distance, set standardvalue to save work
+        $distanceList = $distanceRepository->loadList();
+        $selectedDistanceId = count($distanceList) === 1 ? $distanceList[array_key_first($distanceList)]->getId() : null;
+        
+        if($configuration->getAltersklassen() === 1){
             $this->smarty->assign('jahrgang', false);
         }else{
             $this->smarty->assign('jahrgang', true);
         }
 
-
-        $val = (is_object($EA_T) && $EA_T->getId()) ? true : false;
+        $val = (is_object($EA_Starter) && $EA_Starter->getId()) ? true : false;
         $this->smarty->assign('edit', $val);
 
-        $val = (is_object($EA_T) && $EA_T->getStrecke()->getId()) ? $EA_T->getStrecke()->getId() : null;
+        $val = (is_object($EA_Starter) && $EA_Starter->getStrecke()->getId()) ? $EA_Starter->getStrecke()->getId() : $selectedDistanceId;
         $this->smarty->assign('strecke', $val);
 
-        $val = (is_object($EA_T) && $EA_T->getMannschaft()->getId()) ? $EA_T->getMannschaft()->getId() : null;
+        $val = (is_object($EA_Starter) && $EA_Starter->getMannschaft()->getId()) ? $EA_Starter->getMannschaft()->getId() : null;
         $this->smarty->assign('mannschaft', $val);
 
-        $val = (is_object($EA_T) && $EA_T->getVerein()->getVerein()) ? $EA_T->getVerein()->getVerein() : null;
+        $val = (is_object($EA_Starter) && $EA_Starter->getVerein()->getVerein()) ? $EA_Starter->getVerein()->getVerein() : null;
         $this->smarty->assign('verein', $val);
-        $val = (is_object($EA_T) && $EA_T->getVerein()->getId()) ? $EA_T->getVerein()->getId() : null;
+        $val = (is_object($EA_Starter) && $EA_Starter->getVerein()->getId()) ? $EA_Starter->getVerein()->getId() : null;
         $this->smarty->assign('vereinid', $val);
 
-        $this->smarty->assign('teilnehmer', $EA_T);
+        $this->smarty->assign('teilnehmer', $EA_Starter);
         $this->smarty->assign('actionurl', 'index.php?doc=teilnehmer');
         $content .= $this->smarty->fetch('FormTeilnehmer.tpl');
         return $content;

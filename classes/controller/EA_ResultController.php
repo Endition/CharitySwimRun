@@ -3,7 +3,7 @@ namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-use CharitySwimRun\classes\helper\EA_PlatzierungBerechner;
+use CharitySwimRun\classes\helper\EA_PlacementHelper;
 
 class EA_ResultController extends EA_Controller
 {
@@ -14,7 +14,7 @@ class EA_ResultController extends EA_Controller
     public function getPageErgebnisse(): string
     {
         $content = "";
-        $platzierungBerechnenHelper = new EA_PlatzierungBerechner($this->entityManager);
+        $platzierungBerechnenHelper = new EA_PlacementHelper($this->entityManager);
         $specialEvaluation = null;
         //Verarbeiten der Auswahl
         $filter['typ'] = "Einzelstarter";
