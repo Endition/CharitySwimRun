@@ -93,7 +93,7 @@ class EA_UserController  extends EA_Controller
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
         $user = $this->EA_UserRepository->loadById($id);
         if($user === null){
-            $this->EA_Messages->addMessage("Kein User gefunden.",1288839990,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Kein User gefunden.",1288839990,EA_Message::MESSAGE_WARNING);
         }
         return $user;
     }
@@ -105,7 +105,7 @@ class EA_UserController  extends EA_Controller
         if ($userList !== []) {
             $content = $this->EA_R->renderTabelleUser($userList);
         } else {
-            $this->EA_Messages->addMessage("Es sind noch keine User angelegt.",1156666779,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Es sind noch keine User angelegt.",1156666779,EA_Message::MESSAGE_WARNING);
         } 
         return $content;
     }
@@ -115,7 +115,7 @@ class EA_UserController  extends EA_Controller
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
         $user = $this->EA_UserRepository->loadById($id);
         if($user === null){
-            $this->EA_Messages->addMessage("Kein User gefunden.",1288839990,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Kein User gefunden.",1288839990,EA_Message::MESSAGE_WARNING);
         }else{
             $this->EA_UserRepository->delete($user);
             $this->EA_Messages->addMessage("User gelöscht.",8899234234234,EA_Message::MESSAGE_SUCCESS);

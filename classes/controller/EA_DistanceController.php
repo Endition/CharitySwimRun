@@ -90,7 +90,7 @@ class EA_DistanceController extends EA_Controller
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
         $strecke = $this->EA_DistanceRepository->loadById($id);
         if($strecke === null){
-            $this->EA_Messages->addMessage("Keine Strecke gefunden.",156567875,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Keine Strecke gefunden.",156567875,EA_Message::MESSAGE_WARNING);
         }
         return $strecke;
     }
@@ -102,7 +102,7 @@ class EA_DistanceController extends EA_Controller
         if ($streckeList !== []) {
             $content = $this->EA_R->renderTabelleStrecken($streckeList);
         } else {
-            $this->EA_Messages->addMessage("Es sind noch keine Streckeen angelegt.",155677878,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Es sind noch keine Streckeen angelegt.",155677878,EA_Message::MESSAGE_WARNING);
         } 
         return $content;
     }

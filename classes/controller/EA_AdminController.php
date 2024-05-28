@@ -26,7 +26,8 @@ class EA_AdminController extends EA_Controller
             $this->EA_R->deleteSmartyCache();
             $_GET['doc'] = (isset($_GET['doc'])) ? htmlspecialchars($_GET['doc']) : null;
             if(!$this->isAuthenticated()){
-                return "keine Rechte";
+                $this->EA_Messages->addMessage("keine Rechte für diese Seite",11567654343,EA_Message::MESSAGE_INFO);            
+                return $this->EA_Messages->renderMessageAlertList();
             }
 
             //if there is no configuration show configuration Page
@@ -159,9 +160,6 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $this->EA_R->renderIndex($this->getServerNetworkIP());
                     break;
             }
-        
-        
-
 
         //render messages and content
         $content .= $this->EA_Messages->renderMessageAlertList();

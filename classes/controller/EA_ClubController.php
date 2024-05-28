@@ -102,7 +102,7 @@ class EA_ClubController  extends EA_Controller
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
         $verein = $this->EA_ClubRepository->loadById($id);
         if($verein === null){
-            $this->EA_Messages->addMessage("Keine Verein gefunden.",156567875,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Keine Verein gefunden.",156567875,EA_Message::MESSAGE_WARNING);
         }
         return $verein;
     }
@@ -114,7 +114,7 @@ class EA_ClubController  extends EA_Controller
         if ($vereinList !== []) {
             $content = $this->EA_R->renderTabelleVereine($vereinList);
         } else {
-            $this->EA_Messages->addMessage("Es sind noch keine Vereinen angelegt.",155677878,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Es sind noch keine Vereinen angelegt.",155677878,EA_Message::MESSAGE_WARNING);
         } 
         return $content;
     }

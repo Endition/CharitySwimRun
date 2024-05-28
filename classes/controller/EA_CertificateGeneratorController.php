@@ -94,7 +94,7 @@ class EA_CertificateGeneratorController  extends EA_Controller
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
         $urkundenelement = $this->EA_CertificateElementRepository->loadById($id);
         if($urkundenelement === null){
-            $this->EA_Messages->addMessage("Keine Urkundenelement gefunden.",195474377777,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Keine Urkundenelement gefunden.",195474377777,EA_Message::MESSAGE_WARNING);
         }
         return $urkundenelement;
     }
@@ -106,7 +106,7 @@ class EA_CertificateGeneratorController  extends EA_Controller
         if ($urkundenelementList !== []) {
             $content = $this->EA_R->renderTabelleUrkundenelemente($urkundenelementList);
         } else {
-            $this->EA_Messages->addMessage("Es sind noch keine Urkundenelementen angelegt.",194233454,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Es sind noch keine Urkundenelementen angelegt.",194233454,EA_Message::MESSAGE_WARNING);
         } 
         return $content;
     }
@@ -116,7 +116,7 @@ class EA_CertificateGeneratorController  extends EA_Controller
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
         $mannschaft = $this->EA_CertificateElementRepository->loadById($id);
         if($mannschaft === null){
-            $this->EA_Messages->addMessage("Kein Urkundenelement gefunden.",19237657777,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Kein Urkundenelement gefunden.",19237657777,EA_Message::MESSAGE_WARNING);
         }else{
             $this->EA_CertificateElementRepository->delete($mannschaft);
             $this->EA_Messages->addMessage("Urkundenelement gelöscht.",1953547777,EA_Message::MESSAGE_SUCCESS);

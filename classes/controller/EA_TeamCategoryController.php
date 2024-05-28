@@ -71,7 +71,7 @@ class EA_TeamCategoryController extends EA_Controller
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
         $mannschaftskategorieBez = $this->EA_TeamCategoryRepository->loadById($id);
         if($mannschaftskategorieBez === null){
-            $this->EA_Messages->addMessage("Keine Kategorie gefunden.",12434523452,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Keine Kategorie gefunden.",12434523452,EA_Message::MESSAGE_WARNING);
         }
         return $mannschaftskategorieBez;
     }
@@ -83,7 +83,7 @@ class EA_TeamCategoryController extends EA_Controller
         if ($mannschaftskategorieList !== []) {
             $content = $this->EA_R->renderTabelleMannschaftskategorien($mannschaftskategorieList);
         } else {
-            $this->EA_Messages->addMessage("Es sind noch keine Mannschaftskategorien angelegt.",535756423234,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Es sind noch keine Mannschaftskategorien angelegt.",535756423234,EA_Message::MESSAGE_WARNING);
         } 
         return $content;
     }
@@ -93,7 +93,7 @@ class EA_TeamCategoryController extends EA_Controller
         $id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
         $mannschaftskategorieBez = $this->EA_TeamCategoryRepository->loadById($id);
         if($mannschaftskategorieBez === null){
-            $this->EA_Messages->addMessage("Kein Mannschaftskategorie gefunden.",1624435643,EA_Message::MESSAGE_WARNINIG);
+            $this->EA_Messages->addMessage("Kein Mannschaftskategorie gefunden.",1624435643,EA_Message::MESSAGE_WARNING);
         }else{
             $this->EA_TeamCategoryRepository->delete($mannschaftskategorieBez);
             $this->EA_Messages->addMessage("Mannschaftskategorie gelöscht.",123456,EA_Message::MESSAGE_SUCCESS);

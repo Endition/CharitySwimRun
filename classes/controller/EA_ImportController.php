@@ -60,7 +60,7 @@ class EA_ImportController extends EA_Controller
                                 if ($answer === true) {
                                     $this->EA_Messages->addMessage("Zeile " . $i . " : Starter " . mb_convert_encoding($data[1], 'UTF-8') . " " . mb_convert_encoding($data[2], 'UTF-8')  . " erfolgreich angemeldet",1335375234,EA_Message::MESSAGE_SUCCESS);            
                                 } else {
-                                    $this->EA_Messages->addMessage("Zeile " . $i . " : Starternummer " . mb_convert_encoding($data[1], 'UTF-8')  . " " . mb_convert_encoding($data[2], 'UTF-8') . " " . mb_convert_encoding($data[3], 'UTF-8')  . " NICHT erfolgreich angemeldet",1235567775,EA_Message::MESSAGE_WARNINIG);            
+                                    $this->EA_Messages->addMessage("Zeile " . $i . " : Starternummer " . mb_convert_encoding($data[1], 'UTF-8')  . " " . mb_convert_encoding($data[2], 'UTF-8') . " " . mb_convert_encoding($data[3], 'UTF-8')  . " NICHT erfolgreich angemeldet",1235567775,EA_Message::MESSAGE_WARNING);            
                                 }
                             }
                             $i++;
