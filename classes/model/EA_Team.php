@@ -46,6 +46,7 @@ class EA_Team
     private int $gesamtMeterCache = 0;
 
     #[ORM\OneToMany(targetEntity: EA_Starter::class, mappedBy: 'mannschaft')]
+    #[ORM\OrderBy(["name" => "ASC"])]
     private Collection $mitgliederList;
 
     public function __construct()

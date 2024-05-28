@@ -22,6 +22,7 @@ class EA_Club
     private string $verein = "";
 
     #[ORM\OneToMany(targetEntity: EA_Starter::class, mappedBy: 'verein')]
+    #[ORM\OrderBy(["name" => "ASC"])]
     private Collection $mitgliederList;
 
     private int $gesamtimpulseCache = 0;
