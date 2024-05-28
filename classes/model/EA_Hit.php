@@ -99,7 +99,7 @@ class EA_Hit
         if ($format === "ts") {
             return $this->rundenzeit === null ? 0 : $this->rundenzeit;
         } elseif ($format === "H:i:s") {
-            return $this->gesamtzeit === null ? 0 : EA_Helper::FormatterRundenzeit($this->rundenzeit);
+            return $this->rundenzeit === null ? 0 : EA_Helper::FormatterRundenzeit($this->rundenzeit);
         }else{
             return "";
         }
