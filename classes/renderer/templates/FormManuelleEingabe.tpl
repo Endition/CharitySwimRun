@@ -67,7 +67,7 @@
                 method: "GET",
                 dataType: "json",
                 error: function (result) {
-                    toastManager.show('Fehler: Teilnehmer nicht gefunden', 'error', 3000);
+                    toastManager.show('Fehler: Teilnehmer nicht gefunden (113243537357)','Fehler', 'danger');
                 },
                 success: function (result) {
                     addButtonToDom(result);
@@ -81,7 +81,7 @@
                 method: "GET",
                 dataType: "json",
                 error: function (result) {
-                    toastManager.show('Fehler beim Speichern Impuls', 'Fehler in der Abfrage', 'error', 3000);
+                    toastManager.show('Fehler beim Speichern Impuls (1343546335)','Fehler in der Abfrage', 'danger');
                 },
                 success: function (result) {
                     result.forEach(addButtonToDom);
@@ -101,10 +101,10 @@
                 method: "POST",
                 dataType: "json",
                 error: function (result) {
-                    toastManager.show('Fehler beim Speichern Impuls', 'Fehler', 'error', 3000);
+                    toastManager.show('Fehler beim Speichern Impuls (2321346557)', 'Fehler', 'danger');
                 },
                 success: function (result) {
-                    toastManager.show('Impuls gespeichert', 'Erfolgreich', 'success', 3000);
+                    toastManager.show('Impuls gespeichert', 'Erfolgreich', 'success');
                 }});
         }
     {/literal}

@@ -6,13 +6,13 @@ class ToastManager {
         }
     }
 
-    show(message, title = '', type = 'info', delay = 5000) {
+    show(message, title = '', type = 'info') {
         const toastId = `toast-${Date.now()}`;
         const toastHtml = `
-            <div id="${toastId}" class="toast text-bg-${type}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="${delay}">
-                <div class="toast-header">
+            <div id="${toastId}" class="toast text-bg-secondary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+                <div class="toast-header text-bg-${type}">
                     <strong class="me-auto">${title}</strong>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body">
                     ${message}

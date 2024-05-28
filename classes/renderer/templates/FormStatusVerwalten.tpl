@@ -98,10 +98,10 @@
                 method: "POST",
                 dataType: "json",
                 error: function (result) {
-                    toastManager.show('Fehler beim Speichern Impuls', 'Fehler', 'error', 3000);
+                    toastManager.show('Fehler beim Speichern Impuls (213324357)', 'Fehler', 'danger');
                 },
                 success: function (result) {
-                    toastManager.show('Status gespeichert', 'Erfolgreich', 'success', 3000);
+                    toastManager.show('Status gespeichert', 'Erfolgreich', 'success');
                     checkAndUpdateGUI(element_id, status_var);
                 }});
 

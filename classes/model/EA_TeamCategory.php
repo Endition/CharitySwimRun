@@ -21,15 +21,13 @@ class EA_TeamCategory
     #[ORM\Column(type: Types::STRING, name: "Mannschaftskategorie")]
     private string $mannschaftskategorie = "";
     
-    private array $mannschaftList = [];
-
     #[ORM\OneToMany(targetEntity: EA_Team::class, mappedBy: 'mannschaftskategorie')]
-    private Collection $mannschaftListNeu;
+    private Collection $mannschaftList;
 
 
     public function __construct()
     {
-        $this->mannschaftListNeu = new ArrayCollection();
+        $this->mannschaftList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,24 +50,10 @@ class EA_TeamCategory
         $this->mannschaftskategorie = $verein;
     }
 
-    public function getMannschaftList(): array
+    public function getMannschaftList(): Collection
     {
         return $this->mannschaftList;
     }
 
-    public function setMannschaftList(array $mannschaftList)
-    {
-        $this->mannschaftList = $mannschaftList;
-    }
-
-    public function addMannschaft($mannschaft)
-    {
-        $this->mannschaftList[] = $mannschaft;
-    }
-
-    public function getMannschaftListAnzahl(): int
-    {
-        return count($this->mannschaftList);
-    }
 
 }
