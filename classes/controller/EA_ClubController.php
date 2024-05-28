@@ -34,7 +34,7 @@ class EA_ClubController  extends EA_Controller
 
         $content .= $this->getVereinList();
         $content .= $this->EA_FR->getFormVerein($verein);
-        $content .= $this->EA_FR->getFormVereinsfusion($this->EA_ClubRepository->loadList());
+        $content .= $this->EA_FR->getFormVereinsfusion($this->EA_ClubRepository->loadList("verein"));
         return $content;
     }
 
@@ -82,6 +82,11 @@ class EA_ClubController  extends EA_Controller
         
         if($ausgangVerein === null || $zielVerein === null){
             $this->EA_Messages->addMessage("Konnte Vereine nicht korrekt laden.",15656378213,EA_Message::MESSAGE_ERROR);
+            return;
+        }
+
+        if($ausgangVerein === $zielVerein){
+            $this->EA_Messages->addMessage("Zielverein darf nicht gleich Ausgangsverein sein.",12353723773,EA_Message::MESSAGE_ERROR);
             return;
         }
 

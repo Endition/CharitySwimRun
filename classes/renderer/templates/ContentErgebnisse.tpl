@@ -38,7 +38,11 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <h5 class="card-header">Ergebnisliste anzeigen</h5>
+        <div class="card-header">
+            <h5>Ergebnisliste anzeigen</h5>
+            <p>Der Haupt-"Platz" ist nach Geschlecht unterschieden. In der Standardansicht kann es daher drei Mal den 1. Platz geben (M/W/D). </p>
+        </div>
+           
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-12">	
