@@ -10,7 +10,7 @@ use CharitySwimRun\classes\controller\EA_ApiController;
 // error_reporting(E_ALL);
 // ini_set('display_errors', true);
 require_once '../config/config.php';
-include_once("../dbConfigDaten.php");
+include_once("../config/dbConfigDaten.php");
 include_once('../classes/core/EA_Autoloader.php');
 require_once "../vendor/autoload.php";
 

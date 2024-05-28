@@ -2,7 +2,7 @@
 <a href="https://github.com/Endition/CharitySwimRun/blob/master/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/master/README.md">Readme in English</a>
 
 <h1>CharitySwimRun</h1>
-24h/Benefiz-Schwimmen und -Läufe abwickeln. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken.
+24h-Schwimmen, 12h-Schwimmen, Benefiz-Schwimmen oder -Läufe abwickeln. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken.
 Gedacht ist die Software für den temporären Einsatz auf einem Webserver in einem lokalen Netzwerk. 
 Die Software läuft im Browser und ist responsive. Sie kann also von allen Geräten im Netzwerk ohne weitere Voraussetzungen benutzt werden. Danke an <a href="https://github.com/zuramai/mazer">zuramai</a> für das Dashboard.
 
