@@ -10,14 +10,17 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
 
 <h2>Features</h2>
 <ul>
+    <li>Mannschaften</li>
     <li>Altersklasse</li>
     <li>Strecken</li>
+    <li>Vereine</li>
     <li>Sonderwertungen</li>
-    <li>Mannschaften</li>
     <li>anpassbare PDF-Urkunden, sowie Ergebnisliste, Meldelisten</li>
     <li>Live-Anzeige von Buchungen</li>
     <li>Selbstauskunftsmöglichkeit für Teilnehmer</li>
     <li>Statistische Auswertung</li>
+    <li>Alle Infos für die Presse auf einer Seite</li>
+    <li>Verschiedenste Möglichkeiten die Buchungen zu erfassen</li>
     <li>Jede Buchung wird einzeln gespeichert. Schreiben automatische Rundenzähler (z.B. per RFID) direkt in die zugehörige DB-Tabelle, besteht Kompatibiltät zu jeder RFID-Anlage </li>
 </ul>
 
@@ -35,7 +38,7 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
 <h3>Vorhandener Server</h3>
 <ol>
     <li>Dateien kopieren nach CharitySwimRun/ </li>
-    <li>Composer aufrufen und Abhänigkeiten installieren. </li>
+    <li>Composer aufrufen und Abhängigkeiten installieren.</li>
     <li>Weiter mit Abschnitt "Konfiguration"</li>
 </ol>
 
@@ -73,20 +76,20 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
 <h2>Konfiguration</h2>
 <ol>
     <li>Software aufrufen: localhost/CharitySwimRun/</li>
-    <li>Datenbankverbindungsdaten eingeben. Datenbank und Tabellen werden automatisch erstellt. Werden die Daten nicht gespeichert, weil die ConfigDatei nicht geschrieben wird, liegt das an der Installation auf C:/. Dazu probieren den Server zum Anlegen der Datenbankverbindungsdaten als Administrator laufen zu lassen. Zweite Möglichkeit: Datei manuell anlegen.</li>
-    <li>Einstellungen machen</li>
+    <li>Datenbankverbindungsdaten eingeben. Datenbank und Tabellen werden automatisch erstellt. Werden die Daten nicht gespeichert, weil die config/dbConfigDaten.php nicht geschrieben wird, liegt das an der Installation auf C:/. Dann die Datei einfach manuell bearbeiten und die Daten eintragen.</li>
+    <li>Einstellungen setzen</li>
     <li>Strecken anlegen</li>
     <li>Altersklassen anlegen</li>
-    <li>Nutzer anlegen</li>
+    <li>(Nutzer anlegen)</li>
     <li>"Simulator" ausprobieren.</li>
 </ol>
 
 <h2>Möglichkeiten Buchungen zu registrieren am Beispiel Schwimmveranstaltung</h2>
 <h3>Am Beckenrand</h3>
-Am Beckenrand sitzen Bahnenzähler. Diese haben ein Tablet, was mit der Software verbunden ist. Über "Eingabe und Verwaltung" -> manuelle Eingaben bauen Sie sich ein individuelles Set "Ihrer" Schwimmer und buchen die Bahnen per Klicke.
+Am Beckenrand sitzen menschliche Bahnenzähler. Diese haben ein Tablet, was mit der Software verbunden ist. Über "Eingabe und Verwaltung" -> manuelle Eingaben (unterer Bereich) bauen Sie sich ein individuelles Set der Schwimmer auf ihrer Bahn und buchen die Bahnen per Klick.
 
 <h3>Bei "Abmeldung" der Teilnehmer</h3>
-Die Teilnehmer bekommen z.B. für jede Runde einen Gummiring. Die Gummieringe werden regelmäßig an einer zentralen Stelle abgegeben und über "Eingabe und Verwaltung" -> manuelle Eingaben gebucht.
+Die Teilnehmer bekommen z.B. für jede Runde einen Gummiring. Die Gummieringe werden regelmäßig an einer zentralen Stelle abgegeben und über "Eingabe und Verwaltung" -> manuelle Eingaben (oberer Bereich) gebucht.
 
 <h3>Mittels RFID Anlage</h3>
 Eine RFID Anlage mit einer Software ist mit der der Datenbank verbunden und schreibt ihre Buchungen in die DB. Dazu bitte Kontakt mit dem Admin aufnehmen.
