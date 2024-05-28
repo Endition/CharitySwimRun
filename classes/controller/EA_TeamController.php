@@ -116,8 +116,12 @@ class EA_TeamController extends EA_Controller
 
     private function deleteMannschaft(): void
     {
-        $id = filter_input(INPUT_GET,'mannschaftsid',FILTER_SANITIZE_NUMBER_INT);
+        $id = filter_input(INPUT_POST,'mannschaftsid',FILTER_SANITIZE_NUMBER_INT);
         $mannschaft = $this->EA_TeamRepository->loadById($id);
+        if($mannschaft->getMitgliederList()->count() > 0){
+            $this->EA_Messages->addMessage("Mannschaft hat noch Mitglieder",1864322742,EA_Message::MESSAGE_ERROR);
+            return;
+        }
         if($mannschaft === null){
             $this->EA_Messages->addMessage("Kein Mannschaft gefunden.",1864322742,EA_Message::MESSAGE_WARNING);
         }else{
