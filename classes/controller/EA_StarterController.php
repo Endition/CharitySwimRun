@@ -129,10 +129,12 @@ class EA_StarterController extends EA_Controller
             }
             //Doppelter Transponder
             //Es ist möglich dass der Transponder schon ausgebrucht ist.
-            if ($transponder > 0) {
-                if ($this->EA_StarterRepository->loadByFilter($teilnehmer->getId(),null,$transponder) !== null) {
-                    $this->EA_Messages->addMessage("Dieser Transponder ist schon in Benutzung.",13747733754,EA_Message::MESSAGE_ERROR);
-                    $error = true;
+            if ($this->konfiguration->getTransponder() === EA_Configuration::TRANSPONDER_YES) {
+                if ($transponder > 0) {
+                    if ($this->EA_StarterRepository->loadByFilter($teilnehmer->getId(),null,$transponder) !== null) {
+                        $this->EA_Messages->addMessage("Dieser Transponder ist schon in Benutzung.",13747733754,EA_Message::MESSAGE_ERROR);
+                        $error = true;
+                    }
                 }
             }
         }

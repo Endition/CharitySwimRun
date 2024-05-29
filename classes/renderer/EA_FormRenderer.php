@@ -426,8 +426,8 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $vereineLeistung,
         $statiVerteilung,
         $medaillenspiegel,
-        $besterTeilnehmer,
-        $gemeldeteTeilnemer,
+        EA_Starter $besterTeilnehmer,
+        array $gemeldeteTeilnehmer,
         $StreckenTeilnehmerVerteilung,
         $StreckenAltersklassenTeilnehmerVerteilung,
         EA_StarterRepository $EA_StarterRepository,
@@ -441,7 +441,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('juengsterTeilnehmerMann', $teilnehmer['MMin']);
         $this->smarty->assign('aeltesterTeilnehmerFrau',$teilnehmer['WMax']);
         $this->smarty->assign('juengsterTeilnehmerFrau', $teilnehmer['WMin']);
-        $this->smarty->assign('gemeldeteTeilnehmer', $gemeldeteTeilnemer);
+        $this->smarty->assign('gemeldeteTeilnehmer', count($gemeldeteTeilnehmer));
         $this->smarty->assign('teilnehmerRepository', $EA_StarterRepository);
         $this->smarty->assign('EA_H', $this->EA_H);
         $this->smarty->assign('statiVerteilung', $statiVerteilung);

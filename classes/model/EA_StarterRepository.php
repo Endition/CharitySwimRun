@@ -19,7 +19,7 @@ class EA_StarterRepository extends EA_Repository
     {
         $this->entityManager = $entitymanager;
                 //we need the same entityManager in the motherclass
-                parent::setEntityManager($entitymanager); 
+                parent::setEntityManager($entitymanager);   
     }
 
     public function create(EA_Starter $Teilnehmer): EA_Starter
