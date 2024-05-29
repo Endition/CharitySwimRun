@@ -60,7 +60,7 @@ class EA_DatabaseController
         $this->EA_Repository->createDatabase();
 
         if ($this->EA_Repository->isDoctrineConnected() === true) {
-            $this->writeDbConfigDatenFile(ROOT_PATH . '\..\..\config\dbConfigDaten.php');
+            $this->writeDbConfigDatenFile(ROOT_PATH . '\config\dbConfigDaten.php');
             $this->EA_Repository->createDatabaseTables();
             $this->createUrkundeStandardentries($this->EA_Repository->getEntityManager());
             $this->createTransponderStandardentries($this->EA_Repository->getEntityManager());
@@ -82,7 +82,7 @@ class EA_DatabaseController
     {
         foreach(EA_RfidChip::getStandardElemente() as $transponder){
             $entityManager->persist($transponder);
-                    }
+        }
         $entityManager->flush();
     }
 
@@ -106,7 +106,7 @@ class EA_DatabaseController
         $this->EA_Messages->addMessage("Kann die Datei trotz erfolgreich nicht geschrieben werden wurde der Server unter Windows auf C:/ installiert. Durch die Windowspartion extieren dort keine Schreibrechte, esseidenn der Server wird als Admin ausgeführt.",13577459667,EA_Message::MESSAGE_INFO);
 
         fClose($fp);
-        $this->EA_Messages->addMessage("Datenbankdaten unter " . ROOT_PATH . "\..\..\config\dbConfigDaten.php erfolgreich gespeichert",13577449667,EA_Message::MESSAGE_SUCCESS);
+        $this->EA_Messages->addMessage("Datenbankdaten unter " . ROOT_PATH . "\config\dbConfigDaten.php erfolgreich gespeichert",13577449667,EA_Message::MESSAGE_SUCCESS);
         return true;
     } 
 

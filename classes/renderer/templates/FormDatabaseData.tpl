@@ -1,5 +1,8 @@
 <div class="card">
-			<h5 class="card-header">Datenbankverbindung anlegen</h5>
+			<div class="card-body">
+			<h5>Datenbankverbindung anlegen</h5>
+			<p>Alternative die Datei CharitySwimRun/config/dbConfigDaten.php modifizieren mit einem Texteditor.</p>
+			</div>
 			<div class="card-body">
 			<form role="form" name="DatabaseForm" id="DatabaseForm" action="{$actionurl}" method="POST">
 			{include file='templateInputElement.tpl' bezeichnung='Server (localhost oder IP)' name='server' type='text' value=$EA_Repository->getServer() required=true }

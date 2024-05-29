@@ -28,6 +28,7 @@
   </head>
   <body>
       <h1>Achtung!: Nicht während der Veranstaltung live nutzen.</h1>
+      <p>Für den Simulator müssen Strecken und Altersklassen angelegt sein.</p>
       <div id="daten" class="box" style="border: 2px solid black; background-color:red; color:white; font-size:24">
       </div>
     </body>

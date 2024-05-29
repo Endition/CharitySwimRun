@@ -38,7 +38,7 @@ class EA_AdminController extends EA_Controller
 
             if(count($this->EA_AgeGroupRepository->loadList()) === 0){
                 $this->EA_Messages->addMessage("Bitte zuerste Altersklassen anlegen, bevor mit der Software gearbeitet werden kann.",165465657,EA_Message::MESSAGE_INFO);         
-                $_GET['doc'] = "strecken";  
+                $_GET['doc'] = "altersklassen";  
             }
             
             if($this->konfiguration === null){
