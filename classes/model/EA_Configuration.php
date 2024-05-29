@@ -218,7 +218,7 @@ class EA_Configuration
             ),
             "pflichtfeld" => false,
             "savedvalue" => "Formel",
-            "erklaerung" => "Soll bei der Berechnung der Mannschaftspunkte die Gesamtstrecke aller Mitglieder oder eine Berechungsformel angewand werden",
+            "erklaerung" => "Soll bei der Berechnung der Mannschaftspunkte die Gesamtstrecke aller Mitglieder oder eine Berechungsformel (Meter/Wertungsschlüssel = Punkte des Starters) angewand werden",
             "abhängigkeit" => array("von" => "mannschaften", "wert" => true)
         ),
         "beguenstigter" => array(

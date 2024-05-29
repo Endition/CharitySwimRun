@@ -2,31 +2,31 @@
 <a href="https://github.com/Endition/CharitySwimRun/blob/master/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/master/README.md">Readme in English</a>
 
 <h1>CharitySwimRun</h1>
-24h-Schwimmen, 12h-Schwimmen, Benefiz-Schwimmen oder -Läufe abwickeln. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken.
-Gedacht ist die Software für den temporären Einsatz auf einem Webserver in einem lokalen Netzwerk. 
-Die Software läuft im Browser und ist responsive. Sie kann also von allen Geräten im Netzwerk ohne weitere Voraussetzungen benutzt werden. Danke an <a href="https://github.com/zuramai/mazer">zuramai</a> für das Dashboard.
+24h-Schwimmen, 12h-Schwimmen, Benefiz-Schwimmen oder -Läufe können mit dieser kostenlosen OpenSource-Software abgewickelt werden. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken sind nur einige der Möglichkeiten.
+Gedacht ist die Software für den temporären Einsatz auf einem Webserver in einem lokalen Netzwerk. Durch die Software, findet eine entsprechende Veranstaltung praktisch papierlos statt.
+Die Software läuft im normalen Internetbrowser und ist responsive. Sie kann also von allen Geräten im Netzwerk ohne weitere Voraussetzungen benutzt werden. Danke an <a href="https://github.com/zuramai/mazer">zuramai</a> für das Dashboard.
 
 Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch in deutsch. Wird stetig umgebaut)
 
 <h2>Features</h2>
 <ul>
-    <li>Mannschaften</li>
-    <li>Altersklasse</li>
-    <li>Strecken</li>
-    <li>Vereine</li>
-    <li>Sonderwertungen</li>
+    <li>Mannschaften und Mannschaftswertung</li>
+    <li>Altersklasse und Altersklassenwertung</li>
+    <li>Vereine und Vereinswertung</li>
+    <li>verschiedene Strecken können gleichzeitig erfasset werden</li>
+    <li>Sonderwertungen (z.B. Nachtwertung, 13:00Uhr Wertung) individuell definierbar. </li>
     <li>anpassbare PDF-Urkunden, sowie Ergebnisliste, Meldelisten</li>
     <li>Live-Anzeige von Buchungen</li>
     <li>Selbstauskunftsmöglichkeit für Teilnehmer</li>
     <li>Statistische Auswertung</li>
-    <li>Alle Infos für die Presse auf einer Seite</li>
+    <li>Alle Infos für die Presse und die Verantwortlichen auf einer Seite</li>
     <li>Verschiedenste Möglichkeiten die Buchungen zu erfassen</li>
     <li>Jede Buchung wird einzeln gespeichert. Schreiben automatische Rundenzähler (z.B. per RFID) direkt in die zugehörige DB-Tabelle, besteht Kompatibiltät zu jeder RFID-Anlage </li>
 </ul>
 
 <h2>Voraussetzungen</h2>
 <ul>
-    <li>Lokaler Webserver mit PHP > 8.1, Datenbank und  Composer. Zum Beispiel: Laragon oder XAMPP. Bitte beachten. Beide Beispiele sind für lokales entwickeln gedacht. Sie sollen nicht ohne zusätzliche Konfiguration als Webser genutzt werden. Gewisse Einstellungen müssen geändert werden, um den sicheren Einsatz zu ermöglichen.</li>
+    <li>Lokaler Webserver mit PHP > 8.0, Datenbank und Composer. Zum Beispiel: Laragon oder XAMPP. Bitte beachten. Beide Beispiele sind für lokales entwickeln gedacht. Sie sollen nicht ohne zusätzliche Konfiguration als Webser genutzt werden. Gewisse Einstellungen müssen geändert werden, um den sicheren Einsatz zu ermöglichen.</li>
     <li>Laragon: https://laragon.org/</li>
     <li>Xampp: https://www.apachefriends.org/</li>
     <li>Composer: https://getcomposer.org/; </li>
@@ -45,8 +45,8 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
 
 <h3>Lokaler Webserver am Beispiel von Xampp</h3>
 <ol>
-    <li>Xampp-Version mit PHP > 8.1 herunterladen und möglichst nicht auf C:/ installieren</li>
-    <li>Dateien aus dem Repository herunterladen und in den Ordner xampp/htdocs/CharitySwimRun kopieren</li>
+    <li>Xampp-Version mit PHP > 8.1 herunterladen und unter Windows möglichst nicht auf C:/ installieren</li>
+    <li>Dateien aus dem Repository herunterladen (Button: <> Code -> download Zip). Zip entpacken und in den Ordner xampp/htdocs/CharitySwimRun kopieren</li>
     <li>Git, Composer und ComposerCat installieren, wenn nicht vorhanden. Git ist eine Voraussetzung für Composer. Composer wird für ComposerCat benötigt.</li>
     <li>Mit Composer(Cat) in den Ordner htdocs/CharitySwimRun/ navigieren und "composer upate" und im Anschluss "install all" ausführen</li>
     <li>Die Datenbank mit Passwort sichern. Dazu PHPMyAdmin (127.0.0.1/phpmyadmin/) aufrufen und im Tab "User" einen neuen User mit Passwort und allen Rechten anlegen. Den vorhanden User mit dem Namen "root" im Anschluss löschen</li>
@@ -67,11 +67,11 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
     </li>
     <li>(Nur für Entwickler: Einstellungen für XDebug: <a href="https://gitbook.deddy.me/laragon-xdebug-debug-php-with-vscode-on-windows/">Anleitung für Laragon</a>, <a href="https://pen-y-fan.github.io/2021/08/03/How-to-Set-up-VS-Code-to-use-PHP-with-Xdebug-3-on-Windows/">Anleitung Visual Studio</a>)
  </li>
-    <li>Datenbank mit Passwort sichern. Dazu PHPMyAdmin aufrufen und einen neuen User mit Passwort und allen Rechten anlegen. Root User im Anschluss löschen</li>
+     <li>Die Datenbank mit Passwort sichern. Dazu PHPMyAdmin (127.0.0.1/phpmyadmin/) aufrufen und im Tab "User" einen neuen User mit Passwort und allen Rechten anlegen. Den vorhanden User mit dem Namen "root" im Anschluss löschen</li>
     <li>MariaDB/MySql neustarten</li>
-    <li>Die Dateien in den Ordner www/ speichert -> Ziel: www/CharitySwimRun/</li>
-    <li>Composer installieren, wenn nicht vorhanden</li>
-    <li>Mit Composer in den Ordner www/CharitySwimRun/ navigieren und "install all" ausführen</li>
+    <li>Dateien aus dem Repository herunterladen (Button: <> Code -> download Zip). Zip entpacken und in den Ordner laragon/www/CharitySwimRun kopieren</li>
+    <li>Git, Composer und ComposerCat installieren, wenn nicht vorhanden. Git ist eine Voraussetzung für Composer. Composer wird für ComposerCat benötigt.</li>
+    <li>Mit Composer(Cat) in den Ordner htdocs/CharitySwimRun/ navigieren und "composer upate" und im Anschluss "install all" ausführen</li>
     <li>ChartJs via Composer kommt nicht zusammengebaut. Daher manueller Download von <a href="https://www.jsdelivr.com/package/npm/chart.js?path=dist">jsdelivr</a> erforderlich. Anschließend verschieben des /dist Ordner in den vendoer/nnnick/chartjs</li>
 </ol>
 
@@ -80,7 +80,7 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
 <h2>Konfiguration</h2>
 <ol>
     <li>Software aufrufen: 127.0.0.1/CharitySwimRun/</li>
-    <li>Datenbankverbindungsdaten eingeben wie im Schritt Lokaler Webserver einrichten angelegt. Datenbank und Tabellen werden automatisch erstellt. Werden die Daten nicht gespeichert, weil die Datei CharitySwimRun/config/dbConfigDaten.php nicht geschrieben wird, liegt das an der Installation auf C:/. Dann die Datei einfach manuell bearbeiten und die Daten eintragen in die Felder eintragen.</li>
+    <li>Datenbankverbindungsdaten eingeben, wie im Schritt "Lokaler Webserver einrichten" angelegt. Datenbank und Tabellen werden automatisch erstellt. Werden die Daten nicht gespeichert, weil die Datei CharitySwimRun/config/dbConfigDaten.php nicht geschrieben wird, liegt das an der Installation auf C:/. Dann die Datei einfach manuell bearbeiten und die Daten manuell in die Felder eintragen.</li>
     <li>Einstellungen setzen</li>
     <li>Strecken anlegen</li>
     <li>Altersklassen anlegen</li>

@@ -40,7 +40,7 @@ $type === "date" }
 
         >
         {if emptyElement==true}
-            <option>bitte auswählen</option>
+            <option disabled value="" >bitte auswählen</option>
         {/if} 
         {html_options options=$selectValueList selected=$selectedElement}
         </select>

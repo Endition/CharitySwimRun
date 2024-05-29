@@ -22,7 +22,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group mb-3">
                                     <input type="number" step="1" min=1 class="form-control" placeholder="IdentNr" name="addIdentnumber" id="addIdentnumber" aria-describedby="basic-addon2">
-                                    <input type="number" step="1" min=1 class="form-control" placeholder="Startnummer"  name="addStartnumber" id="addStartnumber" aria-describedby="basic-addon2">
+                                    <input type="number" step="1" min=1 class="form-control" placeholder="Startnummer"  name="addStartnumber" id="addStartnumber" aria-describedby="basic-addon2" required>
                                     <div class="input-group-append">
                                     <button class="btn btn-primary" id="addStartnumberButton" type="button">hinzufügen</button>
                                     </div>
