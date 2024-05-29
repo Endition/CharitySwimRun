@@ -64,8 +64,8 @@ function getPostion() {
 						</ul>
 						<p>Anleitung</p>
 						<ol>
-							<li>Elemente �ber das obere Formular hinzuf�gen und eine grobe Positionierung vornehmen</li>
-							<li>Elemente im Vorschaubereich positionieren und auf die richtige Gr��e ziehen und speichern</li>
+							<li>Elemente über das obere Formular hinzufügen und eine grobe Positionierung vornehmen</li>
+							<li>Elemente im Vorschaubereich positionieren und auf die richtige Größe ziehen und speichern</li>
 							<li>Testurkunde drucken, ggf. nachjustieren. (Die Vorschau ist nur ein anhalt)</li>
 						</ol>
 					</div>
