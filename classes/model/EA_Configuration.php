@@ -108,8 +108,8 @@ class EA_Configuration
             "name" => "Transponder",
             "type" => "select",
             "value" => array(
-                1 => "Mit Transponder",
-                0 => "Ohne Transponder"
+                self::TRANSPONDER_YES => "Mit Transponder",
+                self::TRANSPONDER_NO => "Ohne Transponder"
             ),
             "pflichtfeld" => true,
             "savedvalue" => "ja",
@@ -317,6 +317,10 @@ class EA_Configuration
     );
     public const AGEGROUPMODUS_BIRTHYEAR = 0;
     public const AGEGROUPMODUS_AGE = 1;
+
+    public const TRANSPONDER_NO = 0;
+    public const TRANSPONDER_YES = 1;
+
 
     public function __construct()
     {

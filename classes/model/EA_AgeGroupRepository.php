@@ -71,7 +71,7 @@ class EA_AgeGroupRepository extends EA_Repository
             ->setParameter(":alter1",$alter)
             ->setParameter(":alter2",$alter);
         $query = $qb->getQuery();
-        $result = $query->getSingleResult();
+        $result = $query->getOneOrNullResult();
         return $result;  
     }
 

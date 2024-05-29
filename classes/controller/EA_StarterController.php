@@ -113,10 +113,12 @@ class EA_StarterController extends EA_Controller
                 $error = true;
 
             }
-            //Doppelter Transponder
-            if ($this->EA_StarterRepository->loadByTransponder($transponder) !== null) {
-                $this->EA_Messages->addMessage("Dieser Transponder ist schon in Benutzung.",144357357,EA_Message::MESSAGE_ERROR);
-                $error = true;
+            if ($this->konfiguration->getTransponder() === EA_Configuration::TRANSPONDER_YES) {
+                //Doppelter Transponder
+                if ($this->EA_StarterRepository->loadByTransponder($transponder) !== null) {
+                    $this->EA_Messages->addMessage("Dieser Transponder ist schon in Benutzung.",144357357,EA_Message::MESSAGE_ERROR);
+                    $error = true;
+                }
             }
         //checks only for update case
         }else{
@@ -147,6 +149,11 @@ class EA_StarterController extends EA_Controller
             $altersklasse = $this->EA_AgeGroupRepository->findByAlter($geburtsdatum, $this->konfiguration ->getEnde());
         } else {
             $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($teilnehmer->getGeburtsdatum());
+        }
+
+        if ($altersklasse === null) {
+            $this->EA_Messages->addMessage("Keine passende Altersklasse gefunden.",131464654654,EA_Message::MESSAGE_ERROR);
+            $error = true;
         }
         $teilnehmer->setAltersklasse($altersklasse);
         $teilnehmer->setGeschlecht($geschlecht);
