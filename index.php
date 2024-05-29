@@ -60,6 +60,14 @@ if($EA_Repository->isDoctrineConnected() === true){
     <script src="vendor/components/jquery/jquery.min.js"></script>
     <!-- ChartJs -->
     <script src="vendor/nnnick/chartjs/dist/chart.umd.js"></script>
+    <style>
+        select:invalid,
+        input:invalid,
+        textarea,
+        select {
+            border: 2px solid firebrick;
+        }
+        </style>
 </head>
 
 <body>
