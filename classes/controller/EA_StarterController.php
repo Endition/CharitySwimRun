@@ -231,7 +231,6 @@ class EA_StarterController extends EA_Controller
             return;
         }
         $this->EA_StarterRepository->delete($teilnehmer);
-        $this->EA_HitRepository->deleteAllByTeilnehmer($teilnehmer);
         $this->EA_Messages->addMessage("Teilnehmer " . $teilnehmer->getGesamtname() . " gelöscht",1723452362,EA_Message::MESSAGE_SUCCESS);
     }
 

@@ -120,7 +120,7 @@
                                     <label class="form-label"></label>
                                     <div class="col-sm-8">
                                         <a href="{$actionurl}" class="btn btn-warning">Reset für weitere Anmeldung</a>
-                                        {if $id > 0}
+                                        {if $teilnehmer->getId() > 0}
                                             <button type="submit" formaction="{$actionurl}&action=delete"
                                                     class="btn btn-danger" onClick="return confirm('Soll der Teilnehmer wirklich gelöscht werden?')">Löschen</button>
                                         {/if}

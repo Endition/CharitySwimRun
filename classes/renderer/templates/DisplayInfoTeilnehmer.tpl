@@ -28,7 +28,7 @@
                         <b>Startgeld</b>:<br/> {$EA_Starter->getStartgeld()} € zzgl. {$EA_Starter->getTranspondergeld()} € Pfand 
                     </div>
                     <div class="col-2">
-                        <a href="index.php?doc=teilnehmer&action=search&id={$EA_Starter->getId()}" class="btn btn-primary"><i class="fa fa-user fa-fw"></i>bearbeiten</a>
+                        <a href="index.php?doc=teilnehmer&action=search&id={$EA_Starter->getId()}" class="btn btn-warning"><i class="fa fa-user fa-fw"></i>bearbeiten</a>
                     </div>
                     <hr>
                 </div>
@@ -71,7 +71,7 @@
                     <b>nächste Wertung </b>:<br/> {$EA_Starter->getNaechsteWertung()} ({$EA_Starter->getNaechsteWertungStreckenart($konfiguration->getRundenlaenge())} <small>Impulse</small>)
                     </div>
                     <div class="col-2">
-                        <a href="service.php?doc=urkunden&action=drucken&id={$EA_Starter->getId()}" class="btn btn-primary"><i class="fa fa-file fa-fw"></i>drucken</a>
+                        <a href="service.php?doc=urkunden&action=drucken&id={$EA_Starter->getId()}" class="btn btn-warning"><i class="fa fa-file fa-fw"></i>drucken</a>
                     </div>
                     <hr>
                 </div>
