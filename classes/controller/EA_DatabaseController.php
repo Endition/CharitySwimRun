@@ -1,6 +1,7 @@
 <?php
 namespace CharitySwimRun\classes\controller;
 
+use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Message;
 use CharitySwimRun\classes\model\EA_Certificate;
@@ -30,6 +31,9 @@ class EA_DatabaseController
         if (isset($_POST['sendDatabaseData'])) {
             $this->saveDatabaseData();
         }
+        if (isset($_POST['resetDatabase']) && $_GET['action'] === "deleteDatabase") {
+            $this->resetDatabase();
+        }
 
         $content .= $this->EA_FR->getFormDatabaseData($this->EA_Repository);
        
@@ -39,6 +43,12 @@ class EA_DatabaseController
         }
         $content .= $this->EA_Messages->renderMessageAlertList();
         return $content;
+    }
+
+    private function resetDatabase(): void
+    {
+        $this->EA_Repository->resetDatabase();  
+        $this->EA_Messages->addMessage("Datenbank geleert",413546576546,EA_Message::MESSAGE_SUCCESS);            
     }
 
     private function saveDatabaseData()

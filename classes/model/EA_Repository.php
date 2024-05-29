@@ -174,6 +174,22 @@ class EA_Repository{
         }
     }
 
+    public function resetDatabase(): void
+    {
+     
+        $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 0;")->executeQuery();
+        $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
+        foreach ($schemaManager->listTableNames() as $tableName) {
+                //Do not truncate this tables
+                if($tableName === "users" || $tableName === "transponder"){
+                    continue;
+                }
+                $sql = 'TRUNCATE  TABLE ' . $tableName;
+                $this->entityManager->getConnection()->prepare($sql)->executeQuery();
+        }
+        $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 1;")->executeQuery();  
+    }
+
     public function update(): void
     {
         $this->entityManager->flush();

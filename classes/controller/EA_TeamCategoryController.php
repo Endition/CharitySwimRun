@@ -41,8 +41,8 @@ class EA_TeamCategoryController extends EA_Controller
         $mannschaftskategorieBez = htmlspecialchars($_POST['mannschaftskategorie']);
 
 
-        if(strlen($mannschaftskategorieBez) < 8){
-            $this->EA_Messages->addMessage("Kategorie muss min. 8 Zeichen lang sein",199834325234,EA_Message::MESSAGE_ERROR);
+        if(strlen($mannschaftskategorieBez) < 6){
+            $this->EA_Messages->addMessage("Kategorie muss min. 6 Zeichen lang sein",199834325234,EA_Message::MESSAGE_ERROR);
             return;
         }
 

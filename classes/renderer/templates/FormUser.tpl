@@ -8,8 +8,8 @@
 						<form role="form" name="UserForm" id="UserForm"
 							action="{$actionurl}" method="POST" class="form-horizontal">
 							{include file='templateInputElement.tpl' name='id' type='hidden' value=$user->getId() required=true}
-							{include file='templateInputElement.tpl' name='username' type='text' value=$user->getUsername() required=true bezeichnung='Username'}
-							{include file='templateInputElement.tpl' name='password' type='password' required=true bezeichnung='Passwort' min=8}
+							{include file='templateInputElement.tpl' name='username' type='text' value=$user->getUsername() required=true bezeichnung='Username' description="Min 6 Zeichen"}
+							{include file='templateInputElement.tpl' name='password' type='password' required=true bezeichnung='Passwort' min=8 description="Min 6 Zeichen"}
 							{include file='templateInputElement.tpl' name='password2' type='password'  required=true bezeichnung='Passwort wiederholen' min=8}
 							{include file='templateInputElement.tpl' name='userroleId' type='select' selectedElement=$user->getUserroleId() required=true bezeichnung='Rolle' selectValueList=$user->getUserroleList() emptyElement=true  }
 							{include file='templateInputElement.tpl' name='sendUserData' type='submit'}
