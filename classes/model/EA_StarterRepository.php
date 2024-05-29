@@ -316,8 +316,7 @@ class EA_StarterRepository extends EA_Repository
         $queryBuilder->update(EA_Starter::class, 't')
         ->set('t.gesamtplatz', 99999)
         ->set('t.streckenplatz', 99999)
-        ->set('t.akplatz', 99999)
-        ->set('t.letzteBerechnung', 'NULL');
+        ->set('t.akplatz', 99999);
         if($teilnehmer){
             $queryBuilder->where('t.id = :editId')
             ->setParameter('editId', $teilnehmer->getId());
