@@ -100,7 +100,7 @@ class EA_Club
 
     public function __toString()
     {
-        return "<b>Verein:</b> " . $this->getVerein() . ", ";
+        return $this->getVerein();
     }
 
 }
