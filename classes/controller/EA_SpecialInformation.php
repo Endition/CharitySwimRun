@@ -4,6 +4,7 @@ namespace CharitySwimRun\classes\controller;
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\helper\EA_PlacementHelper;
+use CharitySwimRun\classes\model\EA_Message;
 
 class EA_SpecialInformation extends EA_Controller
 {
@@ -20,6 +21,10 @@ class EA_SpecialInformation extends EA_Controller
     {     
         $this->EA_StarterRepository->berechneStati();
         $teilnehmerList = $this->EA_StarterRepository->loadList(null,null,null,null,null,null,null,"impulseCache","DESC");
+        if(count($teilnehmerList) === 0){
+            $this->EA_Messages->addMessage("Veranstaltung hat noch keine Daten",123237377333,EA_Message::MESSAGE_WARNING);
+            return "";
+        }
         $this->EA_PlacementHelper->berechnePlatzierung($teilnehmerList);
         
         $content = "";
