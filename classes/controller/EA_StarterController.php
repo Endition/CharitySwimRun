@@ -170,7 +170,7 @@ class EA_StarterController extends EA_Controller
         //create case
         if($teilnehmer->getId() === null){
             $this->EA_StarterRepository->create($teilnehmer);
-            $this->EA_Messages->addMessage("Teilnehmer {$teilnehmer->getGesamtname()} angelegt",1233532372,EA_Message::MESSAGE_SUCCESS);
+            $this->EA_Messages->addMessage("Teilnehmer {$teilnehmer->getGesamtname()} angelegt. Das Stargeld beträgt: {$teilnehmer->getAltersklasse()->getStartgeld()} Euro und der Pfand beträgt {$teilnehmer->getAltersklasse()->getTpgeld()} Euro",1233532372,EA_Message::MESSAGE_SUCCESS);
         //update case
         }else{
             $this->EA_StarterRepository->update();
