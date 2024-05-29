@@ -29,7 +29,6 @@ class EA_SpecialInformation extends EA_Controller
         
         $content = "";
         $globaleVeranstaltungsdaten = $this->EA_HitRepository->getGlobaleVeranstaltungsleistungsdaten(count($teilnehmerList),$this->konfiguration);
-        $gemeldeteTeilnemer = count($teilnehmerList);
         $besterTeilnehmer = $teilnehmerList[array_key_first($teilnehmerList)]; //Den TN mit den meisten Buchungen auslesen
         $medaillenspiegel = $this->EA_StarterRepository->loadMedaillenspiegel($teilnehmerList);
         $statiVerteilung = $this->EA_StarterRepository->loadStatiVerteilung();
@@ -42,7 +41,7 @@ class EA_SpecialInformation extends EA_Controller
         $teilnehmer['WMin'] = $this->EA_StarterRepository->loadOldestYoungstByGender(EA_Starter::GESCHLECHT_W, "DESC");
         $teilnehmer['WMax'] = $this->EA_StarterRepository->loadOldestYoungstByGender(EA_Starter::GESCHLECHT_W, "ASC");
 
-        $content .= $this->EA_FR->getContentSpezialabfragen($teilnehmer, $globaleVeranstaltungsdaten, $vereineLeistung, $statiVerteilung, $medaillenspiegel, $besterTeilnehmer, $gemeldeteTeilnemer, $StreckenTeilnehmerVerteilung, $StreckenAltersklassenTeilnehmerVerteilung, $this->EA_StarterRepository,$this->entityManager);
+        $content .= $this->EA_FR->getContentSpezialabfragen($teilnehmer, $globaleVeranstaltungsdaten, $vereineLeistung, $statiVerteilung, $medaillenspiegel, $besterTeilnehmer, $teilnehmerList, $StreckenTeilnehmerVerteilung, $StreckenAltersklassenTeilnehmerVerteilung, $this->EA_StarterRepository,$this->entityManager);
         return $content;
     }
 
