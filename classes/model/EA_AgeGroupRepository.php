@@ -66,9 +66,10 @@ class EA_AgeGroupRepository extends EA_Repository
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('ak')
             ->from(EA_AgeGroup::class, 'ak')
-            ->where("`StartAlter` <= :alter  AND `EndeAlter` >= :alter")
+            ->where("ak.startAlter <= :alter1  AND ak.endeAlter >= :alter2")
             ->setMaxResults(1)
-            ->setParameter(":alter",$alter);
+            ->setParameter(":alter1",$alter)
+            ->setParameter(":alter2",$alter);
         $query = $qb->getQuery();
         $result = $query->getSingleResult();
         return $result;  
