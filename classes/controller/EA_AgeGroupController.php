@@ -58,13 +58,24 @@ class EA_AgeGroupController extends EA_Controller
 
         $news = [];
         if (count($altersklasseList) > 0) {
-            $zuordnung = array_fill(date('Y') - 100, 100, '');
-            for ($jahr = date('Y') - 100; $jahr < date('Y'); $jahr++) {
+            $yearToday = date('Y');
+            $zuordnung = array_fill($yearToday  - 100, 100, '');
+            for ($jahr = $yearToday - 100; $jahr < $yearToday; $jahr++) {
                 $zuordnung[$jahr] .= $jahr." ->";
                 foreach ($altersklasseList as $altersklasse) {
-                    if ($jahr >= $altersklasse->getUDatum()->format("Y") && $jahr <= $altersklasse->getODatum()->format("Y")) {
-                        $zuordnung[$jahr] .= " "  . $altersklasse->getAltersklasseKurz() . " ---------";
+                    if($this->konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_BIRTHYEAR){
+                        if ($jahr >= $altersklasse->getUDatum()->format("Y") && $jahr <= $altersklasse->getODatum()->format("Y")) {
+                            $zuordnung[$jahr] .= " "  . $altersklasse->getAltersklasseKurz() . " ---------";
+                        }
+                    }else{
+                        $yearMinusStart = $yearToday - $altersklasse->getEndeAlter();
+                        $yearMinusEnde = $yearToday -$altersklasse->getStartAlter();
+
+                        if ($jahr >= $yearMinusStart && $jahr <= $yearMinusEnde) {
+                            $zuordnung[$jahr] .= " "  . $altersklasse->getAltersklasseKurz() . " ---------";
+                        }
                     }
+
                 }
             }
             $this->EA_Messages->addMessage(implode("<br/>\n",$zuordnung),13325534342,EA_Message::MESSAGE_INFO);            
