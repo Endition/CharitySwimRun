@@ -93,7 +93,7 @@ class EA_Starter
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE,columnDefinition:"DATETIME on update CURRENT_TIMESTAMP")]
     private ?DateTimeImmutable $lastUpdated = null;
     
-    #[ORM\OneToMany(targetEntity: EA_Hit::class, mappedBy: 'teilnehmer',fetch: 'EXTRA_LAZY')]
+    #[ORM\OneToMany(targetEntity: EA_Hit::class, mappedBy: 'teilnehmer',fetch: 'EXTRA_LAZY',cascade: ['remove'])]
     private Collection $impulsList;
 
     //Trick to make the Konfiguration available in every attendence
