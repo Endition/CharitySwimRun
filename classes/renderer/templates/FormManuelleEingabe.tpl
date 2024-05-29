@@ -18,10 +18,11 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group">
-                            <label class="form-label">Startnummer hinzufügen</label>
+                            <label class="form-label">Startnummer hinzufügen. <small>Die IdentNr ist optional</small></label>
                             <div class="col-sm-8">
                                 <div class="input-group mb-3">
-                                    <input type="number" step="1" class="form-control" name="addStartnumber" id="addStartnumber" aria-describedby="basic-addon2">
+                                    <input type="number" step="1" min=1 class="form-control" placeholder="IdentNr" name="addIdentnumber" id="addIdentnumber" aria-describedby="basic-addon2">
+                                    <input type="number" step="1" min=1 class="form-control" placeholder="Startnummer"  name="addStartnumber" id="addStartnumber" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
                                     <button class="btn btn-primary" id="addStartnumberButton" type="button">hinzufügen</button>
                                     </div>
@@ -36,7 +37,7 @@
         <div class="card">
             <h5 class="card-header">Klicken, um Buchung auszulösen</h5>
             <div class="card-body" >	
-                    <div class="row" id="manuelleEingabeButtons">
+                    <div class="row sortable-numeric" id="manuelleEingabeButtons">
                     </div>	
             </div>
         </div>
@@ -70,7 +71,8 @@
                     toastManager.show('Fehler: Teilnehmer nicht gefunden (113243537357)','Fehler', 'danger');
                 },
                 success: function (result) {
-                    addButtonToDom(result);
+                    addButtonToDom(result,$("#addIdentnumber").val());
+                    sortElements();
                 }});
         });
     });
@@ -87,10 +89,26 @@
                     result.forEach(addButtonToDom);
                 }});
     }
+
+    function sortElements()
+    {
+        //sort elements inside sortable-numeric by data-sort attribute
+        $('.sortable-numeric [data-sort]').sort(function(a, b) {
+            if ($(a).data("sort") < $(b).data("sort")) {
+            return -1;
+            } else {
+            return 1;
+            }
+        }).appendTo('.sortable-numeric');
+    }
         
-    function addButtonToDom(item) {
+    function addButtonToDom(item, identNumber) {
         let inputField = jQuery("#manuelleEingabeButtons");
-            inputField.html(inputField.html()+"<div class=\"d-grid gap-2 col mx-auto\"><div class=\"btn-group mr-2\" role=\"group\"><button type=\"button\" name=\"sendImpulseEinlaufenData\" value=\""+item.id+"\" class=\"btn btn-success add-button\">"+item.startnummer+":<br> "+item.vorname+"</button><button type=\"button\" class=\"btn btn-danger remove-button\">X</button></div></div>");
+        //check if identNumber is set. When yes, create extra button
+        let identNumberButton = identNumber != "" && !isNaN(identNumber) ? "<button type=\"button\" class=\"btn btn-secondary\">"+identNumber+"</button>" : "";
+         //check if identNumber is set. When yes, creat identifyer for the sort method
+        let identNumberSortIdentifyer = identNumber != "" && !isNaN(identNumber) ? "data-sort=\""+identNumber+"\"" : "data-sort=\"999\"";
+        inputField.html(inputField.html()+"<div class=\"d-grid gap-2 col mx-auto\" "+identNumberSortIdentifyer+"><div class=\"btn-group mr-2\" role=\"group\">"+identNumberButton+"<button type=\"button\" name=\"sendImpulseEinlaufenData\" value=\""+item.id+"\" class=\"btn btn-success add-button\">"+item.startnummer+":<br> "+item.vorname+"</button><button type=\"button\" class=\"btn btn-danger remove-button\">X</button></div></div>");
     }
         
     function doAjaxManuelleEingabeInsert(id_var) {
