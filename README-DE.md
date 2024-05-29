@@ -43,6 +43,17 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
     <li>Weiter mit Abschnitt "Konfiguration"</li>
 </ol>
 
+<h3>Lokaler Webserver am Beispiel von Xampp</h3>
+<ol>
+    <li>Xampp-Version mit PHP > 8.1 herunterladen und möglichst nicht auf C:/ installieren</li>
+    <li>Dateien aus dem Repository herunterladen und in den Ordner xampp/htdocs/CharitySwimRun kopieren</li>
+    <li>Git, Composer und ComposerCat installieren, wenn nicht vorhanden. Git ist eine Voraussetzung für Composer. Composer wird für ComposerCat benötigt.</li>
+    <li>Mit Composer(Cat) in den Ordner htdocs/CharitySwimRun/ navigieren und "composer upate" und im Anschluss "install all" ausführen</li>
+    <li>Die Datenbank mit Passwort sichern. Dazu PHPMyAdmin (127.0.0.1/phpmyadmin/) aufrufen und im Tab "User" einen neuen User mit Passwort und allen Rechten anlegen. Den vorhanden User mit dem Namen "root" im Anschluss löschen</li>
+    <li>Loginmodus ("auth type") der Datenbank in xmapp/phpmyadmin/config.inc.php von "cookie" auf "http" ändern</li>
+    <li>Über das XAMPP Control-Panel MariaDB/MySql neustarten</li>
+</ol>
+
 <h3>Lokaler Webserver am Beispiel von Laragon</h3>
 <ol>
     <li>Laragon nicht auf C:/ (Windowspartion) installieren</li>
@@ -64,20 +75,12 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
     <li>ChartJs via Composer kommt nicht zusammengebaut. Daher manueller Download von <a href="https://www.jsdelivr.com/package/npm/chart.js?path=dist">jsdelivr</a> erforderlich. Anschließend verschieben des /dist Ordner in den vendoer/nnnick/chartjs</li>
 </ol>
 
-<h3>Lokaler Webserver am Beispiel von Xampp</h3>
-<ol>
-    <li>Xampp (PHP > 8.1) nicht auf C:/ installieren</li>
-    <li>Dateien in xampp/htdocs/CharitySwimRun kopieren</li>
-    <li>Mit Composer in den Ordner htdocs/CharitySwimRun/ navigieren und "composer upate" und im Anschluss "install all" ausführen</li>
-    <li>Datenbank mit Passwort sichern. Dazu PHPMyAdmin (127.0.0.1/phpmyadmin/ aufrufen und einen neuen User mit Passwort und allen Rechten anlegen. Root User im Anschluss löschen</li>
-    <li>MariaDB/MySql neustarten</li>
-    <li>Loginmodus (auth type) der Datenbank in phpmyadmin/config.inc.php auf http ändern</li>
-</ol>
+
 
 <h2>Konfiguration</h2>
 <ol>
-    <li>Software aufrufen: localhost/CharitySwimRun/</li>
-    <li>Datenbankverbindungsdaten eingeben. Datenbank und Tabellen werden automatisch erstellt. Werden die Daten nicht gespeichert, weil die config/dbConfigDaten.php nicht geschrieben wird, liegt das an der Installation auf C:/. Dann die Datei einfach manuell bearbeiten und die Daten eintragen.</li>
+    <li>Software aufrufen: 127.0.0.1/CharitySwimRun/</li>
+    <li>Datenbankverbindungsdaten eingeben wie im Schritt Lokaler Webserver einrichten angelegt. Datenbank und Tabellen werden automatisch erstellt. Werden die Daten nicht gespeichert, weil die Datei CharitySwimRun/config/dbConfigDaten.php nicht geschrieben wird, liegt das an der Installation auf C:/. Dann die Datei einfach manuell bearbeiten und die Daten eintragen in die Felder eintragen.</li>
     <li>Einstellungen setzen</li>
     <li>Strecken anlegen</li>
     <li>Altersklassen anlegen</li>
