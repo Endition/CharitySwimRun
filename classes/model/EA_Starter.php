@@ -167,7 +167,7 @@ class EA_Starter
         return $this->transponder;
     }
 
-    public function setTransponder($transponder)
+    public function setTransponder(?int $transponder)
     {
         $this->transponder = $transponder;
     }
