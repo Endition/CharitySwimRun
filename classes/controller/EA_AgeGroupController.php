@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_AgeGroup;
 use CharitySwimRun\classes\model\EA_Message;
+use CharitySwimRun\classes\model\EA_Configuration;
 
 
 class EA_AgeGroupController extends EA_Controller
@@ -111,14 +112,22 @@ class EA_AgeGroupController extends EA_Controller
         $id = filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
         $bezeichnungLang = htmlspecialchars($_POST['altersklasse']);
         $bezeichnungKurz = htmlspecialchars($_POST['altersklasseKurz']);
-        $uDatum = htmlspecialchars($_POST['uDatum']);
-        $oDatum  = htmlspecialchars($_POST['oDatum']);
-        $StartAlter = filter_input(INPUT_POST,'StartAlter',FILTER_SANITIZE_NUMBER_INT);
-        $EndeAlter = filter_input(INPUT_POST,'EndeAlter',FILTER_SANITIZE_NUMBER_INT);
+        if($this->konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_BIRTHYEAR){
+            $uDatum = htmlspecialchars($_POST['uDatum']);
+            $oDatum  = htmlspecialchars($_POST['oDatum']);
+            $StartAlter = null;
+            $EndeAlter = null;
+        }else{
+            $uDatum = null;
+            $oDatum  = null;
+            $StartAlter = filter_input(INPUT_POST,'StartAlter',FILTER_SANITIZE_NUMBER_INT);
+            $EndeAlter = filter_input(INPUT_POST,'EndeAlter',FILTER_SANITIZE_NUMBER_INT);
+        }
+
         $startgeld = filter_input(INPUT_POST,'startgeld',FILTER_SANITIZE_NUMBER_FLOAT);
         $tpgeld = filter_input(INPUT_POST,'tpgeld',FILTER_SANITIZE_NUMBER_FLOAT);
-        $wertungsschluessel = (float)filter_input(INPUT_POST,'wertungsschluessel',FILTER_SANITIZE_NUMBER_FLOAT);
-        $rekord = (int)filter_input(INPUT_POST,'rekord',FILTER_SANITIZE_NUMBER_INT);
+        $wertungsschluessel = filter_input(INPUT_POST,'wertungsschluessel',FILTER_SANITIZE_NUMBER_FLOAT);
+        $rekord = filter_input(INPUT_POST,'rekord',FILTER_SANITIZE_NUMBER_INT);
         $urkunde =filter_input(INPUT_POST,'urkunde',FILTER_SANITIZE_NUMBER_INT);
         $bronze = filter_input(INPUT_POST,'bronze',FILTER_SANITIZE_NUMBER_INT);
         $silber = filter_input(INPUT_POST,'silber',FILTER_SANITIZE_NUMBER_INT);
@@ -137,26 +146,27 @@ class EA_AgeGroupController extends EA_Controller
             $this->EA_Messages->addMessage("Bezeichnung (kurz) nicht ausgefüllt",12576677777,EA_Message::MESSAGE_ERROR);
             return;
         }
-        
-        if (DateTime::createFromFormat("Y-m-d", $uDatum . "-01-01") === false) {
-            $this->EA_Messages->addMessage("Fehler beim Formt der unteren Jahresgrenze",162897098687,EA_Message::MESSAGE_ERROR);
-        } else {
-            $uDatum = new DateTimeImmutable($uDatum."-01-01");
-        }
+        if($this->konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_BIRTHYEAR){
+            if (DateTime::createFromFormat("Y-m-d", $uDatum . "-01-01") === false) {
+                $this->EA_Messages->addMessage("Fehler beim Formt der unteren Jahresgrenze",162897098687,EA_Message::MESSAGE_ERROR);
+            } else {
+                $uDatum = new DateTimeImmutable($uDatum."-01-01");
+            }
 
-        if (DateTime::createFromFormat("Y-m-d", $oDatum . "-01-01") === false) {
-            $this->EA_Messages->addMessage("Fehler beim Format der oberen Jahresgrenze",12523453242,EA_Message::MESSAGE_ERROR);
-        } else {
-            $oDatum = new DateTimeImmutable($oDatum."-12-31");
+            if (DateTime::createFromFormat("Y-m-d", $oDatum . "-01-01") === false) {
+                $this->EA_Messages->addMessage("Fehler beim Format der oberen Jahresgrenze",12523453242,EA_Message::MESSAGE_ERROR);
+            } else {
+                $oDatum = new DateTimeImmutable($oDatum."-12-31");
+            }
         }
-
-        //Falls es falschrum eingegeben wird, einfach tauschen
-        if ($oDatum < $uDatum) {
-            $zwischenspeichern = $uDatum;
-            $uDatum = $oDatum;
-            $oDatum = $zwischenspeichern;
+        if($this->konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_BIRTHYEAR){
+            //Falls es falschrum eingegeben wird, einfach tauschen
+            if ($oDatum < $uDatum) {
+                $zwischenspeichern = $uDatum;
+                $uDatum = $oDatum;
+                $oDatum = $zwischenspeichern;
+            }
         }
-
         //checks only for create case
         if($altersklasse->getId() === null){
             if($this->EA_AgeGroupRepository->isAvailable("altersklasse", $bezeichnungLang) === false){
@@ -176,14 +186,14 @@ class EA_AgeGroupController extends EA_Controller
         $altersklasse->setODatum($oDatum);
         $altersklasse->setStartAlter($StartAlter !== null ? $StartAlter : 0);
         $altersklasse->setEndeAlter($EndeAlter !== null ? $EndeAlter : 0);
-        $altersklasse->setStartgeld($startgeld  !== null ? $startgeld : 0);
-        $altersklasse->setTpgeld($tpgeld !== null ? $tpgeld : 0);
-        $altersklasse->setWertungsschluessel($wertungsschluessel !== null ? $wertungsschluessel : 0);
-        $altersklasse->setRekord($rekord !== null ? $rekord : 0);
-        $altersklasse->setUrkunde($urkunde !== null ? $urkunde : 0);
-        $altersklasse->setBronze($bronze !== null ? $bronze : 0);
-        $altersklasse->setSilber($silber !== null ? $silber : 0);
-        $altersklasse->setGold($gold !== null ? $gold : 0);
+        $altersklasse->setStartgeld($startgeld  !== null ? (float)$startgeld : 0);
+        $altersklasse->setTpgeld($tpgeld !== null ? (float)$tpgeld : 0);
+        $altersklasse->setWertungsschluessel($wertungsschluessel !== null ? (int)$wertungsschluessel : 0);
+        $altersklasse->setRekord($rekord !== null ? (int)$rekord : 0);
+        $altersklasse->setUrkunde($urkunde !== null ? (int)$urkunde : 0);
+        $altersklasse->setBronze($bronze !== null ? (int)$bronze : 0);
+        $altersklasse->setSilber($silber !== null ? (int)$silber : 0);
+        $altersklasse->setGold($gold !== null ? (int)$gold : 0);
 
         
         //create case

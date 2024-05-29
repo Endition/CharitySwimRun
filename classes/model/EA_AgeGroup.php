@@ -24,10 +24,10 @@ class EA_AgeGroup
     #[ORM\Column(type: Types::STRING,name:"AK_kurz",length:50)]
     private string $altersklasseKurz = "";
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE,name:"u_Datum")]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE,name:"u_Datum",nullable:true)]
     private ?DateTimeImmutable $uDatum = null;
     
-    #[ORM\Column(type: Types::DATE_IMMUTABLE,name:"o_Datum")]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE,name:"o_Datum",nullable:true)]
     private ?DateTimeImmutable $oDatum = null;
 
     #[ORM\Column(type: Types::INTEGER,name:"StartAlter",options:["default"=>0])]
@@ -150,7 +150,7 @@ class EA_AgeGroup
         return $this->altersklasseKurz;
     }
 
-    public function setUDatum(DateTimeImmutable $uDatum): void
+    public function setUDatum(?DateTimeImmutable $uDatum): void
     {
         $this->uDatum = $uDatum;
     }

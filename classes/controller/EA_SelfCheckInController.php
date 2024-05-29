@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Club;
 use CharitySwimRun\classes\model\EA_Message;
+use CharitySwimRun\classes\model\EA_Configuration;
 
 class EA_SelfCheckInController extends EA_Controller
 {
@@ -74,7 +75,7 @@ class EA_SelfCheckInController extends EA_Controller
         $EA_T->setVorname($vorname);
         $EA_T->setGeburtsdatum($geburtsdatum);
 
-        if ($this->konfiguration->getAltersklassen() === 1) {
+        if ($this->konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE) {
             $altersklasse = $this->EA_AgeGroupRepository->findByAlter($geburtsdatum, $this->konfiguration->getEnde());
         } else {
             $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($EA_T->getGeburtsdatum());

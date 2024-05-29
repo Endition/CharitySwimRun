@@ -1,7 +1,9 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="card">
-			<h5 class="card-header">Mannschaftskategorie anlegen</h5>
+		<h5>Mannschaftskategorie anlegen</h5>
+		<p>Mannschaftskategorien dienen der Gruppierung von Altersklassen</p>
+		</div>
 			<div class="card-body">
 						<form role="form" name="MannschaftskategorieForm" id="StreckenForm"
 							action="{$actionurl}" method="POST" class="form-horizontal">

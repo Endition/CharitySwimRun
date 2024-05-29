@@ -157,8 +157,8 @@ class EA_Configuration
             "name" => "Altersklassen",
             "type" => "select",
             "value" => array(
-                0 => "Jahrgang",
-                1 => "genaues Alter"
+                self::AGEGROUPMODUS_BIRTHYEAR => "Jahrgang",
+                self::AGEGROUPMODUS_AGE => "genaues Alter"
             ),
             "pflichtfeld" => true,
             "savedvalue" => "0",
@@ -315,7 +315,8 @@ class EA_Configuration
             "abhängigkeit" => null
         )
     );
-
+    public const AGEGROUPMODUS_BIRTHYEAR = 0;
+    public const AGEGROUPMODUS_AGE = 1;
 
     public function __construct()
     {
