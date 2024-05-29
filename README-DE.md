@@ -30,7 +30,8 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
     <li>Laragon: https://laragon.org/</li>
     <li>Xampp: https://www.apachefriends.org/</li>
     <li>Composer: https://getcomposer.org/; </li>
-    <li>Composer with GUI: https://getcomposercat.com/ </li>
+    <li>GUI für Composer: https://getcomposercat.com/ </li>
+    <li>Git: https://git-scm.com/downloads (wird für Composer benötigt)</li>
 </ul>
 
 
@@ -67,8 +68,8 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
 <ol>
     <li>Xampp (PHP > 8.1) nicht auf C:/ installieren</li>
     <li>Dateien in xampp/htdocs/CharitySwimRun kopieren</li>
-    <li>Mit Composer in den Ordner htdocs/CharitySwimRun/ navigieren und "install all" ausführen</li>
-    <li>Datenbank mit Passwort sichern. Dazu PHPMyAdmin aufrufen und einen neuen User mit Passwort und allen Rechten anlegen. Root User im Anschluss löschen</li>
+    <li>Mit Composer in den Ordner htdocs/CharitySwimRun/ navigieren und "composer upate" und im Anschluss "install all" ausführen</li>
+    <li>Datenbank mit Passwort sichern. Dazu PHPMyAdmin (127.0.0.1/phpmyadmin/ aufrufen und einen neuen User mit Passwort und allen Rechten anlegen. Root User im Anschluss löschen</li>
     <li>MariaDB/MySql neustarten</li>
     <li>Loginmodus (auth type) der Datenbank in phpmyadmin/config.inc.php auf http ändern</li>
 </ol>
