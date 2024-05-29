@@ -159,11 +159,11 @@ class EA_AgeGroupController extends EA_Controller
 
         //checks only for create case
         if($altersklasse->getId() === null){
-            if($this->EA_AgeGroupRepository->isAvailable("bezLang", $bezeichnungLang) === false){
+            if($this->EA_AgeGroupRepository->isAvailable("altersklasse", $bezeichnungLang) === false){
                 $this->EA_Messages->addMessage("Die Bezeichnung {$bezeichnungLang} für die Altersklasse ist schon vergeben",1459789787,EA_Message::MESSAGE_ERROR);
                 return;
             }
-            if($this->EA_AgeGroupRepository->isAvailable("bezKurz", $bezeichnungKurz) === false){
+            if($this->EA_AgeGroupRepository->isAvailable("altersklasseKurz", $bezeichnungKurz) === false){
                 $this->EA_Messages->addMessage("Die Bezeichnung {$bezeichnungKurz} für die Altersklasse ist schon vergeben",1456787777,EA_Message::MESSAGE_ERROR);
                 return;
             }

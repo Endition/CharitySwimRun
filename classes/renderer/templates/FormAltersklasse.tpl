@@ -59,10 +59,10 @@
 							{/if}
 							{include file='templateInputElement.tpl' name='wertungsschluessel' type='number' value=$altersklasse->getWertungsschluessel() required=false bezeichnung='Wertungsschluessel'}
 							{include file='templateInputElement.tpl' name='rekord' type='number' value=$altersklasse->getRekord() required=false bezeichnung='Rekord'}
-							{include file='templateInputElement.tpl' name='urkunde' type='number' value=$altersklasse->getUrkunde() required=false bezeichnung='Urkunde'}
-							{include file='templateInputElement.tpl' name='bronze' type='number' value=$altersklasse->getBronze() required=false bezeichnung='Bronze'}
-							{include file='templateInputElement.tpl' name='silber' type='number' value=$altersklasse->getSilber() required=false bezeichnung='Silber'}
-							{include file='templateInputElement.tpl' name='gold' type='number' value=$altersklasse->getGold() required=false bezeichnung='Bronze'}
+							{include file='templateInputElement.tpl' name='urkunde' type='number' value=$altersklasse->getUrkunde() required=false bezeichnung='min. Strecke in Meter für Urkunde'}
+							{include file='templateInputElement.tpl' name='bronze' type='number' value=$altersklasse->getBronze() required=false bezeichnung='min. Strecke in Meter für Bronzemedaille'}
+							{include file='templateInputElement.tpl' name='silber' type='number' value=$altersklasse->getSilber() required=false bezeichnung='min. Strecke in Meter für Silbermedaille'}
+							{include file='templateInputElement.tpl' name='gold' type='number' value=$altersklasse->getGold() required=false bezeichnung='min. Strecke in Meter für Goldmedaille'}
 							{include file='templateInputElement.tpl' name='sendAltersklasseData' type='submit'}
 
 						</form>
