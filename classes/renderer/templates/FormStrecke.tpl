@@ -1,7 +1,10 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <h5 class="card-header">Strecke anlegen</h5>
+            <div class="card-header">
+            <h5>Strecke anlegen</h5>
+            <p>Es muss immer mindestens eine Strecke angelegt sein. Mit mehreren Strecken (große Runde, kleine Runde), kann die Wertung nochmals unterteilt werden.</p>
+            </div>
             <div class="card-body">
                         <form role="form" name="StreckenForm" id="StreckenForm"
                               action="{$actionurl}" method="POST" class="form-horizontal">

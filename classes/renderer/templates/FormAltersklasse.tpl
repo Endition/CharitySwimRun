@@ -49,16 +49,16 @@
 								{include file='templateInputElement.tpl' name='uDatum' type='number' value=$uDatum required=true bezeichnung='Untere Jahresgrenze (der niedrige Wert)' minlength=4 maxlength=4 min=1910 max=2050}
 								{include file='templateInputElement.tpl' name='oDatum' type='number' value=$oDatum required=true bezeichnung='Obere Jahresgrenze (der hohe Wert)' minlength=4 maxlength=4 min=1910 max=2050}
 							{else}
-								{include file='templateInputElement.tpl' name='StartAlter' type='number' value=$StartAlter required=true bezeichnung='von Alter' minlength=1 maxlength=3 min=0 max=999}
-								{include file='templateInputElement.tpl' name='EndeAlter' type='number' value=$EndeAlter required=true bezeichnung='bis Alter' minlength=1 maxlength=3 min=0 max=999 datamin="StartAlter"}
+								{include file='templateInputElement.tpl' name='StartAlter' type='number' value=$StartAlter required=true bezeichnung='von Alter' minlength=1 maxlength=3 min=0 max=999 description="Das Startalter in Jahren"}
+								{include file='templateInputElement.tpl' name='EndeAlter' type='number' value=$EndeAlter required=true bezeichnung='bis Alter' minlength=1 maxlength=3 min=0 max=999 description="Das Endalter in Jahren" datamin="StartAlter"}
 							{/if}
 							{include file='templateInputElement.tpl' name='startgeld' type='number' value=$altersklasse->getStartgeld() required=true bezeichnung='Startgeld'}
 
 							{if $konfiguration->getTransponder() eq true}	
 								{include file='templateInputElement.tpl' name='tpgeld' type='number' value=$altersklasse->getTpgeld() required=true bezeichnung='Transpondergeld'}
 							{/if}
-							{include file='templateInputElement.tpl' name='wertungsschluessel' type='number' value=$altersklasse->getWertungsschluessel() required=false bezeichnung='Wertungsschluessel'}
-							{include file='templateInputElement.tpl' name='rekord' type='number' value=$altersklasse->getRekord() required=false bezeichnung='Rekord'}
+							{include file='templateInputElement.tpl' name='wertungsschluessel' type='number' value=$altersklasse->getWertungsschluessel() required=false bezeichnung='Wertungsschluessel für die Berechnung Mannschaftswertung mit Formel'}
+							{include file='templateInputElement.tpl' name='rekord' type='number' value=$altersklasse->getRekord() required=false bezeichnung='Rekord in Meter in dieser Altersklasse'}
 							{include file='templateInputElement.tpl' name='urkunde' type='number' value=$altersklasse->getUrkunde() required=false bezeichnung='min. Strecke in Meter für Urkunde'}
 							{include file='templateInputElement.tpl' name='bronze' type='number' value=$altersklasse->getBronze() required=false bezeichnung='min. Strecke in Meter für Bronzemedaille'}
 							{include file='templateInputElement.tpl' name='silber' type='number' value=$altersklasse->getSilber() required=false bezeichnung='min. Strecke in Meter für Silbermedaille'}

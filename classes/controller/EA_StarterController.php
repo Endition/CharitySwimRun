@@ -142,7 +142,7 @@ class EA_StarterController extends EA_Controller
         $teilnehmer->setVorname($vorname);
         $teilnehmer->setGeburtsdatum($geburtsdatum);
 
-        if ($this->konfiguration->getAltersklassen() === 1) {
+        if ($this->konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE) {
             $altersklasse = $this->EA_AgeGroupRepository->findByAlter($geburtsdatum, $this->konfiguration ->getEnde());
         } else {
             $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($teilnehmer->getGeburtsdatum());

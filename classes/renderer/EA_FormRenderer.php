@@ -117,7 +117,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";
         $this->getStandardIncludes($entityManager, ["konfiguration" => true]);
 
-        if($konfiguration->getAltersklassen() === 1){
+        if($konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE){
             $val = ($EA_AK->getStartAlter()) ? $EA_AK->getStartAlter() : null;
             $this->smarty->assign('StartAlter', $val);
 
@@ -229,7 +229,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "mannschaften" => true, "strecken" => true, "startgruppen" => true, "geschlechter" => true, "stati" => true));
 
-        if($konfiguration->getAltersklassen() === 1){
+        if($konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE){
             $this->smarty->assign('jahrgang', false);
         }else{
             $this->smarty->assign('jahrgang', true);
@@ -257,7 +257,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $distanceList = $distanceRepository->loadList();
         $selectedDistanceId = count($distanceList) === 1 ? $distanceList[array_key_first($distanceList)]->getId() : null;
         
-        if($configuration->getAltersklassen() === 1){
+        if($configuration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE){
             $this->smarty->assign('jahrgang', false);
         }else{
             $this->smarty->assign('jahrgang', true);
