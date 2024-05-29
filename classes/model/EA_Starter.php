@@ -624,13 +624,7 @@ class EA_Starter
 
     public function __toString()
     {
-        $content = "<b>Teilnehmer:</b> " . $this->getGesamtname() . ", ";
-        $content .= "<b>Geschlecht:</b> " . $this->getGeschlecht() . ", ";
-        $content .= "<b>StNr:</b> " . $this->getStartnummer() . ", ";
-        $content .= "<b>TP:</b> " . $this->getTransponder() . ", ";
-        $content .= "<b>Geburtsdatum:</b> " . $this->getGeburtsdatum()->format('d.m.Y') . ", ";
-        $content .= "<b>Strecke:</b> " . $this->getStrecke()->getBezLang() . "";
-        return $content;
+      return $this->getGesamtname();
     }
 
 }

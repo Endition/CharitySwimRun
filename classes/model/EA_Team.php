@@ -188,10 +188,6 @@ class EA_Team
 
     public function __toString()
     {
-        $content = "<b>Mannschaft:</b> " . $this->getMannschaft() . ", ";
-        $content .= "<b>StNr:</b> " . $this->getStartnummer() . ", ";
-        $content .= "<b>Verantwortlicher:</b> " . $this->getVer_vorname() . " " . $this->getVer_name() . ", ";
-        $content .= "<b>E-Mail:</b> " . $this->getVer_mail();
-        return $content;
+         return $this->getMannschaft();
     }
 }

@@ -27,7 +27,7 @@ class EA_MenueRenderer
                 "02-13-00" => array("name" => "Teilnehmerübersicht", "doc" => "teilnehmeruebersicht", "icon" => "fa fa-address-book  fa-fw", "necassaryRoleId"=>EA_User::USERROLE_ADMIN),
             )
         ),
-        "03-00-00" => array("name" => "Eingabe und Verwaltung", "doc" => "eingabe", "icon" => "fas fa-edit fa-fw",  "necassaryRoleId"=>EA_User::USERROLE_ANMELDUNG,
+        "03-00-00" => array("name" => "Verwaltung", "doc" => "eingabe", "icon" => "fas fa-edit fa-fw",  "necassaryRoleId"=>EA_User::USERROLE_ANMELDUNG,
             "subMenue" => array(
                 "03-01-00" => array("name" => "Teilnehmer", "doc" => "teilnehmer", "icon" => "fa fa-user fa-fw", "necassaryRoleId"=>EA_User::USERROLE_ANMELDUNG),
                 "03-02-00" => array("name" => "Mannschaft", "doc" => "mannschaften", "icon" => "fa fa-users fa-fw", "necassaryRoleId"=>EA_User::USERROLE_ANMELDUNG),
