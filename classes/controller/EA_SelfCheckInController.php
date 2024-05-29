@@ -61,7 +61,7 @@ class EA_SelfCheckInController extends EA_Controller
             $verein = null;
         }
         $strecke = (isset($_POST['strecke'])) ? $this->EA_DistanceRepository->loadById($_POST['strecke']) :null;
-        $startgruppe = (isset($_POST['startgruppe'])) ? htmlspecialchars($_POST['startgruppe']) : null;
+        $startgruppe = (isset($_POST['startgruppe'])) ? htmlspecialchars($_POST['startgruppe']) : 0;
         $mail = (isset($_POST['mail'])) ? htmlspecialchars($_POST['mail']) : "";
         $plz = (isset($_POST['plz'])) ? htmlspecialchars($_POST['plz']) : null;
         $wohnort = (isset($_POST['wohnort'])) ? htmlspecialchars($_POST['wohnort']) : "";
@@ -91,7 +91,6 @@ class EA_SelfCheckInController extends EA_Controller
         $EA_T->setStrasse($strasse);
         $EA_T->setStartzeit($startzeit);
         $EA_T->setKonfiguration($this->konfiguration);
-
 
         return $EA_T;
     }
