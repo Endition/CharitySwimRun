@@ -48,12 +48,12 @@ class EA_UserController  extends EA_Controller
         $userroleId = filter_input(INPUT_POST,'userroleId',FILTER_SANITIZE_NUMBER_INT);
         $passwordHash = "";
 
-        if(strlen($username) < 8){
-            $this->EA_Messages->addMessage("Username muss min. 8 Zeichen lang sein",1546854634,EA_Message::MESSAGE_ERROR);
+        if(strlen($username) < 6){
+            $this->EA_Messages->addMessage("Username muss min. 6 Zeichen lang sein",1546854634,EA_Message::MESSAGE_ERROR);
             return;
         }
-        if(strlen($password) < 8){
-            $this->EA_Messages->addMessage("Passwort muss min. 8 Zeichen lang sein.",134565277,EA_Message::MESSAGE_ERROR);
+        if(strlen($password) < 6){
+            $this->EA_Messages->addMessage("Passwort muss min. 6 Zeichen lang sein.",134565277,EA_Message::MESSAGE_ERROR);
             return;
         }
         if($userroleId === "" || !array_key_exists($userroleId,EA_User::USERROLE_LIST)){

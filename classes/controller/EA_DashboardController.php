@@ -52,7 +52,7 @@ class EA_DashboardController extends EA_Controller
 
         //Wenn Veranstaltung noch nicht begonnen hat, oder beende ist, nichts berechnen
         if($endeTs < $jetztTs || $startTs > $jetztTs){
-            return "";
+            return "Die Prognose wird nur während der Veranstaltung ({$start->format('d.m.Y H:i:s')} - {$ende->format('d.m.Y H:i:s')}) angezeigt.";
         }
 
         $diffStartToJetztInSeconds = $jetztTs - $startTs;

@@ -6,7 +6,9 @@ error_reporting(E_ALL);
 use \CharitySwimRun\classes\core\EA_MenueRenderer;
 use \CharitySwimRun\classes\controller\EA_AdminController;
 use \CharitySwimRun\classes\model\EA_Repository;
+use \CharitySwimRun\classes\model\EA_ConfigurationRepository;
 use \CharitySwimRun\classes\controller\EA_DatabaseController;
+
 
 require_once 'config/config.php';
 require_once CORE_PATH . 'EA_Autoloader.php';
@@ -112,7 +114,14 @@ if($EA_Repository->isDoctrineConnected() === true){
             
             <?php
                     $menuerenderer = new EA_MenueRenderer();
-                    echo $menuerenderer->getMenue($EA_Repository->isDoctrineConnected());
+                    $isTransponderActive = false;
+                    if($EA_Repository->isDoctrineConnected()){
+                        $EA_ConfigurationRepository = new EA_ConfigurationRepository($EA_Repository->getEntityManager());
+                        $configuration =  $EA_ConfigurationRepository->load();
+                        $isTransponderActive = $configuration !== null ? $configuration->getTransponder() : false;
+                    }
+            
+                    echo $menuerenderer->getMenue($isTransponderActive);
             ?>
         </ul>
     </div>
