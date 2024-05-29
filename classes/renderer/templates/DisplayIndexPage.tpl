@@ -19,12 +19,8 @@
 				<h5 class="card-header">Anleitung</h5>
 				<div class="card-body">
 					<ol>
-						<li>Datenbankverbindung herstellen</li>
-						<li>Datenbanktabellen anlegen</li>
-						<li>Programm konfigurieren</li>
-						<li>Altersklassen anlegen</li>
-						<li>Strecken anlegen</li>
-						<li>ggf. Urkunden anlegen</li>
+						<li><a href="https://github.com/Endition/CharitySwimRun">Link zu Github</a></li>
+						<li><a href="127.0.0.1/phpmyadmin">Link zu PHPMyAdmin</a></li>
 					</ol>
 				</div>
 			</div>
