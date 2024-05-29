@@ -1,7 +1,6 @@
 <?php
 namespace CharitySwimRun\classes\controller;
 
-use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Message;
 use CharitySwimRun\classes\model\EA_Certificate;
