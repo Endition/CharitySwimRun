@@ -5,6 +5,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 
 use CharitySwimRun\classes\model\EA_Starter;
+use CharitySwimRun\classes\model\EA_Configuration;
 use CharitySwimRun\classes\model\EA_Club;
 
 use CharitySwimRun\classes\model\EA_Message;
