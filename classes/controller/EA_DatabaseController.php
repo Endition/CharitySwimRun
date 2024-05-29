@@ -30,8 +30,13 @@ class EA_DatabaseController
         if (isset($_POST['sendDatabaseData'])) {
             $this->saveDatabaseData();
         }
+
         if (isset($_POST['resetDatabase']) && $_GET['action'] === "deleteDatabase") {
             $this->resetDatabase();
+        }
+
+        if (isset($_POST['dropDatabase']) && $_GET['action'] === "dropDatabase") {
+            $this->dropDatabase();
         }
 
         $content .= $this->EA_FR->getFormDatabaseData($this->EA_Repository);
@@ -46,8 +51,15 @@ class EA_DatabaseController
 
     private function resetDatabase(): void
     {
-        $this->EA_Repository->resetDatabase();  
+        $this->EA_Repository->resetDatabase("TRUNCATE");  
         $this->EA_Messages->addMessage("Datenbank geleert",413546576546,EA_Message::MESSAGE_SUCCESS);            
+    }
+
+    private function dropDatabase(): void
+    {
+        $this->EA_Repository->resetDatabase("DROP");  
+        $this->EA_Repository->createDatabaseTables();
+        $this->EA_Messages->addMessage("Datenbank neu erstellt",537567354477,EA_Message::MESSAGE_SUCCESS);            
     }
 
     private function saveDatabaseData()
