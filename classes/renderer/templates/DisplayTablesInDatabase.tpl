@@ -10,7 +10,8 @@
                         {/foreach}
                     </ul>
                     <form method="post">
-                    <input class="btn btn-danger" formaction="{$actionurl}&action=deleteDatabase" type="submit" name="resetDatabase" value="Datenbank resetten (Das löscht ALLE Daten!)" onClick="return confirm('Soll wirklich gelöscht werden?')" />
+                    <input class="btn btn-danger" formaction="{$actionurl}&action=deleteDatabase" type="submit" name="resetDatabase" value="Datenbank resetten (Das löscht ALLE Daten bis auf die User!)" onClick="return confirm('Soll wirklich gelöscht werden?')" />
+                    <input class="btn btn-danger" formaction="{$actionurl}&action=dropDatabase" type="submit" name="dropDatabase" value="Datenbankstruktur neu generieren (Das löscht ALLE Daten!)" onClick="return confirm('Soll wirklich gelöscht werden?')" />
                     </form>
                 </div>
             </div>
