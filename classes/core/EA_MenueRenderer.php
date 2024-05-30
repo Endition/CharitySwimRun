@@ -70,9 +70,7 @@ class EA_MenueRenderer
         if ($isTransponderActive === false) {
             // Transponderrückgabe ausblenden
             unset($this->menueStruktur['03-00-00']['subMenue']['03-06-00']);
-
-            // Log für Transponder ausblenden
-            unset($this->menueStruktur['05-00-00']);
+            unset($this->menueStruktur['03-00-00']['subMenue']['03-07-00']);
         }
 
                     //if user is logged in, show logout button. Otherwise show login button

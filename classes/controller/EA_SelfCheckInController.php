@@ -105,9 +105,11 @@ class EA_SelfCheckInController extends EA_Controller
                 $error = true;
             }
             //avoid double transponder
-            if ($this->EA_StarterRepository->loadByTransponder($teilnehmer->getTransponder()) !== null) {
-                $this->EA_Messages->addMessage("Dieser Transponder ist schon in Benutzung",1353747735,EA_Message::MESSAGE_ERROR);           
-                $error = true;
+            if ($this->konfiguration->getTransponder() === EA_Configuration::TRANSPONDER_YES) {
+                if ($this->EA_StarterRepository->loadByTransponder($teilnehmer->getTransponder()) !== null) {
+                    $this->EA_Messages->addMessage("Dieser Transponder ist schon in Benutzung",1353747735,EA_Message::MESSAGE_ERROR);           
+                    $error = true;
+                }
             }
             //check for emty entries
             if($teilnehmer->getVorname() === ""){

@@ -42,8 +42,8 @@
 							<td>{$value->getAltersklasse()}</td>
 							<td>{$value->getAltersklasseKurz()}</td>
 							{if $jahrgang == 0}
-							<td>{$value->getUDatum()->format('Y')}</td>
-							<td>{$value->getODatum()->format('Y')}</td>
+							<td>{$value->getUDatum() !== null ? $value->getUDatum()->format('Y') : ""}</td>
+							<td>{$value->getODatum() !== null ? $value->getODatum()->format('Y') : ""}</td>
 							{else}
 							<td>{$value->getStartAlter()}</td>
 							<td>{$value->getEndeAlter()}</td>
@@ -66,6 +66,20 @@
 						{/foreach}
 					</tbody>
 				</table>
+				<form role="form" name="AltersklassenZuordnungForm" id="AltersklassenZuordnungForm"
+							action="{$link}&action=sonderfunktionen" method="POST" class="form-horizontal">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<button type="submit" name="sendDLO2017Data"
+										 class="btn btn-primary">AKs gem.  DLO 2017 anlegen</button>
+									<button type="submit" name="sendPCSData"
+										 class="btn btn-primary">AKs gem.  PCS anlegen</button>
+								
+									<button type="submit" name="sendBerechneZuordnungNeu"
+										 class="btn btn-info">AK Zuordnung neuberechnen</button>
+								</div>
+							</div>
+						</form>
 			</div>
 		</div>
 	</div>

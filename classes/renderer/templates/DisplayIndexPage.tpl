@@ -16,11 +16,11 @@
 		</div>
 		<div class="col-lg-6">
 			<div class="card">
-				<h5 class="card-header">Anleitung</h5>
+				<h5 class="card-header">Links</h5>
 				<div class="card-body">
 					<ol>
-						<li><a href="https://github.com/Endition/CharitySwimRun">Link zu Github</a></li>
-						<li><a href="127.0.0.1/phpmyadmin">Link zu PHPMyAdmin</a></li>
+						<li><a target="_blank" href="https://github.com/Endition/CharitySwimRun">Link zu Github</a></li>
+						<li><a target="_blank" href="{$httphost}/phpmyadmin/">Link zu PHPMyAdmin</a></li>
 					</ol>
 				</div>
 			</div>
