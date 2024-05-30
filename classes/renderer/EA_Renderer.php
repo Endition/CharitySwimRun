@@ -97,6 +97,7 @@ class EA_Renderer extends EA_AbstractRenderer
         $this->smarty->assign('ips', $ips);
         $this->smarty->assign('serverzeit', date("d.m.Y H:i:s"));
         $this->smarty->assign('serverzeitzone', date_default_timezone_get());
+        $this->smarty->assign('httphost', $_SERVER['HTTP_HOST']);
         return $this->smarty->fetch('DisplayIndexPage.tpl');
     }
     public function getDashboardExtrapolration(array $stundenMeterList,int $meterProMinute,int $zielMeterFuerSpendensumme): string

@@ -112,28 +112,12 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormAltersklasse(EntityManager $entityManager, EA_AgeGroup $EA_AK, EA_Configuration $konfiguration): string
+    public function getFormAltersklasse(EntityManager $entityManager, EA_AgeGroup $ageGroup, array $yearAgeGroupList): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, ["konfiguration" => true]);
-
-        if($konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE){
-            $val = ($EA_AK->getStartAlter()) ? $EA_AK->getStartAlter() : null;
-            $this->smarty->assign('StartAlter', $val);
-
-            $val = ($EA_AK->getEndeAlter()) ? $EA_AK->getEndeAlter() : null;
-            $this->smarty->assign('EndeAlter', $val);
-            $this->smarty->assign('jahrgang', false);
-        }else{
-            $val = ($EA_AK->getUDatum() !== null) ? $EA_AK->getUDatum()->format('Y') : null;
-            $this->smarty->assign('uDatum', $val);
-
-            $val = ($EA_AK->getODatum() !== null) ? $EA_AK->getODatum()->format('Y') : null;
-            $this->smarty->assign('oDatum', $val);
-            $this->smarty->assign('jahrgang', true);
-        }
-
-        $this->smarty->assign('altersklasse', $EA_AK);
+        $this->smarty->assign('yearAgeGroupList', $yearAgeGroupList);
+        $this->smarty->assign('ageGroup', $ageGroup);
         $this->smarty->assign('actionurl', 'index.php?doc=altersklassen');
         $content .= $this->smarty->fetch('FormAltersklasse.tpl');
         return $content;

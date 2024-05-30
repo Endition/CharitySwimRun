@@ -36,52 +36,45 @@ class EA_AgeGroupController extends EA_Controller
         }
 
         $content .= $this->getAltersklasseList();
-        $content .= $this->EA_FR->getFormAltersklasse($this->entityManager, $altersklasse,$this->konfiguration);
+        $content .= $this->EA_FR->getFormAltersklasse($this->entityManager, $altersklasse,$this->getYearAgeGroupRelation());
         return $content;
     }
 
 
     private function getSonderfunktionen(): void
     {
-        if (isset($_POST['sendZuodnungData'])) {
-            $this->checkZuordnung();
-        } elseif (isset($_POST['sendDLO2017Data']) || isset($_POST['sendPCSData'])) {
+        if (isset($_POST['sendDLO2017Data']) || isset($_POST['sendPCSData'])) {
             $this->createAltersklasseFromDraft();
         } elseif (isset($_POST['sendBerechneZuordnungNeu'])) {
             $this->berechneZuordnungNeu();
         }
     }
 
-    private function checkZuordnung(): void
+    private function getYearAgeGroupRelation(): array
     {
         $altersklasseList = $this->EA_AgeGroupRepository->loadListOrderBy("uDatum");
-
-        $news = [];
+        $yearToday = date('Y');
+        $zuordnung = array_fill($yearToday  - 100, 101, []);
         if (count($altersklasseList) > 0) {
-            $yearToday = date('Y');
-            $zuordnung = array_fill($yearToday  - 100, 100, '');
-            for ($jahr = $yearToday - 100; $jahr < $yearToday; $jahr++) {
-                $zuordnung[$jahr] .= $jahr." ->";
+            for ($jahr = $yearToday - 100; $jahr <= $yearToday; $jahr++) {
                 foreach ($altersklasseList as $altersklasse) {
-                    if($this->konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_BIRTHYEAR){
+                    if($this->konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_BIRTHYEAR && $altersklasse->getUDatum()){
                         if ($jahr >= $altersklasse->getUDatum()->format("Y") && $jahr <= $altersklasse->getODatum()->format("Y")) {
-                            $zuordnung[$jahr] .= " "  . $altersklasse->getAltersklasseKurz() . " ---------";
+                            $zuordnung[$jahr][] .=  $altersklasse->getAltersklasseKurz();
                         }
                     }else{
                         $yearMinusStart = $yearToday - $altersklasse->getEndeAlter();
                         $yearMinusEnde = $yearToday -$altersklasse->getStartAlter();
 
                         if ($jahr >= $yearMinusStart && $jahr <= $yearMinusEnde) {
-                            $zuordnung[$jahr] .= " "  . $altersklasse->getAltersklasseKurz() . " ---------";
+                            $zuordnung[$jahr][] = $altersklasse->getAltersklasseKurz();
                         }
                     }
 
                 }
             }
-            $this->EA_Messages->addMessage(implode("<br/>\n",$zuordnung),13325534342,EA_Message::MESSAGE_INFO);            
-        } else {
-            $this->EA_Messages->addMessage("Zuordnung prüfen nicht notwendig",14343556353,EA_Message::MESSAGE_WARNING);   
-        }
+        } 
+        return $zuordnung;
     }
 
     private function createAltersklasseFromDraft(): void
