@@ -7,7 +7,7 @@
 						(zuerst die im Bereich 130 - 192) in den Browser eingeben. Wenn hier mehrere stehen, sollte eine
 						gehen:</p>
 					<ul>
-						{foreach $ips as $ip}
+						{foreach $ipList as $ip}
 							<li> {$ip}</li>
 						{/foreach}
 					</ul>

@@ -224,6 +224,12 @@ class EA_AdminController extends EA_Controller
     private function getServerNetworkIP(): array
     {
         $meldungen = [];
+
+        //search for port, in case it is not :80
+        $parsedUrl = parse_url($_SERVER['HTTP_HOST']);
+        $ip = $parsedUrl['host'];
+        $port = ":".$parsedUrl['port'];
+
     	$IP_Config = shell_exec("ipconfig");
         $pfadarray = explode("/", getenv('SCRIPT_FILENAME')); // Splittet den PfadNamen anhand / auf und zerteilt ihn
         // echo $IP_Config; //Gibt ipconfig komplett aus
@@ -232,7 +238,7 @@ class EA_AdminController extends EA_Controller
         foreach ($matches [0] as $ip) { // �?ber alle Werte laufen, matches[0] ergibts sich aus der speicherung der werte in preg_match_all
             $aufgesplittet = explode(".", $ip); // Ips aufsplitten
             if ($aufgesplittet [0] != "255" and $aufgesplittet [1] != "255") { // Subnetzmasken Filtern
-                $meldungen [] = $ip . "/" . $pfadarray [count($pfadarray) - 2] . "/";
+                $meldungen [] = $ip . "".$port."/" . $pfadarray [count($pfadarray) - 2] . "/";
             }
         }
         // print_r($matches[0]); //Gibt das Ergebnisarray mit allen IPs aus

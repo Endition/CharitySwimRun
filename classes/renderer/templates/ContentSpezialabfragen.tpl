@@ -200,7 +200,7 @@
                                  
                                     {foreach from=$altersklassen item=akvalue}
                                         <tr>
-                                        {assign var=i 1}
+                                     
                                             {foreach from=$geschlechter key=geschlechterkey item=geschlechtervalue}	
                                                 {foreach from=$StreckenAltersklassenTeilnehmerVerteilung key=schluessel item=value} 
                                                     {if isset($value['Unterteilung'][{$akvalue->getId()}]['Unterteilung']['M']) == true || isset($value['Unterteilung'][{$akvalue->getId()}]['Unterteilung']['W']) == true}

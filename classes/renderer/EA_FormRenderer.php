@@ -365,12 +365,12 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getFormBuchungsuebersicht(EntityManager $entityManager, array $buchungen): string
+    public function getFormBuchungsuebersicht(EntityManager $entityManager, array $hitList): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true));
         $this->smarty->assign('actionurl', 'index.php?doc=buchungsuebersicht');
-        $this->smarty->assign('buchungen', $buchungen);
+        $this->smarty->assign('hitList', $hitList);
         $content .= $this->smarty->fetch('DisplayTabelleBuchungsuebersicht.tpl');
         return $content;
     }
