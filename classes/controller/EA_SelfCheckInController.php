@@ -21,13 +21,13 @@ class EA_SelfCheckInController extends EA_Controller
         $error = true;
 
         if (isset($_POST['sendeSelbstanmeldung'])) {
-            $EA_T = $this->initiateTeilnehmer();
-            $error = $this->securityChecksTeilnehmer($EA_T);
+            $EA_Starter = $this->initiateTeilnehmer();
+            $error = $this->securityChecksTeilnehmer($EA_Starter);
 
             if ($error === false) {
-                $this->EA_StarterRepository->create($EA_T);
-                $content .= $this->EA_FR->getInfoSelbstanmeldung($this->entityManager, $EA_T);
-                $EA_T = new EA_Starter();
+                $this->EA_StarterRepository->create($EA_Starter);
+                $content .= $this->EA_FR->getInfoSelbstanmeldung($this->entityManager, $EA_Starter);
+                $EA_Starter = new EA_Starter();
             }
         }else{
             $content .= $this->EA_FR->getFormSelbstanmeldung($this->entityManager, $this->konfiguration);
@@ -40,7 +40,7 @@ class EA_SelfCheckInController extends EA_Controller
     
     private function initiateTeilnehmer(): ?EA_Starter
     {
-        $EA_T = new EA_Starter();
+        $EA_Starter = new EA_Starter();
 
         $startnummer = rand(9000,10000);
         $transponder = $startnummer;
@@ -48,7 +48,7 @@ class EA_SelfCheckInController extends EA_Controller
         $vorname = htmlspecialchars($_POST['vorname']);
         $geburtsdatum = (isset($_POST['geburtsdatum'])) ? new \DateTimeImmutable(htmlspecialchars($_POST['geburtsdatum'])) : null;
         $geschlecht = htmlspecialchars($_POST['geschlecht']);
-        $mannschaft = (isset($_POST['mannschaft']) && $_POST['mannschaft'] > 0) ? $this->EA_TeamRepository->loadById(htmlspecialchars($_POST['mannschaft'])) : null;
+        $mannschaft = (isset($_POST['mannschaft']) && $_POST['mannschaft'] > 0) ? $this->EA_StarterRepository->loadById(htmlspecialchars($_POST['mannschaft'])) : null;
         if (isset($_POST['verein']) && $_POST['verein'] !== "") {
             $verein = $this->EA_ClubRepository->loadByBezeichnung(htmlspecialchars($_POST['verein']));
             if($verein === null){
@@ -69,31 +69,31 @@ class EA_SelfCheckInController extends EA_Controller
         $strasse = (isset($_POST['strasse'])) ? htmlspecialchars($_POST['strasse']) : "";
         $startzeit = ($this->konfiguration->getStarttyp() === "aba") ? new \DateTimeImmutable() : null;
 
-        $EA_T->setStartnummer($startnummer);
-        $EA_T->setTransponder($transponder);
-        $EA_T->setName($name);
-        $EA_T->setVorname($vorname);
-        $EA_T->setGeburtsdatum($geburtsdatum);
+        $EA_Starter->setStartnummer($startnummer);
+        $EA_Starter->setTransponder($transponder);
+        $EA_Starter->setName($name);
+        $EA_Starter->setVorname($vorname);
+        $EA_Starter->setGeburtsdatum($geburtsdatum);
 
         if ($this->konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE) {
             $altersklasse = $this->EA_AgeGroupRepository->findByAlter($geburtsdatum, $this->konfiguration->getEnde());
         } else {
-            $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($EA_T->getGeburtsdatum());
+            $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($EA_Starter->getGeburtsdatum());
         }
-        $EA_T->setAltersklasse($altersklasse);
-        $EA_T->setGeschlecht($geschlecht);
-        $EA_T->setMannschaft($mannschaft);
-        $EA_T->setVerein($verein);
-        $EA_T->setStrecke($strecke);
-        $EA_T->setStartgruppe($startgruppe);
-        $EA_T->setMail($mail);
-        $EA_T->setPlz($plz);
-        $EA_T->setWohnort($wohnort);
-        $EA_T->setStrasse($strasse);
-        $EA_T->setStartzeit($startzeit);
-        $EA_T->setKonfiguration($this->konfiguration);
+        $EA_Starter->setAltersklasse($altersklasse);
+        $EA_Starter->setGeschlecht($geschlecht);
+        $EA_Starter->setMannschaft($mannschaft);
+        $EA_Starter->setVerein($verein);
+        $EA_Starter->setStrecke($strecke);
+        $EA_Starter->setStartgruppe($startgruppe);
+        $EA_Starter->setMail($mail);
+        $EA_Starter->setPlz($plz);
+        $EA_Starter->setWohnort($wohnort);
+        $EA_Starter->setStrasse($strasse);
+        $EA_Starter->setStartzeit($startzeit);
+        $EA_Starter->setKonfiguration($this->konfiguration);
 
-        return $EA_T;
+        return $EA_Starter;
     }
 
     private function securityChecksTeilnehmer(EA_Starter $teilnehmer): bool

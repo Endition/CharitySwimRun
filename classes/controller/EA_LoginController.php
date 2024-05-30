@@ -34,11 +34,8 @@ class EA_LoginController extends EA_Controller
                     $_SESSION['id'] = $userFound->getId();
                     $_SESSION['userroleId'] = $userFound->getUserroleId(); 
                     $this->EA_Messages->addMessage("Erfolgreich eingloggt ".htmlspecialchars($_SESSION['name'], ENT_QUOTES)."",1213456457,EA_Message::MESSAGE_SUCCESS);
-                    if(isset($_SERVER['HTTP_REFERER'])) {
-                        header('Location: '.$_SERVER['HTTP_REFERER']);  
-                       } else {
-                        header('Location: index.php');  
-                       }
+                    //we can not send a header, because output startet. Therefore sending HTML is ok and works.
+                    echo "<script>location.href='index.php?doc=dashboard';</script>";
                 } else {
                     // Incorrect password
                     $this->EA_Messages->addMessage("Passwort oder Username falsch",5376574321,EA_Message::MESSAGE_WARNING);

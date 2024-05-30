@@ -92,9 +92,9 @@ class EA_Renderer extends EA_AbstractRenderer
         return $this->smarty->fetch('DisplayTabelleVereine.tpl');
     }
 
-    public function renderIndex($ips): string
+    public function renderIndex(array $ipList): string
     {
-        $this->smarty->assign('ips', $ips);
+        $this->smarty->assign('ipList', $ipList);
         $this->smarty->assign('serverzeit', date("d.m.Y H:i:s"));
         $this->smarty->assign('serverzeitzone', date_default_timezone_get());
         $this->smarty->assign('httphost', $_SERVER['HTTP_HOST']);

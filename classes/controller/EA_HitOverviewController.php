@@ -3,9 +3,6 @@ namespace CharitySwimRun\classes\controller;
 
 use Doctrine\ORM\EntityManager;
 
-
-
-
 class EA_HitOverviewController extends EA_Controller
 {
     public function __construct(EntityManager $entityManager)
@@ -16,7 +13,7 @@ class EA_HitOverviewController extends EA_Controller
     public function getPageBuchungsuebersicht(): string
     {
         $content = "";
-        $content .= $this->EA_FR->getFormBuchungsuebersicht($this->entityManager, $this->EA_HitRepository->loadList());
+        $content .= $this->EA_FR->getFormBuchungsuebersicht($this->entityManager, $this->EA_HitRepository->loadList("i.timestamp","DESC"));
         return $content;
     }
 
