@@ -199,8 +199,8 @@
                                     </tr>
                                  
                                     {foreach from=$altersklassen item=akvalue}
+                                        {assign var=i value=1}
                                         <tr>
-                                     
                                             {foreach from=$geschlechter key=geschlechterkey item=geschlechtervalue}	
                                                 {foreach from=$StreckenAltersklassenTeilnehmerVerteilung key=schluessel item=value} 
                                                     {if isset($value['Unterteilung'][{$akvalue->getId()}]['Unterteilung']['M']) == true || isset($value['Unterteilung'][{$akvalue->getId()}]['Unterteilung']['W']) == true}
@@ -237,11 +237,43 @@
                                     {/foreach}
                                 {/if}
                         </ol>
-
-
             </div>
         </div>
     </div>
+    <div class="col-lg-6">
+    <div class="card">
+        <h5 class="card-header">Starter über 10.000m</h5>
+        <div class="card-body">
+                    {assign var="starter" value=$teilnehmerRepository->loadListSmartyZugriff(null, null, null,null,'gesamtplatz',200) nocache}
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>GebJ</th>
+                                    <th>Meter</th>
+                                    <th>{$konfiguration->getStreckenart()}</th>
+                                    <th>Geld</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach from=$starter key=starterkey item=startervalue} 
+                                    <tr>
+                                        <td>{$startervalue->getGesamtplatz()}.</td>
+                                        <td>{$startervalue->getGesamtname()}</td>
+                                        <td>{$startervalue->getGeburtsdatum()->format("Y")}</td>
+                                        <td>{$startervalue->getMeter()} </td>
+                                        <td>{$startervalue->getStreckenart()}</td>
+                                        <td>{$startervalue->getGeld()}</td>
+                                    </tr>
+                                {/foreach}	
+                            </tbody>
+                        </table>
+                    </div>
+        </div>
+    </div>
+</div>
 </div>
 <!-- ########################################  -->
 {foreach from=$StreckenAltersklassenTeilnehmerVerteilung key=schluessel item=value} 

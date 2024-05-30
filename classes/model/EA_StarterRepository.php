@@ -142,7 +142,8 @@ class EA_StarterRepository extends EA_Repository
         ?string $searchName = null,
         ?string $searchVorname = null,
         ?int $limit = null,
-        ?EA_SpecialEvaluation $specialEvaluation = null
+        ?EA_SpecialEvaluation $specialEvaluation = null,
+        ?int $moreHitsThan = null
         ): ?array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
@@ -200,6 +201,11 @@ class EA_StarterRepository extends EA_Repository
             );
             $queryBuilder->setParameter(":startzeit",'0000-00-00 00:00:00');
         }
+        if($moreHitsThan){
+            $queryBuilder->andWhere("t.impulseCache > :moreHitsThan");
+            $queryBuilder->setParameter(":moreHitsThan",$moreHitsThan);
+        }
+
         if($teilnehmerId){
             $queryBuilder->andWhere("t.id = :id");
             $queryBuilder->setParameter(":id",$teilnehmerId);
@@ -225,7 +231,6 @@ class EA_StarterRepository extends EA_Repository
         }  
         if($orderBy !== ""){
             $queryBuilder->orderBy('t.'.$orderBy, $orderDirection);        
-
         }else{
             $queryBuilder->orderBy('t.id',"ASC");        
         }
@@ -239,7 +244,7 @@ class EA_StarterRepository extends EA_Repository
         return $query->getResult();
     }
 
-    public function loadListSmartyZugriff(?int $streckeId, ?int $altersklasseId, ?string $geschlecht, ?string $platzfilter = null, string $order = "Gesamtplatz"): array
+    public function loadListSmartyZugriff(?int $streckeId, ?int $altersklasseId, ?string $geschlecht, ?string $platzfilter = null, string $order = "gesamtplatz", int $moreHitsThan = null): array
     {
         $strecke = null;
         $altersklasse = null;
@@ -255,8 +260,7 @@ class EA_StarterRepository extends EA_Repository
         if($platzfilter){
             $limit = 3;
         }
-        $test = $this->loadList($strecke,$altersklasse,$geschlecht,null,null,null,null,$order,"ASC",null,null,null,null,null,null,null,null,$limit);
-        return $this->loadList($strecke,$altersklasse,$geschlecht,null,null,null,null,$order,"ASC",null,null,null,null,null,null,null,null,$limit);
+        return $this->loadList($strecke,$altersklasse,$geschlecht,null,null,null,null,$order,"ASC",null,null,null,null,null,null,null,null,$limit,null,$moreHitsThan);
     }
 
     public function delete(EA_Starter $Teilnehmer): void
