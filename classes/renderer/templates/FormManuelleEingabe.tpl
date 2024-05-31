@@ -108,10 +108,11 @@
         let identNumberButton = identNumber != "" && !isNaN(identNumber) ? "<button type=\"button\" class=\"btn btn-secondary\">"+identNumber+"</button>" : "";
          //check if identNumber is set. When yes, creat identifyer for the sort method
         let identNumberSortIdentifyer = identNumber != "" && !isNaN(identNumber) ? "data-sort=\""+identNumber+"\"" : "data-sort=\"999\"";
-        inputField.html(inputField.html()+"<div class=\"d-grid gap-2 col mx-auto\" "+identNumberSortIdentifyer+"><div class=\"btn-group mr-2\" role=\"group\">"+identNumberButton+"<button type=\"button\" name=\"sendImpulseEinlaufenData\" value=\""+item.id+"\" class=\"btn btn-success add-button\">"+item.startnummer+":<br> "+item.vorname+"</button><button type=\"button\" class=\"btn btn-danger remove-button\">X</button></div></div>");
+        inputField.html(inputField.html()+"<div class=\"d-grid gap-2 col mx-auto\" "+identNumberSortIdentifyer+"><div class=\"btn-group mr-2\" role=\"group\">"+identNumberButton+"<button type=\"button\" name=\"sendImpulseEinlaufenData\" value=\""+item.id+"\" class=\"btn btn-success add-button\">"+item.vorname+" (StNr: "+item.startnummer+")<br><span id=\"meter"+item.id+"\">"+item.meter+"</span>m</button><button type=\"button\" class=\"btn btn-danger remove-button\">X</button></div></div>");
     }
         
     function doAjaxManuelleEingabeInsert(id_var) {
+            var $meterPerHit =  {/literal} {$konfiguration->getRundenlaenge()};{literal} 
             var typ_var = "strecke";
             jQuery.ajax({
                 url: "api/impulse/create",
@@ -120,9 +121,13 @@
                 dataType: "json",
                 error: function (result) {
                     toastManager.show('Fehler beim Speichern Impuls (2321346557)', 'Fehler', 'danger');
+                    
                 },
                 success: function (result) {
                     toastManager.show('Impuls gespeichert', 'Erfolgreich', 'success');
+                    //Calculate meter dynamicly by addings $meterPerHit from configuration
+                    $meterSpanField = $('#meter'+id_var);
+                    $meterSpanField.html(parseInt($meterSpanField.html())+$meterPerHit);
                 }});
         }
     {/literal}
