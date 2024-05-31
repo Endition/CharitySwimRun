@@ -108,7 +108,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";
         $this->smarty->assign('actionurl', 'index.php?doc=konfiguration');
         $this->smarty->assign('settings', $fields);
-        $content .= $this->smarty->fetch('FormKonfiguration.tpl');
+        $content .= $this->smarty->fetch('FormConfiguration.tpl');
         return $content;
     }
 
@@ -119,7 +119,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('yearAgeGroupList', $yearAgeGroupList);
         $this->smarty->assign('ageGroup', $ageGroup);
         $this->smarty->assign('actionurl', 'index.php?doc=altersklassen');
-        $content .= $this->smarty->fetch('FormAltersklasse.tpl');
+        $content .= $this->smarty->fetch('FormAgeGroupCreateEdit.tpl');
         return $content;
     }
 
@@ -132,7 +132,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('schriftart_selectvalues', EA_Certificate::SCHRIFTART_SELECTVALUES);
         $this->smarty->assign('urkundenelement', $EA_U);
         $this->smarty->assign('actionurl', 'index.php?doc=urkundengenerator');
-        $content .= $this->smarty->fetch('FormUrkundenelement.tpl');
+        $content .= $this->smarty->fetch('FormCertificateElement.tpl');
         return $content;
     }
 
@@ -220,14 +220,14 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         }
 
         $this->smarty->assign('actionurl', 'index.php?doc=selbstanmeldung');
-        $content .= $this->smarty->fetch('FormSelbstanmeldung.tpl');
+        $content .= $this->smarty->fetch('FormPublicSelfCheckIn.tpl');
         return $content;
     }
 
     public function getFormKurzauskunft(): string
     {
         $this->smarty->assign('actionurl', 'index.php?doc=kurzauskunft');
-        $content = $this->smarty->fetch('FormKurzauskunft.tpl');
+        $content = $this->smarty->fetch('FormPublicSelfInfo.tpl');
         return $content;
     }
 
@@ -296,7 +296,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('datum', date('d.m.Y'));
         $this->smarty->assign('zeit', date('H:i:s'));
         $this->smarty->assign('actionurl', 'index.php?doc=startzeiten');
-        $content .= $this->smarty->fetch('FormStartzeiten.tpl');
+        $content .= $this->smarty->fetch('FormStartimeEdit.tpl');
         return $content;
     }
 
@@ -320,7 +320,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('teilnehmerId', $teilnehmer->getId());
         $this->smarty->assign('actionurl', 'index.php?doc=buchungenstarter');
         $this->getStandardIncludes($entityManager, array("konfiguration" => true));
-        $content .= $this->smarty->fetch('FormBuchungenStarter.tpl');
+        $content .= $this->smarty->fetch('FormStarterHitOverview.tpl');
 
         // Diagramm
         $this->getStandardIncludes($entityManager, array("konfiguration" => true));
@@ -335,7 +335,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "strecken" => true));
         $this->smarty->assign('strecken', $streckeListForSelect);
         $this->smarty->assign('actionurl', 'index.php?doc=manuelleeingabe');
-        $content .= $this->smarty->fetch('FormManuelleEingabe.tpl');
+        $content .= $this->smarty->fetch('FormHitManuelInsert.tpl');
         return $content;
     }
 
@@ -344,7 +344,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";
         $this->smarty->assign('actionurl', 'index.php?doc=transponderrueckgabe');
         $this->smarty->assign('teilnehmer', $teilnehmer);
-        $content .= $this->smarty->fetch('FormTransponderrueckgabe.tpl');
+        $content .= $this->smarty->fetch('FormRfidReturn.tpl');
         return $content;
     }
 
