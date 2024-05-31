@@ -5,9 +5,8 @@ namespace CharitySwimRun\classes\pdf;
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\core\EA_AbstractPDF;
 
-class PDFErgebnisliste extends EA_AbstractPDF
+class PdfReportList extends EA_AbstractPDF
 {
-  
 
     public function __construct(EntityManager $entityManager, array $filter)
     {
@@ -38,25 +37,27 @@ class PDFErgebnisliste extends EA_AbstractPDF
         $this->SetFont('helvetica', 'B', 14);
         $this->Cell(0, 15, $ueberschrift, 0, false, 'C', 0, '', 0, false, 'M', 'M');
         $this->SetXY(10, 20);
-        if ($this->filter['typ'] === "Vereine") {
-            $content = $this->smarty->fetch('PDFDisplayTabelleErgebnisseVereine.tpl');
+         if ($this->filter['typ'] === "Vereine") {
+            $content = $this->smarty->fetch('PdfReportListClub.tpl');
         } elseif ($this->filter['typ'] === "Mannschaften") {
-            $content = $this->smarty->fetch('DisplayTabelleErgebnisseMannschaften.tpl');
+           //Gibt es noch nicht
         } else {
-            $content = $this->smarty->fetch('PDFDisplayTabelleErgebnisseTeilnehmer.tpl');
+            $content = $this->smarty->fetch('PdfReportListStarter.tpl');
         }
-
         $this->SetXY(10, 30);
         $this->SetFont('helvetica', '', 11);
         $this->writeHTML($content, true, false, false, false, '');
     }
 
+    /**
+     * overwrite TCPDF method to generate specific header
+     */
     public function header()
     {
-        $this->SetFont('helvetica', 'B', 16);
+        $this->SetFont('helvetica', 'B', 20);
         $this->setXY(10, 10);
         $this->Cell(0, 15, $this->typ, 0, false, 'C', 0, '', 0, false, 'M', 'M');
-        $filterausgabe = "<p>Gefiltert: ";
+        $filterausgabe = "<p>Gefiltert nach: ";
         if ($this->filter['typ'] !== null) {
             $filterausgabe .= " <b>Typ:</b> " . $this->filter['typ'];
         }
@@ -78,5 +79,3 @@ class PDFErgebnisliste extends EA_AbstractPDF
         $this->SetTopMargin($this->GetY());
     }
 }
-
-?>

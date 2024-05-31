@@ -9,7 +9,7 @@ use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_CertificateElementRepository;
 
 
-class PDFUrkunde extends EA_AbstractPDF
+class PdfCertificate extends EA_AbstractPDF
 {
     private EA_CertificateElementRepository $EA_CertificateElementRepository;
 
