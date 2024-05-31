@@ -3,7 +3,7 @@
 
 <h1>CharitySwimRun</h1>
 24h-Schwimmen, 12h-Schwimmen, Benefiz-Schwimmen oder -Läufe können mit dieser kostenlosen OpenSource-Software abgewickelt werden. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken sind nur einige der Möglichkeiten.
-Gedacht ist die Software für den temporären Einsatz auf einem Webserver in einem lokalen Netzwerk. Durch die Software, findet eine entsprechende Veranstaltung praktisch papierlos statt.
+Gedacht ist die Software für den temporären Einsatz auf einem Webserver in einem lokalen Netzwerk. Durch die Software, findet eine entsprechende Veranstaltung praktisch papierlos statt. Das Einrichten von Xampp oder Laragon ist auf den ersten Blick komplex, muss aber nur 1x gemacht werden.
 Die Software läuft im normalen Internetbrowser und ist responsive. Sie kann also von allen Geräten im Netzwerk ohne weitere Voraussetzungen benutzt werden. Danke an <a href="https://github.com/zuramai/mazer">zuramai</a> für das Dashboard.
 
 Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch in deutsch. Wird stetig umgebaut)
@@ -48,7 +48,7 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
     <li>Xampp-Version mit PHP > 8.1 herunterladen und unter Windows möglichst nicht auf C:/ installieren</li>
     <li>Dateien aus dem Repository herunterladen (Button: <> Code -> download Zip). Zip entpacken und in den Ordner xampp/htdocs/CharitySwimRun kopieren</li>
     <li>Git, Composer und ComposerCat installieren, wenn nicht vorhanden. Git ist eine Voraussetzung für Composer. Composer wird für ComposerCat benötigt.</li>
-    <li>Mit Composer(Cat) in den Ordner htdocs/CharitySwimRun/ navigieren und "composer upate" und im Anschluss "install all" ausführen</li>
+    <li>Mit Composer(Cat) in den Ordner xmapp/htdocs/CharitySwimRun/ navigieren und "composer upate" und im Anschluss "install all" ausführen</li>
     <li>Die Datenbank mit Passwort sichern. Dazu PHPMyAdmin (127.0.0.1/phpmyadmin/) aufrufen und im Tab "User" einen neuen User mit Passwort und allen Rechten anlegen. Den vorhanden User mit dem Namen "root" im Anschluss löschen</li>
     <li>Loginmodus ("auth type") der Datenbank in xmapp/phpmyadmin/config.inc.php von "cookie" auf "http" ändern</li>
     <li>Über das XAMPP Control-Panel MariaDB/MySql neustarten</li>
@@ -90,10 +90,10 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
 
 <h2>Möglichkeiten Buchungen zu registrieren am Beispiel Schwimmveranstaltung</h2>
 <h3>Am Beckenrand</h3>
-Am Beckenrand sitzen menschliche Bahnenzähler. Diese haben ein Tablet, was mit der Software verbunden ist. Über "Eingabe und Verwaltung" -> manuelle Eingaben (unterer Bereich) bauen Sie sich ein individuelles Set der Schwimmer auf ihrer Bahn und buchen die Bahnen per Klick.
+Am Beckenrand sitzen menschliche Bahnenzähler. Diese haben ein Tablet, welches per lokalem Netzwerk dem Server verbunden ist. Über "Verwaltung" -> manuelle Eingaben (unterer Bereich) bauen Sie sich ein individuelles Set der Schwimmer auf ihrer Bahn und buchen die Bahnen per Klick.
 
 <h3>Bei "Abmeldung" der Teilnehmer</h3>
-Die Teilnehmer bekommen z.B. für jede Runde einen Gummiring. Die Gummieringe werden regelmäßig an einer zentralen Stelle abgegeben und über "Eingabe und Verwaltung" -> manuelle Eingaben (oberer Bereich) gebucht.
+Die Teilnehmer bekommen z.B. für jede Runde einen Gummiring. Die Gummieringe werden regelmäßig an einer zentralen Stelle abgegeben und über "Verwaltung" -> manuelle Eingaben (oberer Bereich) gebucht.
 
 <h3>Mittels RFID Anlage</h3>
 Eine RFID Anlage mit einer Software ist mit der der Datenbank verbunden und schreibt ihre Buchungen in die DB. Dazu bitte Kontakt mit dem Admin aufnehmen.
