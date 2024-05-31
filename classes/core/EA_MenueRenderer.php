@@ -55,11 +55,6 @@ class EA_MenueRenderer
         "10-00-00" => array("name" => "Login", "doc" => "login", "icon" => "fa fa-enter fa-fw", "necassaryRoleId"=>EA_User::USERROLE_PUBLIC)
     );
 
-    public function __construct()
-    {
-
-    }
-
     public function getMenueStructure(): array
     {
         return $this->menueStruktur;
@@ -68,17 +63,23 @@ class EA_MenueRenderer
     public function getMenue(bool $isTransponderActive): string
     {
         if ($isTransponderActive === false) {
-            // Transponderrückgabe ausblenden
+            // remove rfid chip 
             unset($this->menueStruktur['03-00-00']['subMenue']['03-06-00']);
             unset($this->menueStruktur['03-00-00']['subMenue']['03-07-00']);
         }
-
-                    //if user is logged in, show logout button. Otherwise show login button
-                    if(isset($_SESSION['loggedin'])){
-                        unset($this->menueStruktur['10-00-00']);
-                    }else{
-                        unset($this->menueStruktur['09-00-00']);
-                    }
+      
+        if ($isTransponderActive === false) {
+              //remove teams
+            unset($this->menueStruktur['02-00-00']['subMenue']['02-06-00']);
+            unset($this->menueStruktur['03-00-00']['subMenue']['03-02-00']);
+        }
+        
+        //if user is logged in, show logout button. Otherwise show login button
+        if(isset($_SESSION['loggedin'])){
+            unset($this->menueStruktur['10-00-00']);
+        }else{
+             unset($this->menueStruktur['09-00-00']);
+        }
 
         return $this->renderMenu2($this->menueStruktur, 0);
     }

@@ -65,7 +65,7 @@ if($EA_Repository->isDoctrineConnected() === true){
         input:invalid,
         textarea,
         select {
-            border: 2px solid firebrick;
+            border: 1px solid firebrick;
         }
         </style>
 </head>
@@ -123,13 +123,16 @@ if($EA_Repository->isDoctrineConnected() === true){
             <?php
                     $menuerenderer = new EA_MenueRenderer();
                     $isTransponderActive = false;
+                    $isTeamActive = true;
                     if($EA_Repository->isDoctrineConnected()){
                         $EA_ConfigurationRepository = new EA_ConfigurationRepository($EA_Repository->getEntityManager());
                         $configuration =  $EA_ConfigurationRepository->load();
                         $isTransponderActive = $configuration !== null ? $configuration->getTransponder() : false;
+                        $isTeamActive = $configuration !== null ? $configuration->getMannschaften() : false;
+
                     }
             
-                    echo $menuerenderer->getMenue($isTransponderActive);
+                    echo $menuerenderer->getMenue($isTransponderActive, $isTeamActive );
             ?>
         </ul>
     </div>

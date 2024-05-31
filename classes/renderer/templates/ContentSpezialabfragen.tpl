@@ -337,7 +337,7 @@
                                                         <div class="table-responsive">
                                                             <table class="table table-sm table-striped table-bordered">
                                                             <tr>
-                                                                <th colspan="5"> <b>Altersklasse:</b>  {$akvalue->getAltersklasse()}; <b> Geschlecht:</b>  {$geschlechtervalue}; <b> Anzahl:</b>  {$value['Unterteilung'][{$akvalue->getId()}]['Unterteilung'][{$geschlechtervalue}]}  </td>
+                                                                <th colspan="5"> <b>AK:</b>  {$akvalue->getAltersklasseKurz()}; <b> Geschl.:</b>  {$geschlechtervalue}; <b> Anzahl:</b>  {$value['Unterteilung'][{$akvalue->getId()}]['Unterteilung'][{$geschlechtervalue}]}  </td>
                                                             </tr>
 
                                                                 <tr>
