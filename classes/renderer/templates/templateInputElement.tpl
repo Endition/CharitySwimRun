@@ -6,22 +6,28 @@ $type === "email" ||
 $type === "date" } 
 <div class="form-group">
     <label class="form-label">{$bezeichnung}</label>
-    <div class="col-sm-8">
-        <input class="form-control" 
-            type="{$type}"
-            value="{$value}" 
-            name="{$name}"
-            placeholder="{$placeholder}" 
-            {if $id } id="{$id}" {/if} 
-            {if $required === true} required {/if} 
-            {if $maxlength > 0} maxlength="{$maxlength }" {/if} 
-            {if $minlength > 0} minlength="{$minlength }" {/if} 
-            {if $min > 0} min="{$min }" {/if} 
-            {if $max > 0} max="{$max }" {/if} 
-            {if $step > 0} step="{$step }" {/if} 
-            {if $datamin } data-min="{$datamin}" {/if} 
-            {if $onkeyup } onkeyup="{$onkeyup}" {/if} 
-        >
+    <div class="input-group mb-3">
+        {if $required === true}
+        <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-asterisk fa-2xs"></i></span>
+        {/if} 
+        <div class="col-sm-8">
+            <input class="form-control" 
+                type="{$type}"
+                value="{$value}" 
+                name="{$name}"
+                placeholder="{$placeholder}" 
+                aria-describedby="basic-addon1"
+                {if $id } id="{$id}" {/if} 
+                {if $required === true} required {/if} 
+                {if $maxlength > 0} maxlength="{$maxlength }" {/if} 
+                {if $minlength > 0} minlength="{$minlength }" {/if} 
+                {if $min > 0} min="{$min }" {/if} 
+                {if $max > 0} max="{$max }" {/if} 
+                {if $step > 0} step="{$step }" {/if} 
+                {if $datamin } data-min="{$datamin}" {/if} 
+                {if $onkeyup } onkeyup="{$onkeyup}" {/if} 
+            >
+        </div>
     </div>
     {if $description } 
         <div class="form-text" id="basic-addon4">{$description}</div>
@@ -29,21 +35,26 @@ $type === "date" }
 </div>
 {elseif $type == "select"} 
 <div class="form-group">
-    <label class="form-label">{$bezeichnung}</label>
-    <div class="col-sm-8">
-        <select class="form-control" 
-                name="{$name}" 
-                placeholder="{$placeholder}" 
-                {if $id } id="{$id}" {/if} 
-                {if $required === true} required {/if} 
-                {if $multiple === true} multiple {/if} 
+        <label class="form-label">{$bezeichnung}</label>
+        <div class="input-group mb-3">
+        {if $required === true}
+        <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-asterisk fa-2xs"></i></span>
+        {/if}   
+        <div class="col-sm-8">
+            <select class="form-control" 
+                    name="{$name}" 
+                    placeholder="{$placeholder}" 
+                    {if $id } id="{$id}" {/if} 
+                    {if $required === true} required {/if} 
+                    {if $multiple === true} multiple {/if} 
 
-        >
-        {if emptyElement==true}
-            <option disabled value="" >bitte auswählen</option>
-        {/if} 
-        {html_options options=$selectValueList selected=$selectedElement}
-        </select>
+            >
+            {if emptyElement==true}
+                <option disabled value="" >bitte auswählen</option>
+            {/if} 
+            {html_options options=$selectValueList selected=$selectedElement}
+            </select>
+        </div>
     </div>
 </div>  
 {elseif $type == "hidden"} 

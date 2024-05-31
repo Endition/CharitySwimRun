@@ -105,10 +105,10 @@
     function addButtonToDom(item, identNumber) {
         let inputField = jQuery("#manuelleEingabeButtons");
         //check if identNumber is set. When yes, create extra button
-        let identNumberButton = identNumber != "" && !isNaN(identNumber) ? "<button type=\"button\" class=\"btn btn-secondary\">"+identNumber+"</button>" : "";
+        let identNumberButton = identNumber != "" && !isNaN(identNumber) ? "<button type=\"button\" class=\"btn btn-secondary\">"+identNumber+"</button>" : "<button type=\"button\" class=\"btn btn-secondary\">"+item.startnummer+"</button>"
          //check if identNumber is set. When yes, creat identifyer for the sort method
-        let identNumberSortIdentifyer = identNumber != "" && !isNaN(identNumber) ? "data-sort=\""+identNumber+"\"" : "data-sort=\"999\"";
-        inputField.html(inputField.html()+"<div class=\"d-grid gap-2 col mx-auto\" "+identNumberSortIdentifyer+"><div class=\"btn-group mr-2\" role=\"group\">"+identNumberButton+"<button type=\"button\" name=\"sendImpulseEinlaufenData\" value=\""+item.id+"\" class=\"btn btn-success add-button\">"+item.vorname+" (StNr: "+item.startnummer+")<br><span id=\"meter"+item.id+"\">"+item.meter+"</span>m</button><button type=\"button\" class=\"btn btn-danger remove-button\">X</button></div></div>");
+        let identNumberSortIdentifyer = identNumber != "" && !isNaN(identNumber) ? "data-sort=\""+identNumber+"\"" : "data-sort=\""+item.startnummer+"\"";
+        inputField.html(inputField.html()+"<div class=\"d-grid gap-2 col mx-auto\" "+identNumberSortIdentifyer+"><div class=\"btn-group mr-2\" role=\"group\">"+identNumberButton+"<button type=\"button\" name=\"sendImpulseEinlaufenData\" value=\""+item.id+"\" class=\"btn btn-success add-button\">"+item.vorname+"<br><span id=\"meter"+item.id+"\">"+item.meter+"</span>m</button><button type=\"button\" class=\"btn btn-danger remove-button\">X</button></div></div>");
     }
         
     function doAjaxManuelleEingabeInsert(id_var) {
