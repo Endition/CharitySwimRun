@@ -26,7 +26,7 @@ class EA_StatsticsController extends EA_Controller
             switch ($_POST['statistikauswahl']) {
                 case "TNpLeser" :
                     $daten = $this->EA_StatisticsHelper->loadStatistikData("TNproLeser");
-                    $template = 'StatisticsBar.tpl';
+                    $template = 'PageContentStatisticsBar.tpl';
                     $title = 'Teilnehmer pro Leser';
                     $explanation = 'Dieser Wert gibt aus, wieviele unterschiedliche Startnummern in den letzten 3 Minuten an einem Leser gebucht haben. Es ist also nur eine Schätzung';
                     break;
@@ -37,7 +37,7 @@ class EA_StatsticsController extends EA_Controller
                     break;
                 case "BpL":
                     $daten = $this->EA_StatisticsHelper->loadStatistikData("BuchungenProLeser");
-                    $template = 'StatisticsBar.tpl';
+                    $template = 'PageContentStatisticsBar.tpl';
                     $title = 'Buchungen pro Leser';
                     break;
                 case "BpHuLeser":

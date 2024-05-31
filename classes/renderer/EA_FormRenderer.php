@@ -151,7 +151,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->getStandardIncludes($entityManager, array("konfiguration" => true,"strecken"=>true,"altersklassen"=>true,"geschlechter"=>true));
         $this->smarty->assign('specialEvaluation', $EA_SE);
         $this->smarty->assign('actionurl', 'index.php?doc=specialevaluation');
-        $content .= $this->smarty->fetch('FormSpecialEvaluation.tpl');
+        $content .= $this->smarty->fetch('FormSpecialEvaluationCreateEdit.tpl');
         return $content;
     }
 
@@ -186,7 +186,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";
         $this->smarty->assign('mannschaften', $mannschaften);
         $this->smarty->assign('actionurl', 'index.php?doc=mannschaften');
-        $content .= $this->smarty->fetch('FormSelectMannschaften.tpl');
+        $content .= $this->smarty->fetch('FormTeamSelect.tpl');
         return $content;
     }
 
@@ -304,7 +304,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
     {
         $content = "";
         $this->smarty->assign('actionurl', 'index.php?doc=buchungenstarter');
-        $content .= $this->smarty->fetch('FormSearchTeilnehmer.tpl');
+        $content .= $this->smarty->fetch('FormStarterSearch.tpl');
         return $content;
     }
 
@@ -506,7 +506,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('actionurl', 'index.php?doc=statistik');
         $this->smarty->assign('EA_H', $this->EA_H);
         
-        $content .= $this->smarty->fetch('FormSelectStatistik.tpl');
+        $content .= $this->smarty->fetch('FormStatisticsSelect.tpl');
         
         if($template !== ""){
             $this->smarty->assign('daten', $daten);
@@ -533,7 +533,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
 
         $this->smarty->assign('actionurl', 'index.php?doc=teilnehmer');
         $this->smarty->registerPlugin('modifier', 'date', 'date');
-        $content .= $this->smarty->fetch('FormSpecialDaten.tpl');
+        $content .= $this->smarty->fetch('PageSpecialData.tpl');
         return $content;
     }
 
@@ -552,21 +552,21 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('teilnehmerWrongStartzeit2List', $teilnehmerWrongStartzeit2List);
 
         $this->smarty->assign('actionurl', 'index.php?doc=teilnehmer');
-        return $this->smarty->fetch('FormSpecialAlarm.tpl');
+        return $this->smarty->fetch('PageContentSpecialAlarm.tpl');
     }
 
     public function getFormSpecialNachrichten($nachrichten): string
     {
         $content = "";
         $this->smarty->assign('nachrichten', $nachrichten);
-        $content .= $this->smarty->fetch('FormSpecialNachrichten.tpl');
+        $content .= $this->smarty->fetch('PageContentSpecialNews.tpl');
         return $content;
     }
 
     public function getFormSpecialLogin(): string
     {
         $content = "";
-        $content .= $this->smarty->fetch('FormSpecialLogin.tpl');
+        $content .= $this->smarty->fetch('PageContentLoginForm.tpl');
         return $content;
     }
 
