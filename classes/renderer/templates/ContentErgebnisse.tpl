@@ -15,7 +15,7 @@
                                         <option value="Einzelstarter">Einzelstarter</option>
                                         <option value="Mannschaften">Mannschaften</option>
                                         <option value="Vereine">Vereine</option>
-                                        <option value="specialEvaluation">Spnderauswertung</option>
+                                        <option value="specialEvaluation">Sonderauswertung</option>
                                     </select>									
                                 </div>
                                 <div class="col-sm-3">

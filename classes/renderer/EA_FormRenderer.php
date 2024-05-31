@@ -141,7 +141,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";
         $this->smarty->assign('strecke', $EA_S);
         $this->smarty->assign('actionurl', 'index.php?doc=strecken');
-        $content .= $this->smarty->fetch('FormStrecke.tpl');
+        $content .= $this->smarty->fetch('FormDistanceCreateEdit.tpl');
         return $content;
     }
 
@@ -177,7 +177,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";       
         $this->smarty->assign('mannschaftskategorie', $EA_MK);
         $this->smarty->assign('actionurl', 'index.php?doc=mannschaftskategorie');
-        $content .= $this->smarty->fetch('FormMannschaftskategorie.tpl');
+        $content .= $this->smarty->fetch('FormTeamCategoryCreateEdit.tpl');
         return $content;
     }
 
@@ -263,7 +263,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
 
         $this->smarty->assign('teilnehmer', $EA_Starter);
         $this->smarty->assign('actionurl', 'index.php?doc=teilnehmer');
-        $content .= $this->smarty->fetch('FormTeilnehmer.tpl');
+        $content .= $this->smarty->fetch('FormStarterCreateEdit.tpl');
         return $content;
     }
 
@@ -273,7 +273,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('mannschaftkategorieList', $mannschaftKategorieListForSelect);
         $this->smarty->assign('actionurl', 'index.php?doc=mannschaften');
         $this->smarty->assign('mannschaft', $mannschaft);
-        $content .= $this->smarty->fetch('FormMannschaft.tpl');
+        $content .= $this->smarty->fetch('FormTeamCreateEdit.tpl');
         return $content;
     }
 
@@ -283,7 +283,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('verein', $EA_V);
         $this->smarty->assign('actionurl', 'index.php?doc=vereine');
         $this->smarty->assign('editTeilnehmerUrl', 'index.php?doc=teilnehmer');
-        $content .= $this->smarty->fetch('FormVerein.tpl');
+        $content .= $this->smarty->fetch('FormClubCreateEdit.tpl');
         return $content;
     }
 
@@ -400,7 +400,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";
         $this->smarty->assign('vereine', $vereinList);
         $this->smarty->assign('actionurl', 'index.php?doc=vereine&action=vereinsfusion');
-        $content .= $this->smarty->fetch('FormVereinsfusion.tpl');
+        $content .= $this->smarty->fetch('FormClubFusion.tpl');
         return $content;
     }
 
