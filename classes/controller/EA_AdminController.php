@@ -128,7 +128,7 @@ class EA_AdminController extends EA_Controller
                     $innercontent .= $statusVerwaltenController->getPageStatusVerwalten();
                     break;
                 case "transponderrueckgabe":
-                    $transponderrueckgabeController = new EA_RfidChipRueckgabeController( $this->entityManager);
+                    $transponderrueckgabeController = new EA_RfidChipReturnController( $this->entityManager);
                     $innercontent .= $transponderrueckgabeController->getPageTransponderrueckgabe();
                     break;
                 case "fehlbuchungen":

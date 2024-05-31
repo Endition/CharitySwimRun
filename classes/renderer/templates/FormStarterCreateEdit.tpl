@@ -1,4 +1,4 @@
-{include file='FormSearchTeilnehmer.tpl'}
+{include file='FormStarterSearch.tpl'}
 
 
 <div class="row">
