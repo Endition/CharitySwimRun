@@ -10,7 +10,7 @@
                 </div>
             </div>
         <div class="card">
-            <h5 class="card-header">Starter auswählen, um sie der Box hinzuzufügen.</h5>
+            <h5 class="card-header">Indiviudelles Set zusammen stellen, und Starter per Klicken buchen</h5>
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
@@ -108,7 +108,16 @@
         let identNumberButton = identNumber != "" && !isNaN(identNumber) ? "<button type=\"button\" class=\"btn btn-secondary\">"+identNumber+"</button>" : "<button type=\"button\" class=\"btn btn-secondary\">"+item.startnummer+"</button>"
          //check if identNumber is set. When yes, creat identifyer for the sort method
         let identNumberSortIdentifyer = identNumber != "" && !isNaN(identNumber) ? "data-sort=\""+identNumber+"\"" : "data-sort=\""+item.startnummer+"\"";
-        inputField.html(inputField.html()+"<div class=\"d-grid gap-2 col mx-auto\" "+identNumberSortIdentifyer+"><div class=\"btn-group mr-2\" role=\"group\">"+identNumberButton+"<button type=\"button\" name=\"sendImpulseEinlaufenData\" value=\""+item.id+"\" class=\"btn btn-success add-button\">"+item.vorname+"<br><span id=\"meter"+item.id+"\">"+item.meter+"</span>m</button><button type=\"button\" class=\"btn btn-danger remove-button\">X</button></div></div>");
+        inputField.html(inputField.html()+"<div class=\"d-grid gap-2 col mx-auto\" "+identNumberSortIdentifyer+"><div class=\"btn-group mr-2\" role=\"group\">"+identNumberButton+"<button type=\"button\" name=\"sendImpulseEinlaufenData\" id=\"sendImpulseEinlaufenData"+item.id+"\" value=\""+item.id+"\" class=\"btn btn-success add-button\">"+item.vorname+"<br><span id=\"meter"+item.id+"\">"+item.meter+"</span>m</button><button type=\"button\" class=\"btn btn-danger remove-button\">X</button></div></div>");
+    }
+
+    //Disable Button for 20sec after a hit was added
+    function disableEnableButton(jQueryButtonElement)
+    {
+        jQueryButtonElement.prop('disabled', true);
+        setTimeout(() => {
+            jQueryButtonElement.prop("disabled",false);
+        }, "20000");
     }
         
     function doAjaxManuelleEingabeInsert(id_var) {
@@ -124,7 +133,8 @@
                     
                 },
                 success: function (result) {
-                    toastManager.show('Impuls gespeichert', 'Erfolgreich', 'success');
+                    toastManager.show('Impuls gespeichert. Eingabe 20sec. gesperrt.', 'Erfolgreich', 'success');
+                    disableEnableButton(jQuery('#sendImpulseEinlaufenData'+id_var+''));
                     //Calculate meter dynamicly by addings $meterPerHit from configuration
                     $meterSpanField = $('#meter'+id_var);
                     $meterSpanField.html(parseInt($meterSpanField.html())+$meterPerHit);
