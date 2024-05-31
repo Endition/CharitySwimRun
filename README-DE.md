@@ -2,7 +2,7 @@
 <a href="https://github.com/Endition/CharitySwimRun/blob/master/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/master/README.md">Readme in English</a>
 
 <h1>CharitySwimRun</h1>
-24h-Schwimmen, 12h-Schwimmen, Benefiz-Schwimmen oder -Läufe können mit dieser kostenlosen OpenSource-Software abgewickelt werden. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken sind nur einige der Möglichkeiten.
+24h-Schwimmen, 12h-Schwimmen, Benefiz-Schwimmen, Spendenschwimmen oder -Läufe können mit dieser kostenlosen OpenSource-Software abgewickelt werden. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken sind nur einige der Möglichkeiten.
 Gedacht ist die Software für den temporären Einsatz auf einem Webserver in einem lokalen Netzwerk. Durch die Software, findet eine entsprechende Veranstaltung praktisch papierlos statt. Das Einrichten von Xampp oder Laragon ist auf den ersten Blick komplex, muss aber nur 1x gemacht werden.
 Die Software läuft im normalen Internetbrowser und ist responsive. Sie kann also von allen Geräten im Netzwerk ohne weitere Voraussetzungen benutzt werden. Danke an <a href="https://github.com/zuramai/mazer">zuramai</a> für das Dashboard.
 
@@ -16,6 +16,7 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
     <li>verschiedene Strecken können gleichzeitig erfasset werden</li>
     <li>Sonderwertungen (z.B. Nachtwertung, 13:00Uhr Wertung) individuell definierbar. </li>
     <li>anpassbare PDF-Urkunden, sowie Ergebnisliste, Meldelisten</li>
+    <li>Lauf- und Schwimmveranstaltungen gleichermaßen verwaltbar</li>
     <li>Live-Anzeige von Buchungen</li>
     <li>Selbstauskunftsmöglichkeit für Teilnehmer</li>
     <li>Statistische Auswertung</li>
