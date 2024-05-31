@@ -43,4 +43,4 @@
 	</div>
 </div>
 
-{include file="ContentListenDrucken.tpl"}
+{include file="ContentListPrinting.tpl"}

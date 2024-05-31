@@ -47,11 +47,11 @@
                 <div class="row">
                     <div class="col-lg-12">	
                             {if $filter['typ'] == "Mannschaften"}
-                                {include file="DisplayTabelleErgebnisseMannschaften.tpl"}
+                                {include file="ResultTeamTable.tpl"}
                             {elseif $filter['typ'] == "Vereine"}
-                                {include file="DisplayTabelleErgebnisseVereine.tpl"}
+                                {include file="ResultClubTable.tpl"}
                             {else}
-                                {include file="DisplayTabelleErgebnisseTeilnehmer.tpl"}
+                                {include file="ResultStarterTable.tpl"}
                             {/if}
                         </div>
                     </div>
@@ -59,4 +59,4 @@
             </div>
         </div>
     </div> 
-    {include file="ContentListenDrucken.tpl"}
+    {include file="ContentListPrinting.tpl"}

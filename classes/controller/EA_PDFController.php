@@ -4,10 +4,9 @@ namespace CharitySwimRun\classes\controller;
 
 
 use CharitySwimRun\classes\model\EA_Repository;
-use CharitySwimRun\classes\pdf\PDFMeldeliste;
-use CharitySwimRun\classes\pdf\PDFErgebnisliste;
-use CharitySwimRun\classes\pdf\PDFUrkunde;
-use CharitySwimRun\classes\pdf\PDFRundenzeiten;
+use CharitySwimRun\classes\pdf\PdfReportList;
+use CharitySwimRun\classes\pdf\PdfResultlist;
+use CharitySwimRun\classes\pdf\PdfCertificate;
 
 class EA_PDFController extends EA_Controller
 {
@@ -22,14 +21,12 @@ class EA_PDFController extends EA_Controller
 
         //generieren des PDFs
         if (isset($_GET['doc']) && $_GET['doc'] === "meldelisten") {
-            $pdf = $this->getPdfMeldeliste();
+            $pdf = $this->getPdfReportList();
         } elseif (isset($_GET['doc']) && $_GET['doc'] === "ergebnisse") {
-            $pdf = $this->getPdfErgebnisliste();
+            $pdf = $this->getPdfResultlist();
         } elseif (isset($_GET['doc']) && $_GET['doc'] === "urkunden") {
-            $pdf = $this->getPdfUrkunde();
-        } elseif (isset($_GET['doc']) && $_GET['doc'] === "rundenzeiten") {
-            $pdf = $this->getPdfRundenzeiten();
-        }
+            $pdf = $this->getPdfCertificate();
+        } 
 
         $pdf->Inhalt();
         //OB_Clean entfernt viele Ausgaben, verhinert aber die Ausgabe von xprint();
@@ -39,22 +36,17 @@ class EA_PDFController extends EA_Controller
         return $pdf->Output($dateiname . '.pdf', $pdfdestination);
     }
 
-    private function getPdfMeldeliste(): PDFMeldeliste
+    private function getPdfReportList(): PdfReportList
     {
-        return new PDFMeldeliste($this->entityManager, $this->getFilter());
+        return new PdfReportList($this->entityManager, $this->getFilter());
     }
 
-    private function getPdfErgebnisliste(): PDFErgebnisliste
+    private function getPdfResultlist(): PdfResultlist
     {
-        return new PDFErgebnisliste($this->entityManager, $this->getFilter());
+        return new PdfResultlist($this->entityManager, $this->getFilter());
     }
 
-    private function getPdfRundenzeiten(): PDFRundenzeiten
-    {
-        return new PDFRundenzeiten($this->entityManager, $_GET['id']);
-    }
-
-    private function getPdfUrkunde(): PDFUrkunde
+    private function getPdfCertificate(): PdfCertificate
     {
         $filter = $this->getFilter();
         //Hier den Sonderfall Einzelurkunde abfangen
@@ -65,7 +57,7 @@ class EA_PDFController extends EA_Controller
           $filter['typ'] = "Einzelstarter";
                  $filter['id'] = filter_input(INPUT_GET,"id",FILTER_SANITIZE_NUMBER_INT);
         }
-        return new PDFUrkunde($this->entityManager, $filter);
+        return new PdfCertificate($this->entityManager, $filter);
     }
 
     private function getFilter(): array
