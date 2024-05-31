@@ -26,7 +26,7 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
 
 <h2>Voraussetzungen</h2>
 <ul>
-    <li>Lokaler Webserver mit PHP > 8.0, Datenbank und Composer. Zum Beispiel: Laragon oder XAMPP. Bitte beachten. Beide Beispiele sind für lokales entwickeln gedacht. Sie sollen nicht ohne zusätzliche Konfiguration als Webser genutzt werden. Gewisse Einstellungen müssen geändert werden, um den sicheren Einsatz zu ermöglichen.</li>
+    <li>Lokaler Webserver mit PHP > 8.0, Datenbank und Composer. Zum Beispiel: Laragon oder XAMPP. Bitte beachten. Beide Beispiele sind für lokales entwickeln gedacht. Sie sollen nicht ohne zusätzliche Konfiguration als Webserver im Internet genutzt werden. Gewisse Einstellungen müssen geändert werden, um den sicheren Einsatz zu ermöglichen.</li>
     <li>Laragon: https://laragon.org/</li>
     <li>Xampp: https://www.apachefriends.org/</li>
     <li>Composer: https://getcomposer.org/; </li>
