@@ -58,6 +58,8 @@ class EA_DashboardController extends EA_Controller
         $diffStartToJetztInSeconds = $jetztTs - $startTs;
         $diffStartToJetztInMinutes = intval($diffStartToJetztInSeconds/60);
         $diffJetztToEndeInStunden = intval(($endeTs-$jetztTs)/60/60);
+        //show max 10h in future
+        $numberOfHoursForExtrapolration = $diffJetztToEndeInStunden > 10 ? 10 : $diffJetztToEndeInStunden;
 
         $veranstaltungsDrittel =  intval($diffJetztToEndeInStunden/3);
         $fristThirdEnd = $veranstaltungsDrittel;
@@ -72,7 +74,7 @@ class EA_DashboardController extends EA_Controller
         //calc meter per minute
         $meterProMinute = intval($meter/$diffStartToJetztInMinutes);
         $stundenMeterList = [];
-        for($i=1;$i<$diffJetztToEndeInStunden;$i++){
+        for($i=1;$i<=$numberOfHoursForExtrapolration ;$i++){
             //factor to consider lower performance at the beginnen and at the end
             $factor = ($i < $fristThirdEnd or $i > $secondThirdEnde) ? 0.8 : 1;
             //add meter for this hour

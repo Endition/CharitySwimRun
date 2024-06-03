@@ -114,10 +114,10 @@
     //Disable Button for 20sec after a hit was added
     function disableEnableButton(jQueryButtonElement)
     {
-        jQueryButtonElement.prop('disabled', true);
+        jQueryButtonElement.delay(2000).prop('disabled', true);
         setTimeout(() => {
             jQueryButtonElement.prop("disabled",false);
-        }, "20000");
+        }, "2000");
     }
         
     function doAjaxManuelleEingabeInsert(id_var) {
@@ -133,7 +133,7 @@
                     
                 },
                 success: function (result) {
-                    toastManager.show('Impuls gespeichert. Eingabe 20sec. gesperrt.', 'Erfolgreich', 'success');
+                    toastManager.show('Impuls gespeichert. Eingabe 20sec. gesperrt. ', 'Erfolgreich', 'success');
                     disableEnableButton(jQuery('#sendImpulseEinlaufenData'+id_var+''));
                     //Calculate meter dynamicly by addings $meterPerHit from configuration
                     $meterSpanField = $('#meter'+id_var);

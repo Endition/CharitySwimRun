@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12 card">
         <div class="card-body px-4 py-4-5">
-        Stand: {date ( "d.m.Y, H:i:s" )} ->  {$prozent}%
+        Spendenstand am {date ( "d.m.Y, H:i:s" )} Uhr:  {$prozent}% erreicht
             <div class="progress progress-striped active">
                 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{$prozent}" aria-valuemin="0" aria-valuemax="100" style="width: {$prozent}%">
                     <span>{$geld} Euro von {$spendensumme} Euro</span>
