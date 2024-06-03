@@ -1,92 +1,100 @@
 
-<a href="https://github.com/Endition/CharitySwimRun/blob/master/README-DE.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/master/README.md">Readme in English</a>
-<h1>CharitySwimRun</h1>
-Manage 24-hour swimming, 12-hour swimming, charity swimming, or running events. Handle participants, count laps/rounds, evaluate results, and print certificates. The software is intended for temporary use on a web server in a local network. It runs in the browser and is responsive, allowing it to be used from any device in the network without additional requirements. Thanks to <a href="https://github.com/zuramai/mazer">zuramai</a> for the dashboard.
+<a href="https://github.com/Endition/CharitySwimRun/blob/master/README.md">Readme in Deutsch</a> | <a href="https://github.com/Endition/CharitySwimRun/blob/master/README-EN.md">Readme in English</a>
 
-The user interface is in German. (For historical reasons, the code is also in German. It is continuously being refactored.)
+<h1>CharitySwimRun</h1>
+24h-Schwimmen, 12h-Schwimmen, Benefiz-Schwimmen, Spendenschwimmen oder -Läufe können mit dieser kostenlosen OpenSource-Software abgewickelt werden. Teilnehmer verwalten, Bahnen/Runden zählen, Ergebnisse auswerten und Urkunden drucken sind nur einige der Möglichkeiten.
+Gedacht ist die Software für den temporären Einsatz auf einem Webserver in einem lokalen Netzwerk. Durch die Software, findet eine entsprechende Veranstaltung praktisch papierlos statt. Das Einrichten von Xampp oder Laragon ist auf den ersten Blick komplex, muss aber nur 1x gemacht werden.
+Die Software läuft im normalen Internetbrowser und ist responsive. Sie kann also von allen Geräten im Netzwerk ohne weitere Voraussetzungen benutzt werden. Danke an <a href="https://github.com/zuramai/mazer">zuramai</a> für das Dashboard.
+
+Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch in deutsch. Wird stetig umgebaut)
 
 <h2>Features</h2>
 <ul>
-    <li>Teams</li>
-    <li>Age groups</li>
-    <li>Routes</li>
-    <li>Clubs</li>
-    <li>Special ratings</li>
-    <li>Customizable PDF certificates, results lists, and registration lists</li>
-    <li>Live display of bookings</li>
-    <li>Self-reporting capability for participants</li>
-    <li>Statistical analysis</li>
-    <li>All information for the press on one page</li>
-    <li>Various ways to record bookings</li>
-    <li>Each booking is saved individually. Automatic lap counters (e.g., via RFID) write directly to the relevant DB table, ensuring compatibility with any RFID system</li>
+    <li>Mannschaften und Mannschaftswertung</li>
+    <li>Altersklasse und Altersklassenwertung</li>
+    <li>Vereine und Vereinswertung</li>
+    <li>verschiedene Strecken können gleichzeitig erfasset werden</li>
+    <li>Sonderwertungen (z.B. Nachtwertung, 13:00Uhr Wertung) individuell definierbar. </li>
+    <li>anpassbare PDF-Urkunden, sowie Ergebnisliste, Meldelisten</li>
+    <li>Lauf- und Schwimmveranstaltungen gleichermaßen verwaltbar</li>
+    <li>Live-Anzeige von Buchungen</li>
+    <li>Selbstauskunftsmöglichkeit für Teilnehmer</li>
+    <li>Statistische Auswertung</li>
+    <li>Alle Infos für die Presse und die Verantwortlichen auf einer Seite</li>
+    <li>Verschiedenste Möglichkeiten die Buchungen zu erfassen</li>
+    <li>Jede Buchung wird einzeln gespeichert. Schreiben automatische Rundenzähler (z.B. per RFID) direkt in die zugehörige DB-Tabelle, besteht Kompatibiltät zu jeder RFID-Anlage </li>
 </ul>
 
-<h2>Requirements</h2>
+<h2>Voraussetzungen</h2>
 <ul>
-    <li>Local web server with PHP > 8.1, database, and Composer. Examples: Laragon or XAMPP. Please note: Both examples are intended for local development. They should not be used as web servers without additional configuration. Certain settings need to be changed to ensure secure use.</li>
-    <li>Laragon: <a href="https://laragon.org/">https://laragon.org/</a></li>
-    <li>Xampp: <a href="https://www.apachefriends.org/">https://www.apachefriends.org/</a></li>
-    <li>Composer: <a href="https://getcomposer.org/">https://getcomposer.org/</a></li>
-    <li>Composer with GUI: <a href="https://getcomposercat.com/">https://getcomposercat.com/</a></li>
+    <li>Lokaler Webserver mit PHP > 8.0, Datenbank und Composer. Zum Beispiel: Laragon oder XAMPP. Bitte beachten. Beide Beispiele sind für lokales entwickeln gedacht. Sie sollen nicht ohne zusätzliche Konfiguration als Webserver im Internet genutzt werden. Gewisse Einstellungen müssen geändert werden, um den sicheren Einsatz zu ermöglichen.</li>
+    <li>Laragon: https://laragon.org/</li>
+    <li>Xampp: https://www.apachefriends.org/</li>
+    <li>Composer: https://getcomposer.org/; </li>
+    <li>GUI für Composer: https://getcomposercat.com/ </li>
+    <li>Git: https://git-scm.com/downloads (wird für Composer benötigt)</li>
 </ul>
+
 
 <h2>Installation</h2>
-<h3>Existing Server</h3>
+<h3>Vorhandener Server</h3>
 <ol>
-    <li>Copy files to CharitySwimRun/</li>
-    <li>Run Composer and install dependencies.</li>
-    <li>Continue with the "Configuration" section</li>
+    <li>Dateien kopieren nach CharitySwimRun/ </li>
+    <li>Composer aufrufen und Abhängigkeiten installieren.</li>
+    <li>Weiter mit Abschnitt "Konfiguration"</li>
 </ol>
 
-<h3>Local Web Server Example with Laragon</h3>
+<h3>Lokaler Webserver am Beispiel von Xampp</h3>
 <ol>
-    <li>Do not install Laragon on C:/ (Windows partition)</li>
-    <li>Add PHPMyAdmin (Quick Add -> PHPMyAdmin)</li>
-    <li>Add PHP > 8.1 if necessary (<a href="https://medium.com/@oluwaseye/add-different-php-versions-to-your-laragon-installation-d2526db5c5f1">Guide</a>, <a href="https://windows.php.net/downloads/releases/">PHP Download</a>)</li>
+    <li>Xampp-Version mit PHP > 8.1 herunterladen und unter Windows möglichst nicht auf C:/ installieren</li>
+    <li>Dateien aus dem Repository herunterladen (Button: <> Code -> download Zip). Zip entpacken und in den Ordner xampp/htdocs/CharitySwimRun kopieren</li>
+    <li>Git, Composer und ComposerCat installieren, wenn nicht vorhanden. Git ist eine Voraussetzung für Composer. Composer wird für ComposerCat benötigt.</li>
+    <li>Mit Composer(Cat) in den Ordner xmapp/htdocs/CharitySwimRun/ navigieren und "composer upate" und im Anschluss "install all" ausführen</li>
+    <li>Die Datenbank mit Passwort sichern. Dazu PHPMyAdmin (127.0.0.1/phpmyadmin/) aufrufen und im Tab "User" einen neuen User mit Passwort und allen Rechten anlegen. Den vorhanden User mit dem Namen "root" im Anschluss löschen</li>
+    <li>Loginmodus ("auth type") der Datenbank in xmapp/phpmyadmin/config.inc.php von "cookie" auf "http" ändern</li>
+    <li>Über das XAMPP Control-Panel MariaDB/MySql neustarten</li>
+</ol>
+
+<h3>Lokaler Webserver am Beispiel von Laragon</h3>
+<ol>
+    <li>Laragon nicht auf C:/ (Windowspartion) installieren</li>
+    <li>PHPMyAdmin hinzufügen (Quick Add -> PHPMyAdmin)</li>
+    <li>PHP > 8.1 hinzufügen, wenn notwendig (<a href="https://medium.com/@oluwaseye/add-different-php-versions-to-your-laragon-installation-d2526db5c5f1">Anleitung</a>, <a href="https://windows.php.net/downloads/releases/">PHP Download</a>)</li>
     <li>
-        Modify MYSQL settings via the console in Laragon. Execute the three commands:
-        <ul>
-            <li>mysql -u your_username -p</li>
-            <li>USE your_database;</li>
-            <li>SET GLOBAL sql_mode='';</li>
-        </ul>
+        MYSQL Einstellungen modifizieren über die Console in Laragon. Die drei Kommandos ausführen
+        - mysql -u your_username -p
+        - USE your_database;
+        - SET GLOBAL sql_mode='';
     </li>
-    <li>(For developers only: XDebug settings: <a href="https://gitbook.deddy.me/laragon-xdebug-debug-php-with-vscode-on-windows/">Laragon Guide</a>, <a href="https://pen-y-fan.github.io/2021/08/03/How-to-Set-up-VS-Code-to-use-PHP-with-Xdebug-3-on-Windows/">Visual Studio Guide</a>)</li>
-    <li>Secure the database with a password. Open PHPMyAdmin and create a new user with a password and all rights. Then delete the root user.</li>
-    <li>Restart MariaDB/MySQL</li>
-    <li>Save the files to the www/ directory -> target: www/CharitySwimRun/</li>
-    <li>Install Composer if not already installed</li>
-    <li>Navigate to the www/CharitySwimRun/ directory with Composer and run "install all"</li>
-    <li>ChartJs via Composer is not bundled. Download manually from <a href="https://www.jsdelivr.com/package/npm/chart.js?path=dist">jsdelivr</a> and move the /dist folder to vendor/nnnick/chartjs</li>
+    <li>(Nur für Entwickler: Einstellungen für XDebug: <a href="https://gitbook.deddy.me/laragon-xdebug-debug-php-with-vscode-on-windows/">Anleitung für Laragon</a>, <a href="https://pen-y-fan.github.io/2021/08/03/How-to-Set-up-VS-Code-to-use-PHP-with-Xdebug-3-on-Windows/">Anleitung Visual Studio</a>)
+ </li>
+     <li>Die Datenbank mit Passwort sichern. Dazu PHPMyAdmin (127.0.0.1/phpmyadmin/) aufrufen und im Tab "User" einen neuen User mit Passwort und allen Rechten anlegen. Den vorhanden User mit dem Namen "root" im Anschluss löschen</li>
+    <li>MariaDB/MySql neustarten</li>
+    <li>Dateien aus dem Repository herunterladen (Button: <> Code -> download Zip). Zip entpacken und in den Ordner laragon/www/CharitySwimRun kopieren</li>
+    <li>Git, Composer und ComposerCat installieren, wenn nicht vorhanden. Git ist eine Voraussetzung für Composer. Composer wird für ComposerCat benötigt.</li>
+    <li>Mit Composer(Cat) in den Ordner htdocs/CharitySwimRun/ navigieren und "composer upate" und im Anschluss "install all" ausführen</li>
+    <li>ChartJs via Composer kommt nicht zusammengebaut. Daher manueller Download von <a href="https://www.jsdelivr.com/package/npm/chart.js?path=dist">jsdelivr</a> erforderlich. Anschließend verschieben des /dist Ordner in den vendoer/nnnick/chartjs</li>
 </ol>
 
-<h3>Local Web Server Example with Xampp</h3>
+
+
+<h2>Konfiguration</h2>
 <ol>
-    <li>Do not install Xampp (PHP > 8.1) on C:/</li>
-    <li>Copy files to xampp/htdocs/CharitySwimRun</li>
-    <li>Navigate to the htdocs/CharitySwimRun/ directory with Composer and run "install all"</li>
-    <li>Secure the database with a password. Open PHPMyAdmin and create a new user with a password and all rights. Then delete the root user.</li>
-    <li>Restart MariaDB/MySQL</li>
-    <li>Change the database login mode (auth type) in phpmyadmin/config.inc.php to http</li>
+    <li>Software aufrufen: 127.0.0.1/CharitySwimRun/</li>
+    <li>Datenbankverbindungsdaten eingeben, wie im Schritt "Lokaler Webserver einrichten" angelegt. Datenbank und Tabellen werden automatisch erstellt. Werden die Daten nicht gespeichert, weil die Datei CharitySwimRun/config/dbConfigDaten.php nicht geschrieben wird, liegt das an der Installation auf C:/. Dann die Datei einfach manuell bearbeiten und die Daten manuell in die Felder eintragen.</li>
+    <li>Einstellungen setzen</li>
+    <li>Strecken anlegen</li>
+    <li>Altersklassen anlegen</li>
+    <li>(Nutzer anlegen)</li>
+    <li>"Simulator" ausprobieren.</li>
 </ol>
 
-<h2>Configuration</h2>
-<ol>
-    <li>Open the software: localhost/CharitySwimRun/</li>
-    <li>Enter the database connection details. The database and tables are created automatically. If the data is not saved because the config/dbConfigDaten.php file cannot be written, it is due to the installation on C:/. In this case, edit the file manually and enter the data.</li>
-    <li>Set the settings</li>
-    <li>Create routes</li>
-    <li>Create age groups</li>
-    <li>(Create users)</li>
-    <li>Try the "Simulator"</li>
-</ol>
+<h2>Möglichkeiten Buchungen zu registrieren am Beispiel Schwimmveranstaltung</h2>
+<h3>Am Beckenrand</h3>
+Am Beckenrand sitzen menschliche Bahnenzähler. Diese haben ein Tablet, welches per lokalem Netzwerk dem Server verbunden ist. Über "Verwaltung" -> manuelle Eingaben (unterer Bereich) bauen Sie sich ein individuelles Set der Schwimmer auf ihrer Bahn und buchen die Bahnen per Klick.
 
-<h2>Ways to Register Bookings for Swimming Events</h2>
-<h3>At the Poolside</h3>
-At the poolside, human lap counters are seated with a tablet connected to the software. Through "Input and Management" -> manual entries (lower section), they build a custom set of swimmers on their lane and book the laps by clicking.
+<h3>Bei "Abmeldung" der Teilnehmer</h3>
+Die Teilnehmer bekommen z.B. für jede Runde einen Gummiring. Die Gummieringe werden regelmäßig an einer zentralen Stelle abgegeben und über "Verwaltung" -> manuelle Eingaben (oberer Bereich) gebucht.
 
-<h3>When Participants "Check Out"</h3>
-Participants receive a rubber ring for each lap. The rubber rings are regularly submitted at a central location and booked through "Input and Management" -> manual entries (upper section).
-
-<h3>Using RFID System</h3>
-An RFID system with software is connected to the database and writes its bookings to the DB. Please contact the admin for more details.
+<h3>Mittels RFID Anlage</h3>
+Eine RFID Anlage mit einer Software ist mit der der Datenbank verbunden und schreibt ihre Buchungen in die DB. Dazu bitte Kontakt mit dem Admin aufnehmen.
