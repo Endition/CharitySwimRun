@@ -64,7 +64,7 @@ class EA_Configuration
     private float $rundenlaenge = 50;
 
     #[ORM\Column(type: Types::FLOAT)]
-    private float $europrometer = 0.05;
+    private float $europrometer = 0.005;
 
     #[ORM\Column(type: Types::FLOAT)]
     private float $geld = 1000;

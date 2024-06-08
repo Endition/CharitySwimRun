@@ -194,7 +194,7 @@ class EA_StarterController extends EA_Controller
     {
         $idPost = filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
         $idGet = filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-        $suchText = htmlspecialchars($_POST['TeilnehmerSuchen']);
+        $suchText = isset($_POST['TeilnehmerSuchen']) ? htmlspecialchars($_POST['TeilnehmerSuchen']) : "";
         $id = null;
         $teilnehmer = null;
 
