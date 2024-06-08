@@ -54,29 +54,32 @@ class EA_DashboardController extends EA_Controller
         if($endeTs < $jetztTs || $startTs > $jetztTs){
             return "Die Prognose wird nur während der Veranstaltung ({$start->format('d.m.Y H:i:s')} - {$ende->format('d.m.Y H:i:s')}) angezeigt.";
         }
-
+        $diffStartToEndInSeconds = $endeTs - $startTs;
         $diffStartToJetztInSeconds = $jetztTs - $startTs;
         $diffStartToJetztInMinutes = intval($diffStartToJetztInSeconds/60);
         $diffJetztToEndeInStunden = intval(($endeTs-$jetztTs)/60/60);
+        //number of hours for event
+        $numberOfHours = intval($diffStartToEndInSeconds/60/60);
         //show max 10h in future
         $numberOfHoursForExtrapolration = $diffJetztToEndeInStunden > 10 ? 10 : $diffJetztToEndeInStunden;
-
-        $veranstaltungsDrittel =  intval($diffJetztToEndeInStunden/3);
+        //calculate first and last third
+        $veranstaltungsDrittel =  intval($numberOfHours/3);
         $fristThirdEnd = $veranstaltungsDrittel;
         $secondThirdEnde = $veranstaltungsDrittel*2;
         
         $factor = 1;
         
         //get meter
-        $meter = $this->EA_HitRepository->getNumberOfEntries()*$this->konfiguration->getRundenlaenge();
+        $timestampOneHourAgo = $jetzt->getTimestamp()-60*60;
+        $meter = count($this->EA_HitRepository->loadList("i.timestamp","ASC",null,null,$timestampOneHourAgo))*$this->konfiguration->getRundenlaenge();
         //get 100%
         $zielMeterFuerSpendensumme = $this->konfiguration->getGeld()/$this->konfiguration->getEuroprometer();
         //calc meter per minute
-        $meterProMinute = intval($meter/$diffStartToJetztInMinutes);
+        $meterProMinute = intval($meter/60);
         $stundenMeterList = [];
         for($i=1;$i<=$numberOfHoursForExtrapolration ;$i++){
             //factor to consider lower performance at the beginnen and at the end
-            $factor = ($i < $fristThirdEnd or $i > $secondThirdEnde) ? 0.8 : 1;
+            $factor = ($i < $fristThirdEnd or $i > $secondThirdEnde) ? 0.8 : 1.2;
             //add meter for this hour
             $meter = $meter + intval(60*$meterProMinute*$factor);
             //save in array

@@ -3,8 +3,8 @@
             <div class="card-body">
                 <table 	class="table table-striped table-bordered table-hover"
                 data-toggle="table"
-                data-sort-name="mitglieder"
-                data-sort-order="desc"
+                data-sort-name="verein"
+                data-sort-order="asc"
                 data-pagination="true"
                   data-search="true">
                     <thead>

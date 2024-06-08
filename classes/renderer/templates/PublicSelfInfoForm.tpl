@@ -18,7 +18,7 @@
         </div>  
     </div>
     <div class="row">
-        <div class="col-sm-12 mt-5" id="zieldiv" style="font-size:20px"> 
+        <div class="col-sm-12 mt-5" id="zieldiv" style="font-size:25px"> 
             
         </div>
     </div>

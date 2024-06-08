@@ -11,3 +11,4 @@ nbproject/
 .vscode/
 composer.lock
 config/dbConfigDaten.php
+/doctrineMetaDataCache2/doctrine_metadata
