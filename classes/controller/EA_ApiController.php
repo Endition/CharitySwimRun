@@ -356,7 +356,7 @@ class EA_ApiController extends EA_Controller
                 "startnummer"=>$teilnehmer->getStartnummer(),
                 "meter"=>$teilnehmer->getMeter(),
                 "streckenart"=>$teilnehmer->getStreckenart(),
-                "wertung"=>$teilnehmer->getWertung(),
+                "wertung"=>$teilnehmer->getWertung("lang"),
                 "naechsteWertung"=>$teilnehmer->getNaechsteWertung(),
             ];
         }

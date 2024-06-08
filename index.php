@@ -129,10 +129,10 @@ if($EA_Repository->isDoctrineConnected() === true){
                         $configuration =  $EA_ConfigurationRepository->load();
                         $isTransponderActive = $configuration !== null ? $configuration->getTransponder() : false;
                         $isTeamActive = $configuration !== null ? $configuration->getMannschaften() : false;
-
+                        $isSimulatorAvailable = $configuration !== null ? $configuration->getSimulatorAvailable() : false;
                     }
             
-                    echo $menuerenderer->getMenue($isTransponderActive, $isTeamActive );
+                    echo $menuerenderer->getMenue($isTransponderActive, $isTeamActive,$isSimulatorAvailable );
             ?>
         </ul>
     </div>
