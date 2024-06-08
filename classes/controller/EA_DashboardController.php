@@ -55,9 +55,7 @@ class EA_DashboardController extends EA_Controller
             return "Die Prognose wird nur während der Veranstaltung ({$start->format('d.m.Y H:i:s')} - {$ende->format('d.m.Y H:i:s')}) angezeigt.";
         }
         $diffStartToEndInSeconds = $endeTs - $startTs;
-        $diffStartToJetztInSeconds = $jetztTs - $startTs;
-        $diffStartToJetztInMinutes = intval($diffStartToJetztInSeconds/60);
-        $diffJetztToEndeInStunden = intval(($endeTs-$jetztTs)/60/60);
+        $diffJetztToEndeInStunden = intval(round(($endeTs-$jetztTs)/60/60),0);
         //number of hours for event
         $numberOfHours = intval($diffStartToEndInSeconds/60/60);
         //show max 10h in future
@@ -71,19 +69,20 @@ class EA_DashboardController extends EA_Controller
         
         //get meter
         $timestampOneHourAgo = $jetzt->getTimestamp()-60*60;
-        $meter = count($this->EA_HitRepository->loadList("i.timestamp","ASC",null,null,$timestampOneHourAgo))*$this->konfiguration->getRundenlaenge();
+        $meterGesamt = $this->EA_HitRepository->getNumberOfEntries()*$this->konfiguration->getRundenlaenge();
+        $meterLastHour = count($this->EA_HitRepository->loadList("i.timestamp","ASC",null,null,$timestampOneHourAgo))*$this->konfiguration->getRundenlaenge();
         //get 100%
         $zielMeterFuerSpendensumme = $this->konfiguration->getGeld()/$this->konfiguration->getEuroprometer();
         //calc meter per minute
-        $meterProMinute = intval($meter/60);
+        $meterProMinute = intval($meterLastHour/60);
         $stundenMeterList = [];
         for($i=1;$i<=$numberOfHoursForExtrapolration ;$i++){
             //factor to consider lower performance at the beginnen and at the end
             $factor = ($i < $fristThirdEnd or $i > $secondThirdEnde) ? 0.8 : 1.2;
             //add meter for this hour
-            $meter = $meter + intval(60*$meterProMinute*$factor);
+            $meterGesamt = $meterGesamt + intval(60*$meterProMinute*$factor);
             //save in array
-            $stundenMeterList[$i] = $meter;
+            $stundenMeterList[$i] = $meterGesamt;
         }
         return $this->EA_R->getDashboardExtrapolration($stundenMeterList,$meterProMinute,$zielMeterFuerSpendensumme);
 
