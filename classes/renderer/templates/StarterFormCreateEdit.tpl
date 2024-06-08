@@ -4,7 +4,10 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <h5 class="card-header">Teilnehmer anlegen</h5>
+            <div class="card-header">
+                <h5>Teilnehmer anlegen </h5>
+                <a href="{$actionurl}" class="btn btn-warning btn-sm float-right">Reset für weitere Anmeldung</a>
+            </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-12">
@@ -119,7 +122,6 @@
                                 <div class="form-group col-sm-6">
                                     <label class="form-label"></label>
                                     <div class="col-sm-8">
-                                        <a href="{$actionurl}" class="btn btn-warning">Reset für weitere Anmeldung</a>
                                         {if $teilnehmer->getId() > 0}
                                             <button type="submit" formaction="{$actionurl}&action=delete"
                                                     class="btn btn-danger" onClick="return confirm('Soll der Teilnehmer wirklich gelöscht werden?')">Löschen</button>

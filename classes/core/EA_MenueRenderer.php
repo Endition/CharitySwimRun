@@ -60,7 +60,7 @@ class EA_MenueRenderer
         return $this->menueStruktur;
     }
 
-    public function getMenue(bool $isTransponderActive): string
+    public function getMenue(bool $isTransponderActive,bool $isTeamActive, bool $isSimulatorAvailable ): string
     {
         if ($isTransponderActive === false) {
             // remove rfid chip 
@@ -68,10 +68,14 @@ class EA_MenueRenderer
             unset($this->menueStruktur['03-00-00']['subMenue']['03-07-00']);
         }
       
-        if ($isTransponderActive === false) {
+        if ($isTeamActive === false) {
               //remove teams
             unset($this->menueStruktur['02-00-00']['subMenue']['02-06-00']);
             unset($this->menueStruktur['03-00-00']['subMenue']['03-02-00']);
+        }
+
+        if ($isSimulatorAvailable === false) {
+            unset($this->menueStruktur['06-00-00']);
         }
         
         //if user is logged in, show logout button. Otherwise show login button
