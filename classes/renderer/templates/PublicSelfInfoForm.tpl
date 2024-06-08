@@ -1,3 +1,9 @@
+<style>
+.new-entry {
+    background-color: green;
+    color:white;
+}
+</style>
 <div class="container">
     <div class="row">
     <div class="col-sm-12"> 
@@ -35,6 +41,10 @@ input.addEventListener("keypress", function(event) {
         $.ajax({ 
         url: "api/teilnehmer/startnummer/"+$("#startnummer").val(),
         type: 'GET', 
+        beforeSend: function(){
+                        // Remove the highlighted rows when new request is send
+                        $('#zieldiv').find('span').removeClass('new-entry');
+                    },
         error: function(jqXHR, textStatus, errorThrown ){
             var today = new Date();
             var uhrzeit = today.getHours()+":"+(today.getMinutes() < 10 ? '0' : '') + today.getMinutes() +":"+(today.getSeconds() < 10 ? '0' : '') + today.getSeconds();
@@ -49,7 +59,7 @@ input.addEventListener("keypress", function(event) {
 			//clear input
             $("#startnummer").val('');
             //render info
-            $("#zieldiv").html(uhrzeit+' Uhr | StNr: '+data.startnummer+' | Meter: '+data.meter+'m  | Wertung: '+data.wertung+'  | Nächste Wertung: '+data.naechsteWertung+'  <hr>'+$("#zieldiv").html());
+            $("#zieldiv").html('<span class="new-entry">'+uhrzeit+' Uhr | StNr: '+data.startnummer+' | Meter: '+data.meter+'m  | Wertung: '+data.wertung+'  | Nächste Wertung: '+data.naechsteWertung+'  </span><hr>'+$("#zieldiv").html());
 			return false;
         }
     }); 
