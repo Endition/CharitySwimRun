@@ -314,6 +314,10 @@ class EA_ApiController extends EA_Controller
             $biggerAsTimestamp = (isset($paramList[1]) && $paramList[1] !== "") ? (int)$paramList[1] : null;
             $impulseList = $this->EA_HitRepository->loadList("i.timestamp","DESC",20,"i.timestamp", $biggerAsTimestamp );
             foreach($impulseList as $impuls){
+                    //catch error hits
+                    if($impuls->getTeilnehmer() === null){
+                        continue;
+                    }
                     //costs 200% performance, calculates the time per round
                     $impuls->getTeilnehmer()->getImpulseListGueltige(true);
                     $result[] = [

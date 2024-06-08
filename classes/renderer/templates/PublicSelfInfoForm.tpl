@@ -38,12 +38,18 @@ input.addEventListener("keypress", function(event) {
         error: function(jqXHR, textStatus, errorThrown ){
             var today = new Date();
             var uhrzeit = today.getHours()+":"+(today.getMinutes() < 10 ? '0' : '') + today.getMinutes() +":"+(today.getSeconds() < 10 ? '0' : '') + today.getSeconds();
+            //clear input
+            $("#startnummer").val('');
+            //render info
             $("#zieldiv").html(uhrzeit+' Uhr: '+jqXHR.responseJSON.message+'<hr>'+$("#zieldiv").html());
         },
         success: function(data){ 
             var today = new Date();
             var uhrzeit = today.getHours()+":"+(today.getMinutes() < 10 ? '0' : '') + today.getMinutes() +":"+(today.getSeconds() < 10 ? '0' : '') + today.getSeconds();
-			$("#zieldiv").html(uhrzeit+' Uhr | StNr: '+data.startnummer+' | Meter: '+data.meter+'m  | Wertung: '+data.wertung+'  | Nächste Wertung: '+data.naechsteWertung+'  <hr>'+$("#zieldiv").html());
+			//clear input
+            $("#startnummer").val('');
+            //render info
+            $("#zieldiv").html(uhrzeit+' Uhr | StNr: '+data.startnummer+' | Meter: '+data.meter+'m  | Wertung: '+data.wertung+'  | Nächste Wertung: '+data.naechsteWertung+'  <hr>'+$("#zieldiv").html());
 			return false;
         }
     }); 

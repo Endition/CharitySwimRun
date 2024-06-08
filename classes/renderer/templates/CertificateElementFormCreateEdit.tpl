@@ -8,7 +8,7 @@
 
 							{include file='templateInputElement.tpl' name='id' type='hidden' value=$urkundenelement->getId() required=true}
                             {include file='templateInputElement.tpl' name='x_wert' type='number' value=$urkundenelement->getX_wert() required=true bezeichnung='X-Wert' min=1 max=595 step=1}
-                            {include file='templateInputElement.tpl' name='x_wert' type='number' value=$urkundenelement->getY_wert() required=true bezeichnung='Y-Wert' min=1 max=842 step=1}
+                            {include file='templateInputElement.tpl' name='y_wert' type='number' value=$urkundenelement->getY_wert() required=true bezeichnung='Y-Wert' min=1 max=842 step=1}
                             {include file='templateInputElement.tpl' name='breite' type='number' value=$urkundenelement->getBreite() required=true bezeichnung='Breite'}
                             {include file='templateInputElement.tpl' name='hoehe' type='number' value=$urkundenelement->getHoehe() required=true bezeichnung='Höhe'}
 							{include file='templateInputElement.tpl' name='inhalt' type='select' selectedElement=$urkundenelement->getInhalt() required=true bezeichnung='Inhalt' selectValueList=$inhalt_selectvalues }

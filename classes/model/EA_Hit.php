@@ -36,10 +36,10 @@ class EA_Hit
     #[ORM\Column(type: Types::INTEGER,name:"Leser")]
     private int $leser = 0;
 
-    #[ORM\Column(type: Types::BOOLEAN,name:"berechnet")]
+    #[ORM\Column(type: Types::BOOLEAN,name:"berechnet",options:["default"=>0])]
     private bool $berechnet = false;
 
-    #[ORM\Column(type: Types::BOOLEAN,name:"geloescht")]
+    #[ORM\Column(type: Types::BOOLEAN,name:"geloescht",options:["default"=>null])]
     private bool $geloescht = false;
 
     public function __construct()

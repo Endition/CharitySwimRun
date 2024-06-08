@@ -1,6 +1,7 @@
 <?php
 namespace CharitySwimRun\classes\controller;
 
+use CharitySwimRun\classes\model\EA_Certificate;
 use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_CertificateElement;
 use CharitySwimRun\classes\model\EA_Message;
@@ -24,7 +25,9 @@ class EA_CertificateGeneratorController  extends EA_Controller
             $urkundenelement = $this->editUrkundenelement();
         } elseif (isset($_GET['action']) && $_GET['action'] === "delete") {
             $this->deleteUrkundenelement();
-        } else {
+        } elseif(isset($_GET['action']) && $_GET['action'] === "sonderfunktionen"){
+            $this->getSonderfunktionen();
+        }else {
             $urkundenelement = new EA_CertificateElement();
         }
 
@@ -32,6 +35,16 @@ class EA_CertificateGeneratorController  extends EA_Controller
         $content .= $this->EA_FR->getFormUrkundenelement($urkundenelement);
         $content .= $this->EA_R->renderUrkundengeneratorJavascript($this->EA_CertificateElementRepository->loadList());
         return $content;
+    }
+
+    private function getSonderfunktionen(): void
+    {
+        if (isset($_POST['sendPCSData'])) {
+            foreach (EA_Certificate::getStandardElemente() as $singleCertificate) {
+                $this->EA_CertificateElementRepository->create($singleCertificate);
+                $this->EA_Messages->addMessage( "Element " . $singleCertificate->getId() . " gespeichert",234234234222,EA_Message::MESSAGE_SUCCESS);            
+            }
+        } 
     }
 
     private function createAndUpdateUrkundenelement(): void
@@ -103,11 +116,7 @@ class EA_CertificateGeneratorController  extends EA_Controller
     {
         $content = "";
         $urkundenelementList = $this->EA_CertificateElementRepository->loadList();
-        if ($urkundenelementList !== []) {
-            $content = $this->EA_R->renderTabelleUrkundenelemente($urkundenelementList);
-        } else {
-            $this->EA_Messages->addMessage("Es sind noch keine Urkundenelementen angelegt.",194233454,EA_Message::MESSAGE_WARNING);
-        } 
+        $content = $this->EA_R->renderTabelleUrkundenelemente($urkundenelementList);
         return $content;
     }
 

@@ -43,5 +43,14 @@
 						{/foreach}
 					</tbody>
 				</table>
+				<form role="form" name="CertificateForm" id="CertificateForm"
+				action="{$link}&action=sonderfunktionen" method="POST" class="form-horizontal">
+				<div class="form-group">
+					<div class="col-sm-12">
+						<button type="submit" name="sendPCSData"
+							 class="btn btn-primary">Urkunde PCS anlegen</button>
+					</div>
+				</div>
+			</form>
 			</div>
 		</div>

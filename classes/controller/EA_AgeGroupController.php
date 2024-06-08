@@ -226,11 +226,7 @@ class EA_AgeGroupController extends EA_Controller
     {
         $content = "";
         $altersklasseList = $this->EA_AgeGroupRepository->loadList();
-        if ($altersklasseList !== []) {
             $content = $this->EA_R->renderTabelleAltersklassen($altersklasseList, $this->EA_ConfigurationRepository->load());
-        } else {
-            $this->EA_Messages->addMessage("Es sind noch keine Altersklasseen angelegt.",155677878,EA_Message::MESSAGE_WARNING);
-        } 
         return $content;
     }
 
