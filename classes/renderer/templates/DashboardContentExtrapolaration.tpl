@@ -9,7 +9,7 @@
                     </div>
                 </div>
             {/foreach}  
-            Annahme für die Prognose: Durchschnittliche Meter pro Minute bis jetzt: {$meterProMinute}m
+            Annahme für die Prognose: Durchschnittliche Meter pro Minute in der letzten stunde: {$meterProMinute}m
         </div>
     </div>
 </div>

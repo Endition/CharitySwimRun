@@ -95,9 +95,9 @@ class EA_Repository{
         $config = ORMSetup::createAttributeMetadataConfiguration([ROOT_PATH."/classes"],false,);
         //https://www.doctrine-project.org/projects/doctrine-orm/en/3.1/reference/advanced-configuration.html#query-cache-recommended
         //set false when not developing
-        $config->setAutoGenerateProxyClasses(true);
-      #  $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata',0,ROOT_PATH."/doctrineMetaDataCache2"));
-       # $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
+        $config->setAutoGenerateProxyClasses(false);
+        $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata',0,ROOT_PATH."/doctrineMetaDataCache2"));
+        $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
 
         $connectionParams = [
             'dbname' => $this->database,
