@@ -31,12 +31,12 @@ class EA_AdminController extends EA_Controller
             }
 
             //if there is no configuration show configuration Page
-            if(count($this->EA_DistanceRepository->loadList()) === 0){
+            if($this->EA_DistanceRepository->countAll() === 0){
                 $this->EA_Messages->addMessage("Bitte zuerste Strecken anlegen, bevor mit der Software gearbeitet werden kann.",1346575677,EA_Message::MESSAGE_INFO);         
                 $_GET['doc'] = "strecken";  
             }
 
-            if(count($this->EA_AgeGroupRepository->loadList()) === 0){
+            if($this->EA_AgeGroupRepository->countAll() === 0){
                 $this->EA_Messages->addMessage("Bitte zuerste Altersklassen anlegen, bevor mit der Software gearbeitet werden kann.",165465657,EA_Message::MESSAGE_INFO);         
                 $_GET['doc'] = "altersklassen";  
             }
@@ -48,7 +48,11 @@ class EA_AdminController extends EA_Controller
 
 
             //update ImpulseCache on every Call
-            $this->EA_HitRepository->updateImpulseCache();
+            // update ImpulseCache nur einmal pro Minute und User
+            if (!isset($_SESSION['impulseCacheLastUpdate']) || time() - $_SESSION['impulseCacheLastUpdate'] > 60) {
+                $this->EA_HitRepository->updateImpulseCache();
+                $_SESSION['impulseCacheLastUpdate'] = time();
+            }
             
             switch ($_GET['doc']) {
                 case "dashboard":
