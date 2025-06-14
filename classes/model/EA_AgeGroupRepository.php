@@ -47,6 +47,15 @@ class EA_AgeGroupRepository extends EA_Repository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    
+    public function countAll(): int
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('COUNT(a.id)')
+            ->from(EA_AgeGroup::class, 'a');
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
     public function findByGeburtsjahr(DateTimeInterface $geburtsdatum): ?EA_AgeGroup
     {
         $qb = $this->entityManager->createQueryBuilder();

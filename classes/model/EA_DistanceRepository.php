@@ -45,6 +45,14 @@ class EA_DistanceRepository extends EA_Repository
         return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Distance')->findOneBy(["bezeichnungLang"=>$bezeichnungLang]);
     }
 
+    public function countAll(): int
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('COUNT(d.id)')
+            ->from(EA_Distance::class, 'd');
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
     public function loadList(string $orderBy = "id"): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
