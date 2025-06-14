@@ -24,7 +24,7 @@ class EA_RfidChipReturnController extends EA_Controller
             }
             $transponder = $EA_T->getTransponder();
             $EA_T->setTransponder(null);
-            $EA_T->setStatus(EA_Starter::STATUS_TRANSPORTER_ZURUECKGEGEBENE);
+            $EA_T->setStatus(EA_Starter::STATUS_TRANSPONDER_ZURUECKGEGEBEN);
             $this->EA_StarterRepository->update();
             $this->EA_Messages->addMessage("Transponder " . $transponder . " ausgebucht",13235474663,EA_Message::MESSAGE_SUCCESS);
         }

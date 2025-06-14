@@ -129,7 +129,7 @@ class EA_Starter
     public const STATUS_GESTARTET= 50;
     public const STATUS_AUF_DER_STRECKE = 70;
     public const STATUS_GUELTIGE_BUCHUNG = 90;
-    public const STATUS_TRANSPORTER_ZURUECKGEGEBENE = 99;
+    public const STATUS_TRANSPONDER_ZURUECKGEGEBEN = 99;
 
     public const STATUS_LIST = [
             self::STATUS_ANGEMELDET => "angemeldet",
@@ -138,7 +138,7 @@ class EA_Starter
             self::STATUS_GESTARTET  => "gestartet",
             self::STATUS_AUF_DER_STRECKE  => "auf der Strecke",
             self::STATUS_GUELTIGE_BUCHUNG  => "gültige Buchung",
-            self::STATUS_TRANSPORTER_ZURUECKGEGEBENE  => "Transponder zurückgegeben"
+            self::STATUS_TRANSPONDER_ZURUECKGEGEBEN  => "Transponder zurückgegeben"
     ];
 
     public function __construct()
