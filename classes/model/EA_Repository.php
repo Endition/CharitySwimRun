@@ -24,6 +24,7 @@ class EA_Repository{
     public const TB_TEILNEHMER = "teilnehmer";
     public const TB_LOG = "log";
     public const TB_VEREIN = "verein";
+    public const TB_UNTERNEHMEN = "unternehmen";
     public const TB_CACHE = "cache";
 
     const TABELLE_LIST = [
@@ -35,6 +36,7 @@ class EA_Repository{
         'strecken',
         'log',
         'verein',
+        'unternehmen',
         'mannschaft',
         'mannschaft_kategorien',
         'urkunden',
@@ -180,6 +182,9 @@ class EA_Repository{
         $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 0;")->executeQuery();
         $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
         foreach ($schemaManager->listTableNames() as $tableName) {
+                if($modus === "RESETEVENT" && ($tableName !== "teilnehmer" && $tableName !== "log" && $tableName !== "cache" && $tableName !== "mannschaft" && $tableName !== "users" && $tableName !== "transponder")){
+                    continue;
+                }
                 //Do not truncate this tables, but drop them if necassary
                 if($modus === "TRUNCATE" && ($tableName === "users" || $tableName === "transponder")){
                     continue;
