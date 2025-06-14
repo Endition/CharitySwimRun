@@ -31,6 +31,10 @@ class EA_DatabaseController
             $this->saveDatabaseData();
         }
 
+        if (isset($_POST['resetEvent']) && $_GET['action'] === "resetEvent") {
+            $this->resetEvent();
+        }
+
         if (isset($_POST['resetDatabase']) && $_GET['action'] === "deleteDatabase") {
             $this->resetDatabase();
         }
@@ -47,6 +51,12 @@ class EA_DatabaseController
         }
         $content .= $this->EA_Messages->renderMessageAlertList();
         return $content;
+    }
+
+    private function resetEvent(): void
+    {
+        $this->EA_Repository->resetDatabase("RESETEVENT");  
+        $this->EA_Messages->addMessage("Event zurückgesetzt",123547823777,EA_Message::MESSAGE_SUCCESS);            
     }
 
     private function resetDatabase(): void
