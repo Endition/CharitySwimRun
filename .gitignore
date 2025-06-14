@@ -9,6 +9,8 @@ nbproject/
 .buildpath
 /doctrineMetaDataCache
 .vscode/
+.gradle/
+.idea/
 composer.lock
 config/dbConfigDaten.php
 /doctrineMetaDataCache2/doctrine_metadata

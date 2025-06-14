@@ -92,6 +92,13 @@ class EA_Renderer extends EA_AbstractRenderer
         return $this->smarty->fetch('ClubTable.tpl');
     }
 
+    public function renderTabelleUnternehmen(array $unternehmen): string
+    {
+        $this->smarty->assign('link', "index.php?doc=unternehmen");
+        $this->smarty->assign('unternehmen', $unternehmen);
+        return $this->smarty->fetch('CompanyTable.tpl');
+    }
+
     public function renderIndex(array $ipList): string
     {
         $this->smarty->assign('ipList', $ipList);

@@ -17,6 +17,7 @@ use Doctrine\DBAL\Types\Types;
 #[ORM\Index(name: "Transponder", columns: ["Transponder"])]
 #[ORM\Index(name: "Startnummer", columns: ["Startnummer"])]
 #[ORM\Index(name: "Verein", columns: ["Verein"])]
+#[ORM\Index(name: "Unternehmen", columns: ["Unternehmen"])]
 #[ORM\Index(name: "Strecke", columns: ["Strecke"])]
 #[ORM\Index(name: "Mannschaft", columns: ["Mannschaft"])]
 class EA_Starter
@@ -70,6 +71,10 @@ class EA_Starter
     #[ORM\ManyToOne(targetEntity: EA_Club::class)]
     #[ORM\JoinColumn(name: 'Verein', referencedColumnName: 'VereinId',nullable:true,options:["default"=>null])]
     private ?EA_Club $verein = null;
+
+    #[ORM\ManyToOne(targetEntity: EA_Company::class)]
+    #[ORM\JoinColumn(name: 'Unternehmen', referencedColumnName: 'UnternehmenId',nullable:true,options:["default"=>null])]
+    private ?EA_Company $unternehmen = null;
 
     #[ORM\ManyToOne(targetEntity: EA_Distance::class)]
     #[ORM\JoinColumn(name: 'Strecke', referencedColumnName: 'id',nullable:true,options:["default"=>null])]
@@ -319,6 +324,20 @@ class EA_Starter
     {
         $this->verein = $verein;
 
+    }
+
+    public function getUnternehmen(): EA_Company
+    {
+        if ($this->unternehmen !==null) {
+            return $this->unternehmen;
+        } else {
+            return new EA_Company();
+        }
+    }
+
+    public function setUnternehmen(?EA_Company $unternehmen)
+    {
+        $this->unternehmen = $unternehmen;
     }
 
     public function getStrecke(): EA_Distance

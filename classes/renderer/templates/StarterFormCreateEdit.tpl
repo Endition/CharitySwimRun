@@ -74,6 +74,31 @@
                                                                      });
                                                                 </script>
                                 </div>	
+                                <div class="form-group col-sm-6">
+                                    {include file='templateInputElement.tpl' name='unternehmenid' id="Unternehmenid" type='hidden' value=$vereinid }
+                                    {include file='templateInputElement.tpl' bezeichnung='Unternehmen' name='unternehmen' id="unternehmen" type='text' value=$unternehmen required=false}
+                                                                    <script type="text/javascript">
+                                                                    $(document).ready(function($){ 
+                                                                       $("#Verein").autocomplete({
+                                                                           source: function(request, response) {
+                                                                               $.ajax({
+                                                                                   url: "api/unternehmen/search/"+$("#Unternehmen").val(),
+                                                                                   dataType: "json",
+                                                                                   success: function(data) {
+                                                                                       response(data);
+                                                                                   }
+                                                                               });
+                                                                           },
+                                                                           minLength: 1,
+                                                                           select: function(event, ui) {
+                                                                                $("#Unternehmen").val(ui.item.label);
+                                                                                $("#Unternehmenid").val(ui.item.value);
+                                                                                return false;
+                                                                            }
+                                                                           });
+                                                                     });
+                                                                </script>
+                                </div>	
                             </div>
                             <div class="row">
                                 <div class="form-group col-sm-6">

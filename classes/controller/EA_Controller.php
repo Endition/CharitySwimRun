@@ -12,6 +12,7 @@ use CharitySwimRun\classes\model\EA_AgeGroupRepository;
 use CharitySwimRun\classes\model\EA_HitRepository;
 use CharitySwimRun\classes\model\EA_Configuration;
 use CharitySwimRun\classes\model\EA_ClubRepository;
+use CharitySwimRun\classes\model\EA_CompanyRepository;
 use CharitySwimRun\classes\model\EA_TeamRepository;
 use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
 use CharitySwimRun\classes\model\EA_DistanceRepository;
@@ -30,6 +31,7 @@ class EA_Controller
     protected EA_ConfigurationRepository $EA_ConfigurationRepository;
     protected EA_HitRepository $EA_HitRepository;
     protected EA_ClubRepository $vereinRepository;
+    protected EA_CompanyRepository $EA_CompanyRepository;
     protected EA_TeamRepository $EA_TeamRepository;
     protected EA_SpecialEvaluationRepository $EA_SpecialEvaluationRepository;
     protected EA_ClubRepository $EA_ClubRepository;
@@ -56,6 +58,7 @@ class EA_Controller
         $this->EA_HitRepository = new EA_HitRepository($entityManager);
         $this->EA_TeamRepository = new EA_TeamRepository($entityManager);
         $this->EA_SpecialEvaluationRepository = new EA_SpecialEvaluationRepository($entityManager);
+        $this->EA_CompanyRepository = new EA_CompanyRepository($entityManager);
         $this->EA_ClubRepository = new EA_ClubRepository($entityManager);
         $this->EA_DistanceRepository = new EA_DistanceRepository($entityManager);
         $this->EA_TeamCategoryRepository = new EA_TeamCategoryRepository($entityManager);

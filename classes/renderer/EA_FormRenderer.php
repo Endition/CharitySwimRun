@@ -20,12 +20,15 @@ use CharitySwimRun\classes\model\EA_SpecialEvaluationRepository;
 use CharitySwimRun\classes\model\EA_Distance;
 use CharitySwimRun\classes\model\EA_DistanceRepository;
 use CharitySwimRun\classes\model\EA_Club;
+use CharitySwimRun\classes\model\EA_Company;
+use CharitySwimRun\classes\model\EA_Company_Repository;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_StarterRepository;
 use CharitySwimRun\classes\model\EA_Certificate;
 use CharitySwimRun\classes\model\EA_CertificateElement;
 use CharitySwimRun\classes\model\EA_User;
 use CharitySwimRun\classes\model\EA_ClubRepository;
+use CharitySwimRun\classes\model\EA_CompanyRepository;
 use Smarty\Smarty;
 
 class EA_FormRenderer extends EA_AbstractRenderer {
@@ -51,6 +54,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $altersklasseRepository = new EA_AgeGroupRepository($entityManager);
         $streckeRepository = new EA_DistanceRepository($entityManager);
         $vereinRepository = new EA_ClubRepository($entityManager);
+        $unternehmenRepository = new EA_CompanyRepository($entityManager);
         $mannschaftRepository = new EA_TeamRepository($entityManager);
         $konfigurationRepository = new EA_ConfigurationRepository($entityManager);
         $konfiguration = $konfigurationRepository->load();
@@ -62,6 +66,9 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         }
         if (isset($includes['vereine'])) {
             $this->smarty->assign('vereine', $vereinRepository->loadList("verein"));
+        }
+        if (isset($includes['unternehmen'])) {
+            $this->smarty->assign('unternehmen', $unternehmenRepository->loadList("unternehmen"));
         }
         if (isset($includes['strecken'])) {
             $this->smarty->assign('strecken', $streckeRepository->getListForSelectField());
@@ -287,6 +294,16 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
+    public function getFormUnternehmen(EA_Company $EA_C): string
+    {
+        $content = "";
+        $this->smarty->assign('unternehmen', $EA_C);
+        $this->smarty->assign('actionurl', 'index.php?doc=unternehmen');
+        $this->smarty->assign('editTeilnehmerUrl', 'index.php?doc=teilnehmer');
+        $content .= $this->smarty->fetch('CompanyFormCreateEdit.tpl');
+        return $content;
+    }
+
     public function getFormStartzeiten(EntityManager $entityManager, array $nichtgestarteteteilnehmer, array $gestarteteteilnehmer): string
     {
         $content = "";
@@ -401,6 +418,15 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('vereine', $vereinList);
         $this->smarty->assign('actionurl', 'index.php?doc=vereine&action=vereinsfusion');
         $content .= $this->smarty->fetch('ClubFusionForm.tpl');
+        return $content;
+    }
+
+    public function getFormUnternehmensfusion(array $unternehmenList): string
+    {
+        $content = "";
+        $this->smarty->assign('unternehmen', $unternehmenList);
+        $this->smarty->assign('actionurl', 'index.php?doc=unternehmen&action=unternehmensfusion');
+        $content .= $this->smarty->fetch('CompanyFusionForm.tpl');
         return $content;
     }
 
