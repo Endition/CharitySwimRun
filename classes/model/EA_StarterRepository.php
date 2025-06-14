@@ -149,7 +149,11 @@ class EA_StarterRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('t')
-            ->from(EA_Starter::class, 't',"t.id");
+            ->from(EA_Starter::class, 't',"t.id")
+            ->leftJoin('t.verein', 'verein')
+            ->leftJoin('t.unternehmen', 'unternehmen')
+            ->leftJoin('t.strecke', 'strecke')
+            ->leftJoin('t.altersklasse', 'altersklasse');
         if($specialEvaluation){
              $queryBuilder->leftjoin(EA_Hit::class,'i','WITH', 'i.teilnehmer = t.id');
         }    
@@ -212,15 +216,19 @@ class EA_StarterRepository extends EA_Repository
         }
         if($searchStartnummer){
             $queryBuilder->andWhere("t.startnummer LIKE :searchStartnummer");
-            $queryBuilder->setParameter(":searchStartnummer",$searchStartnummer);
+            $queryBuilder->setParameter(":searchStartnummer",$searchStartnummer. '%');
         }
         if($searchName || $searchVorname){
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->like("t.name","'".$searchName."%'"),
-                        $queryBuilder->expr()->like("t.vorname","'".$searchVorname."%'"),
-                )
-            );
+            $orX = $queryBuilder->expr()->orX();
+            if ($searchName) {
+                $orX->add($queryBuilder->expr()->like('t.name', ':searchName'));
+                $queryBuilder->setParameter('searchName', $searchName . '%');
+            }
+            if ($searchVorname) {
+                $orX->add($queryBuilder->expr()->like('t.vorname', ':searchVorname'));
+                $queryBuilder->setParameter('searchVorname', $searchVorname . '%');
+            }
+            $queryBuilder->andWhere($orX);
         }
         if($specialEvaluation){
             $queryBuilder->andWhere("i.timestamp > :start")
