@@ -9,6 +9,7 @@
       data-sort-name="Meter"
       data-sort-order="desc"
       data-show-export="true"
+      data-show-columns="true"
       data-export-data-type="basic"
       data-export-types="['pdf','txt','sql','csv']"
       data-filter-control="true"
@@ -19,13 +20,14 @@
             <tr>
                 <th data-field="Platz" data-sortable="true"><b>Platz</b></th>
                 <th data-field="StPlatz" data-sortable="true"><b>St.Platz</b></th>
-                <th data-field="AKPlatz" data-sortable="true"><b>AKPlatz</b></th>
+                <th data-field="AKPlatz" data-sortable="true" data-switchable="true"><b>AKPlatz</b></th>
                 <th><b>StNr</b></th>
                 <th><b>Name</b></th>
                 <th  data-field="Geschlecht" data-filter-control="select"><b><i class="fa fa-venus-mars fa-fw"></b></th>
                 <th  data-field="AK" data-filter-control="select"><b>AK</b></th>
-                <th  data-field="Verein" data-filter-control="select"><b>Verein</b></th>
-                <th  data-field="Strecke" data-filter-control="select"><b>Strecke</b></th>
+                <th  data-field="Verein" data-filter-control="select" data-visible="false"><b>Verein</b></th>
+                <th  data-field="Unternehmen" data-filter-control="select" data-visible="false"><b>Unternehmen</b></th>
+                <th  data-field="Strecke" data-filter-control="select" data-visible="false"><b>Strecke</b></th>
                 <th><b>{$konfiguration->getStreckenart() }</b></th>
                 <th data-field="Meter" data-sortable="true"><b>Meter</b></th>
                 <th><b>Geld</b></th>					 				
@@ -43,6 +45,7 @@
                     <td>{$value->getGeschlecht()}</td>
                     <td>{$value->getAltersklasse()->getAltersklasseKurz()} {$value->getGeschlecht()}</td>
                     <td>{$value->getVerein()->getVerein()}</td>
+                    <td>{$value->getUnternehmen()->getUnternehmen()}</td>
                     <td>{$value->getStrecke()->getBezKurz()}</td>
                     <td>{if $specialEvaluation == null}  {$value->getStreckenart()} {else} {$value->getStreckenartSonderwertung()}  {/if}</td>
                     <td>{if $specialEvaluation == null}  {$value->getMeter()} {else} {$value->getMeterSonderwertung()}  {/if}</td>

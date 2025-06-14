@@ -102,6 +102,10 @@ class EA_ApiController extends EA_Controller
                 $EA_ClubController = new EA_ClubController($this->entityManager);
                 $responseList = $this->handleGetVereinAdministrativ($paramList);
                 break;
+            case 'unternehmen':
+                $EA_CompanyController = new EA_CompanyController($this->entityManager);
+                $responseList = $this->handleGetUnternehmenAdministrativ($paramList);
+                break;
             default:
                 $responseList = $this->notFoundresponseList();
                 break;
@@ -221,6 +225,35 @@ class EA_ApiController extends EA_Controller
                     //JqueryUi needs exact these parameters
                     "label" => $verein->getVerein(),
                     "value" => $verein->getId()
+                ];
+            }
+        }
+
+
+        $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
+        $responseList['body'] = json_encode($result);
+        return $responseList;
+    }
+
+        private function handleGetUnternehmenAdministrativ(array $paramList): array
+    {
+        $responseList = [];
+        $result = [];
+        
+        if($paramList[0] === "search"){
+            $searchName = $paramList[0] === "search" ? htmlspecialchars($paramList[1]) : null;
+
+            $unternehmenList = $this->EA_CompanyRepository->loadList("unternehmen",$searchName);            
+            if ($unternehmenList === null) {
+                return $this->notFoundresponseList();
+            }
+            foreach($unternehmenList as $unternehmen){
+                $result[] = [   
+                    "id"=>$unternehmen->getId(),
+                    "startnummer"=>$unternehmen->getUnternehmen(),
+                    //JqueryUi needs exact these parameters
+                    "label" => $unternehmen->getUnternehmen(),
+                    "value" => $unternehmen->getId()
                 ];
             }
         }

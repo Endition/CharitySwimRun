@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Configuration;
 use CharitySwimRun\classes\model\EA_Club;
-
+use CharitySwimRun\classes\model\EA_Company;
 use CharitySwimRun\classes\model\EA_Message;
 
 
@@ -87,6 +87,21 @@ class EA_StarterController extends EA_Controller
             $verein = null;
         }
 
+        if (isset($_POST['unternehmen']) && $_POST['unternehmen'] !== "") {
+            if(isset($_POST['unternehmenid']) && is_numeric($_POST['unternehmenid']) && $_POST['unternehmenid'] > 0){
+                $unternehmen = $this->EA_CompanyRepository->loadById(filter_input(INPUT_POST,"unternehmenid",FILTER_SANITIZE_NUMBER_INT));
+            }else{
+                $unternehmen = $this->EA_CompanyRepository->loadByBezeichnung(htmlspecialchars($_POST['unternehmen']));
+                if($unternehmen === null){
+                    $unternehmen = new EA_Company();
+                    $unternehmen->setUnternehmen(htmlspecialchars($_POST['unternehmen']));
+                    $this->EA_CompanyRepository->create($unternehmen);
+                }
+            }
+        } else {
+            $unternehmen = null;
+        }
+
         $streckeId = filter_input(INPUT_POST,"strecke",FILTER_SANITIZE_NUMBER_INT);
         $strecke = $this->EA_DistanceRepository ->loadById($streckeId);
 
@@ -161,6 +176,7 @@ class EA_StarterController extends EA_Controller
         $teilnehmer->setGeschlecht($geschlecht);
         $teilnehmer->setMannschaft($mannschaft);
         $teilnehmer->setVerein($verein);
+        $teilnehmer->setUnternehmen($unternehmen);
         $teilnehmer->setStrecke($strecke);
         $teilnehmer->setStartgruppe($startgruppe);
         $teilnehmer->setMail($mail);

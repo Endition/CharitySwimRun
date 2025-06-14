@@ -95,9 +95,9 @@ class EA_Repository{
         $config = ORMSetup::createAttributeMetadataConfiguration([ROOT_PATH."/classes"],false,);
         //https://www.doctrine-project.org/projects/doctrine-orm/en/3.1/reference/advanced-configuration.html#query-cache-recommended
         //set false when not developing
-        $config->setAutoGenerateProxyClasses(false);
-        $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata',0,ROOT_PATH."/doctrineMetaDataCache2"));
-        $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
+        $config->setAutoGenerateProxyClasses(true);
+     #   $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata',0,ROOT_PATH."/doctrineMetaDataCache2"));
+    #    $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
 
         $connectionParams = [
             'dbname' => $this->database,
@@ -158,6 +158,7 @@ class EA_Repository{
             $this->entityManager->getClassMetadata(EA_CertificateElement::class),
             $this->entityManager->getClassMetadata(EA_User::class),
             $this->entityManager->getClassMetadata(EA_Club::class),
+            $this->entityManager->getClassMetadata(EA_Company::class),
             //only relevant in admin's project
             $this->entityManager->getClassMetadata(EA_Cache::class),
             $this->entityManager->getClassMetadata(EA_RfidChip::class),
