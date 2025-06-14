@@ -5,6 +5,9 @@
             .new-entry {
                 background-color: green;
             }
+            .new-entry-round-number {
+                background-color: lightsalmon;
+            }
     </style>
 
   </head>
@@ -38,6 +41,7 @@
                     beforeSend: function(){
                         // Remove the highlighted rows when new request is send
                         $('#data-table tbody').find('tr').removeClass('new-entry');
+                        $('#data-table tbody').find('tr').removeClass('new-entry-round-number');
                     },
                     success: function(entries) {
                         if (entries.length > 0) {
@@ -45,9 +49,10 @@
                             lastTimestamp = entries[0].timestamp;
                             for (var i = entries.length - 1; i >= 0; i--) {
                                 var entry = entries[i];
+                                var rowClass = entry.meter % 2500 === 0 ? 'new-entry-round-number' : 'new-entry';
                                 //create row with highlight
                                 var newRow = $(
-                                    '<tr class="new-entry">' +
+                                    '<tr class="'+rowClass+'">' +
                                     '<td>' + entry.zeit + '</td>' +
                                     '<td>' + entry.gesamtname + '</td>' +
                                     '<td style="text-align: center; ">' + entry.startnummer + '</td>' +
