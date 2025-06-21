@@ -1,7 +1,7 @@
 <?php
 //has to be the very first thing
 session_start();
-header("Content-Type: application/json");
+header("Content-Type: application/json; charset=utf-8");
 
 use CharitySwimRun\classes\model\EA_User;
 use CharitySwimRun\classes\model\EA_Repository;

@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'strecken')]
+#[ORM\Table(name: 'strecken', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci'])]
 class EA_Distance
 {
     #[ORM\Column(type: Types::INTEGER)]

@@ -96,10 +96,11 @@ class EA_Repository{
     {
         $config = ORMSetup::createAttributeMetadataConfiguration([ROOT_PATH."/classes"],false,);
         //https://www.doctrine-project.org/projects/doctrine-orm/en/3.1/reference/advanced-configuration.html#query-cache-recommended
+        // Manuell den Cache löschen: C:\laragon\www\CharitySwimRun\doctrineMetaDataCache2\doctrine_metadata
         //set false when not developing
-        $config->setAutoGenerateProxyClasses(true);
-     #   $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata',0,ROOT_PATH."/doctrineMetaDataCache2"));
-    #    $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
+        $config->setAutoGenerateProxyClasses(false);
+        $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata',0,ROOT_PATH."/doctrineMetaDataCache2"));
+        $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
 
         $connectionParams = [
             'dbname' => $this->database,
@@ -107,10 +108,12 @@ class EA_Repository{
             'password' => $this->password,
             'host' => $this->server,
             'driver' => 'pdo_mysql',
+            'charset' => 'utf8mb4',
         ];
 
         try{
             $connection = DriverManager::getConnection($connectionParams,$config);
+            $connection->executeQuery("SET NAMES 'utf8mb4'");
             $this->entityManager = new EntityManager($connection, $config);
         }catch(Exception $e){
             $this->entityManager  = null;
@@ -182,14 +185,14 @@ class EA_Repository{
         $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 0;")->executeQuery();
         $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
         foreach ($schemaManager->listTableNames() as $tableName) {
-                if($modus === "RESETEVENT" && ($tableName !== "teilnehmer" && $tableName !== "log" && $tableName !== "cache" && $tableName !== "mannschaft" && $tableName !== "users" && $tableName !== "transponder")){
+                if($modus === "RESETEVENT" && in_array($tableName, ['konfiguration','specialevaluation','users','aks','strecken','verein','unternehmen','mannschaft','mannschaft_kategorien','urkunden','transponder'])){
                     continue;
                 }
                 //Do not truncate this tables, but drop them if necassary
                 if($modus === "TRUNCATE" && ($tableName === "users" || $tableName === "transponder")){
                     continue;
                 }
-                $sql = ''.$modus.'  TABLE ' . $tableName;
+                $sql = ''.$modus === "DROP" ? "DROP" : "TRUNCATE".'  TABLE ' . $tableName;
                 $this->entityManager->getConnection()->prepare($sql)->executeQuery();
         }
         $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 1;")->executeQuery();  

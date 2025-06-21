@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 //This class is only need for the admin's project
 
 #[ORM\Entity]
-#[ORM\Table(name: 'cache')]
+#[ORM\Table(name: 'cache', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci'])]
 #[ORM\Index(name: "verarbeitet", columns: ["verarbeitet"])]
 #[ORM\Index(name: "Leser", columns: ["Leser"])]
 #[ORM\Index(name: "u1", columns: ["Transponderschluessel","Buchungszeit"])]

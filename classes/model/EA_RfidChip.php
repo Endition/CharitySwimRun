@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 //This class is only need for the admin's project
 
 #[ORM\Entity]
-#[ORM\Table(name: 'transponder')]
+#[ORM\Table(name: 'transponder', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci'])]
 #[ORM\Index(name: "Transponderschluessel", columns: ["Transponderschluessel"])]
 class EA_RfidChip
 {

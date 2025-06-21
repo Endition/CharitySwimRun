@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'verein')]
+#[ORM\Table(name: 'verein', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci'])]
 class EA_Club
 {
 

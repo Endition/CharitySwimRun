@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'mannschaft_kategorien')]
+#[ORM\Table(name: 'mannschaft_kategorien', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci'])]
 class EA_TeamCategory
 {
     #[ORM\Column(type: Types::INTEGER, name: "MannschaftskategorieId")]

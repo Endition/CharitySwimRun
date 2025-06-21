@@ -8,7 +8,7 @@ use Doctrine\DBAL\Types\Types;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'specialEvaluation')]
+#[ORM\Table(name: 'specialEvaluation', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci'])]
 class EA_SpecialEvaluation
 {
     #[ORM\Column(type: Types::INTEGER)]

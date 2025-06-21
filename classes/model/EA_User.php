@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'users')]
+#[ORM\Table(name: 'users', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci'])]
 class EA_User
 {
     #[ORM\Column(type: Types::INTEGER)]
