@@ -26,6 +26,7 @@ $type === "date" }
                 {if $step > 0} step="{$step }" {/if} 
                 {if $datamin } data-min="{$datamin}" {/if} 
                 {if $onkeyup } onkeyup="{$onkeyup}" {/if} 
+                {if $autofocus === true} autofocus {/if} 
             >
         </div>
     </div>
