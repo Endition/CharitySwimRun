@@ -17,7 +17,7 @@
                             <div class="row">
                                 {include file='templateInputElement.tpl' name='id' type='hidden' value=$teilnehmer->getId() required=true}
                                 <div class="form-group col-sm-6">
-                                    {include file='templateInputElement.tpl' bezeichnung='Startnummer' name='startnummer' type='number' value=$teilnehmer->getStartnummer() required=true id="Startnummer" step=1  onkeyup="document.getElementById('Transponder').value = document.getElementById('Startnummer').value;"}
+                                    {include file='templateInputElement.tpl' bezeichnung='Startnummer' name='startnummer' type='number' autofocus=true value=$teilnehmer->getStartnummer() required=true id="Startnummer" step=1  onkeyup="document.getElementById('Transponder').value = document.getElementById('Startnummer').value;"}
                                 </div>
 
                                 {if $konfiguration->getTransponder() eq true}	
