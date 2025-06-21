@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'log')]
+#[ORM\Table(name: 'log', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci'])]
 #[ORM\Index(name: "TeilnehmerId", columns: ["TeilnehmerId"])]
 #[ORM\Index(name: "TransponderId", columns: ["TransponderId"])]
 #[ORM\Index(name: "Leser", columns: ["Leser"])]

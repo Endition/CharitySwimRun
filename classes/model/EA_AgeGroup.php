@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'aks')]
+#[ORM\Table(name: 'aks', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci'])]
 class EA_AgeGroup
 {
     #[ORM\Column(type: Types::INTEGER,name:"Id")]

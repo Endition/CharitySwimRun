@@ -79,7 +79,7 @@
                                     {include file='templateInputElement.tpl' bezeichnung='Unternehmen' name='unternehmen' id="unternehmen" type='text' value=$unternehmen required=false}
                                                                     <script type="text/javascript">
                                                                     $(document).ready(function($){ 
-                                                                       $("#Verein").autocomplete({
+                                                                       $("#Unternehmen").autocomplete({
                                                                            source: function(request, response) {
                                                                                $.ajax({
                                                                                    url: "api/unternehmen/search/"+$("#Unternehmen").val(),

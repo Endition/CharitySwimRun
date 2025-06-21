@@ -26,7 +26,6 @@ class EA_DatabaseController
     public function getPageDb(): string
     {
         $content = "";
-
         if (isset($_POST['sendDatabaseData'])) {
             $this->saveDatabaseData();
         }

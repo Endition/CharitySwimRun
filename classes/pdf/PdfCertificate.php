@@ -67,6 +67,9 @@ class PdfCertificate extends EA_AbstractPDF
                 case "Meter" :
                     $inhalt = $teilnehmer->getMeter() . "m";
                     break;
+                case "Veranstaltungsname" :
+                    $inhalt = $this->konfiguration->getVeranstaltungsname();
+                    break;
                 case "Beguenstigter" :
                     $inhalt = $this->konfiguration->getBeguenstigter();
                     break;
