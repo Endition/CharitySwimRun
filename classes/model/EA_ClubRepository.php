@@ -59,7 +59,7 @@ class EA_ClubRepository extends EA_Repository
             ->from(EA_Club::class, 'v',"v.id");
         if($searchVerein){
             $queryBuilder->where("v.verein LIKE :verein")
-            ->setParameter(":verein", $searchVerein."%");
+            ->setParameter(":verein", "%".$searchVerein."%");
         }
         $queryBuilder->orderBy('v.'.$orderBy);        
         return $queryBuilder->getQuery()->getResult();
