@@ -41,7 +41,8 @@ class EA_Repository{
         'mannschaft_kategorien',
         'urkunden',
         'cache',
-        'transponder'
+        'transponder',
+        'femalefirstnames',
     ];
 
     public function __construct(string $user, string $password, string $server, bool $createConnection=false)
@@ -164,6 +165,7 @@ class EA_Repository{
             $this->entityManager->getClassMetadata(EA_User::class),
             $this->entityManager->getClassMetadata(EA_Club::class),
             $this->entityManager->getClassMetadata(EA_Company::class),
+            $this->entityManager->getClassMetadata(EA_FemaleFirstname::class),
             //only relevant in admin's project
             $this->entityManager->getClassMetadata(EA_Cache::class),
             $this->entityManager->getClassMetadata(EA_RfidChip::class),
@@ -185,11 +187,11 @@ class EA_Repository{
         $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 0;")->executeQuery();
         $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
         foreach ($schemaManager->listTableNames() as $tableName) {
-                if($modus === "RESETEVENT" && in_array($tableName, ['konfiguration','specialevaluation','users','aks','strecken','verein','unternehmen','mannschaft','mannschaft_kategorien','urkunden','transponder'])){
+                if($modus === "RESETEVENT" && in_array($tableName, ['konfiguration','specialevaluation','users','aks','strecken','verein','unternehmen','mannschaft','mannschaft_kategorien','urkunden','transponder','femalefirstnames'])){
                     continue;
                 }
                 //Do not truncate this tables, but drop them if necassary
-                if($modus === "TRUNCATE" && ($tableName === "users" || $tableName === "transponder")){
+                if($modus === "TRUNCATE" && ($tableName === "users" || $tableName === "transponder" || $tableName === "femalefirstnames")){
                     continue;
                 }
                 $sql = ''.$modus === "DROP" ? "DROP" : "TRUNCATE".'  TABLE ' . $tableName;

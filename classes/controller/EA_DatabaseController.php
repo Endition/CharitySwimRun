@@ -8,6 +8,7 @@ use CharitySwimRun\classes\renderer\EA_FormRenderer;
 use CharitySwimRun\classes\model\EA_Repository;
 use CharitySwimRun\classes\model\EA_Messages;
 use CharitySwimRun\classes\model\EA_RfidChip;
+use CharitySwimRun\classes\model\EA_FemaleFirstname;
 
 //Because this controller creates the DB connection, no heritage
 class EA_DatabaseController
@@ -84,6 +85,7 @@ class EA_DatabaseController
             $this->EA_Repository->createDatabaseTables();
             $this->createUrkundeStandardentries($this->EA_Repository->getEntityManager());
             $this->createTransponderStandardentries($this->EA_Repository->getEntityManager());
+            $this->createFemaleFirstnamesStandardentries($this->EA_Repository->getEntityManager());
         }else{
             $this->EA_Messages->addMessage("Konnte keine Verbindung herstellen",123457777,EA_Message::MESSAGE_ERROR);            
         }
@@ -102,6 +104,14 @@ class EA_DatabaseController
     {
         foreach(EA_RfidChip::getStandardElemente() as $transponder){
             $entityManager->persist($transponder);
+        }
+        $entityManager->flush();
+    }
+
+    private function createFemaleFirstnamesStandardentries(EntityManager $entityManager): void
+    {
+        foreach(EA_FemaleFirstname::getStandardElemente() as $firstname){
+            $entityManager->persist($firstname);
         }
         $entityManager->flush();
     }

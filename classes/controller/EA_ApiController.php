@@ -98,16 +98,16 @@ class EA_ApiController extends EA_Controller
         $responseList = [];
         switch ($route) {
             case 'teilnehmer':
-                $EA_StarterController = new EA_StarterController($this->entityManager);
                 $responseList = $this->handleGetTeilnehmerAdministrativ($paramList);
                 break;
             case 'verein':
-                $EA_ClubController = new EA_ClubController($this->entityManager);
                 $responseList = $this->handleGetVereinAdministrativ($paramList);
                 break;
             case 'unternehmen':
-                $EA_CompanyController = new EA_CompanyController($this->entityManager);
                 $responseList = $this->handleGetUnternehmenAdministrativ($paramList);
+                break;
+            case 'femalefirstname':
+                $responseList = $this->handleGetFemaleFirstnameAdministrativ($paramList);
                 break;
             default:
                 $responseList = $this->notFoundresponseList();
@@ -173,7 +173,7 @@ class EA_ApiController extends EA_Controller
             $x_wert = (isset($_POST['x_wert'])) ? htmlspecialchars($_POST['x_wert']) : $EA_U->getX_wert();
             $y_wert = (isset($_POST['y_wert'])) ? htmlspecialchars($_POST['y_wert']) : $EA_U->getY_wert();
             $breite = (isset($_POST['breite'])) ? htmlspecialchars($_POST['breite']) : $EA_U->getBreite();
-            $hoehe = (isset($_POST['hoehe'])) ? htmlspecialchars($_POST['hoehe']) : $EA_U->getHoehe();
+            $hoehe = (isset($_POST['hoehe'])) ? htmlspecialchars($_POST['hoehe']) : EA_U->getHoehe();
         
             $EA_U->setX_wert($x_wert);
             $EA_U->setY_wert($y_wert);
@@ -238,7 +238,7 @@ class EA_ApiController extends EA_Controller
         return $responseList;
     }
 
-        private function handleGetUnternehmenAdministrativ(array $paramList): array
+    private function handleGetUnternehmenAdministrativ(array $paramList): array
     {
         $responseList = [];
         $result = [];
@@ -265,6 +265,26 @@ class EA_ApiController extends EA_Controller
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
         $responseList['body'] = json_encode($result);
         return $responseList;
+    }
+
+    private function handleGetFemaleFirstnameAdministrativ(array $paramList): array
+    {
+        $responseList = [];
+        $result = [];
+        
+        if($paramList[0] === "check"){
+            $searchName = $paramList[0] === "check" ? htmlspecialchars(urldecode($paramList[1])) : null;
+            
+            $isFemaleFirstname = $this->EA_FemaleFirstnameRepository->isFemaleFirstname($searchName);
+                $result[] = [   
+                    "isFemaleFirstname"=>$isFemaleFirstname,
+                ];
+        }
+
+
+        $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
+        $responseList['body'] = json_encode($result);
+        return $responseList; 
     }
 
     private function handleGetTeilnehmerAdministrativ(array $paramList): array
