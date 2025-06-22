@@ -12,8 +12,11 @@ class EA_ApiController extends EA_Controller
     public function __construct(EA_Repository $EA_Repository) 
     {
         parent::__construct($EA_Repository->getEntityManager());
-        //update Cache on every call
-        $this->EA_HitRepository->updateImpulseCache();
+        // update ImpulseCache nur einmal pro Minute und User
+        if (!isset($_SESSION['impulseCacheLastUpdate']) || time() - $_SESSION['impulseCacheLastUpdate'] > 60) {
+            $this->EA_HitRepository->updateImpulseCache();
+            $_SESSION['impulseCacheLastUpdate'] = time();
+        }
     }
 
     public function handleRequest(string $requestMethod, string $route, array $paramList) : string
@@ -26,7 +29,7 @@ class EA_ApiController extends EA_Controller
         }else{
             $responseList =  $this->handleRequestPublic($requestMethod,$route,$paramList);
         }
-
+        header('Content-Type: application/json; charset=utf-8');
         header($responseList['status_code_header']);
         if ($responseList['body']) {
             return $responseList['body'];
@@ -212,7 +215,7 @@ class EA_ApiController extends EA_Controller
         $result = [];
         
         if($paramList[0] === "search"){
-            $searchName = $paramList[0] === "search" ? htmlspecialchars($paramList[1]) : null;
+            $searchName = $paramList[0] === "search" ? htmlspecialchars(urldecode($paramList[1])) : null;
 
             $vereinList = $this->EA_ClubRepository->loadList("verein",$searchName);            
             if ($vereinList === null) {
@@ -241,7 +244,7 @@ class EA_ApiController extends EA_Controller
         $result = [];
         
         if($paramList[0] === "search"){
-            $searchName = $paramList[0] === "search" ? htmlspecialchars($paramList[1]) : null;
+            $searchName = $paramList[0] === "search" ? htmlspecialchars(urldecode($paramList[1])) : null;
 
             $unternehmenList = $this->EA_CompanyRepository->loadList("unternehmen",$searchName);            
             if ($unternehmenList === null) {
@@ -318,8 +321,9 @@ class EA_ApiController extends EA_Controller
                 $searchName  = null;
                 $searchVorname = null;
             }else{
-                $searchName = $paramList[0] === "search" ? htmlspecialchars($paramList[1]) : null;
-                $searchVorname = $paramList[0] === "search" ? htmlspecialchars($paramList[1]) : null;
+                //Da die Parameter per URL übergeben werden, wird in JS encodeURIComponent() gemacht. Hier dann decodeURIComponent()
+                $searchName = $paramList[0] === "search" ? htmlspecialchars(urldecode($paramList[1])) : null;
+                $searchVorname = $paramList[0] === "search" ? htmlspecialchars(urldecode($paramList[1])) : null;
                 $searchStartnummer = null;
             }
 

@@ -1,5 +1,5 @@
 		<div class="card">
-			<h5 class="card-header">Transponder zurück nehmen</h5>
+			<h5 class="card-header">Transponder zurücknehmen</h5>
 			<div class="card-body">
 						<form role="form" name="TransponderRueckgabeForm" id=""TransponderRueckgabeForm"
 							action="{$actionurl}" method="POST" class="form-horizontal">
