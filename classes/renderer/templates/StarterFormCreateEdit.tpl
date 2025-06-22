@@ -28,8 +28,32 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-sm-6">
-                                    {include file='templateInputElement.tpl' bezeichnung='Vorname' name='vorname' type='text' value=$teilnehmer->getVorname() required=true }
-                                </div>
+                                    {include file='templateInputElement.tpl' bezeichnung='Vorname' name='vorname' id='vorname' type='text' value=$teilnehmer->getVorname() required=true }
+                                    <!-- wenn der Vorname eingegeben wird, dann wird per Ajax der Wert für das Geschlecht gesetzt -->
+                                    <script type="text/javascript">
+                                        $(document).ready(function() {
+                                            $("#vorname").on("blur", function() {
+                                                var vorname = $(this).val();
+                                                if(vorname.length > 1) {
+                                                    $.ajax({
+                                                        url: "api/femalefirstname/check/"+encodeURIComponent(vorname),
+                                                        dataType: "json",
+                                                        success: function(response) {
+                                                            console.log(response[0].isFemaleFirstname);
+                                                            if(response[0].isFemaleFirstname === true) {
+                                                                // Setze das Geschlechtsfeld auf weiblich
+                                                                $("select[name='geschlecht']").val("W").change();
+                                                            } else {
+                                                                // Setze das Geschlechtsfeld auf männlich
+                                                                $("select[name='geschlecht']").val("M").change();
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        });
+                                        </script>
+                                    </div>
                                 <div class="form-group col-sm-6">
                                     {include file='templateInputElement.tpl' bezeichnung='Name' name='name' type='text' value=$teilnehmer->getName() required=true}
                                 </div>
@@ -57,7 +81,7 @@
                                                                        $("#Verein").autocomplete({
                                                                            source: function(request, response) {
                                                                                $.ajax({
-                                                                                   url: "api/verein/search/"+$("#Verein").val(),
+                                                                                   url: "api/verein/search/"+encodeURIComponent($("#Verein").val()),
                                                                                    dataType: "json",
                                                                                    success: function(data) {
                                                                                        response(data);
@@ -82,7 +106,7 @@
                                                                        $("#Unternehmen").autocomplete({
                                                                            source: function(request, response) {
                                                                                $.ajax({
-                                                                                   url: "api/unternehmen/search/"+$("#Unternehmen").val(),
+                                                                                   url: "api/unternehmen/search/"+encodeURIComponent($("#Unternehmen").val()),
                                                                                    dataType: "json",
                                                                                    success: function(data) {
                                                                                        response(data);
