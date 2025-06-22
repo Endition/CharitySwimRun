@@ -18,7 +18,7 @@
                                                                        $("#TeilnehmerSuchen").autocomplete({
                                                                            source: function(request, response) {
                                                                                $.ajax({
-                                                                                   url: "api/teilnehmer/search/"+$("#TeilnehmerSuchen").val(),
+                                                                                   url: "api/teilnehmer/search/"+encodeURIComponent($("#TeilnehmerSuchen").val()),
                                                                                    dataType: "json",
                                                                                    success: function(data) {
                                                                                        response(data);
