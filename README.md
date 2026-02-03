@@ -78,17 +78,19 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
 
 <h3>Docker-Compose</h3>
 <ol>
-    <li> <a href="https://docs.docker.com/engine/install/">Docker</a> installieren  </li>
-    <li> <a href="https://docs.docker.com/compose/install/">Docker Compose</a> installieren  </li>
-    <li>In der Datei docker-compose.yml das Passwort für die Datenbank für die drei Container auf ein eigenes setzen</li>
+    <li><a href="https://docs.docker.com/engine/install/">Docker</a> installieren</li>
+    <li><a href="https://docs.docker.com/compose/install/">Docker Compose</a> installieren</li>
+    <li>In der Datei <code>docker-compose.yml</code> das Datenbankpasswort für alle drei Container auf ein eigenes Passwort setzen</li>
     <li>
-	 Die Container starten:
-	 - docker-compose up
+        Die Container starten:
+        <ul>
+            <li><code>docker-compose up</code></li>
+        </ul>
     </li>
-    <li> <a href="http://localhost:8081">PHP myadmin aufrufen</a></li>
-    <li> <a href="http://localhost:8080//CharitySwimRun">Die Anwendung aufrufen</a></li>
-    <li> weiter bei Konfigurieren, Datenbanknuter ist root, der servername mysql</li>
-</ol
+    <li><a href="http://localhost:8081">phpMyAdmin aufrufen</a></li>
+    <li><a href="http://localhost:8080/CharitySwimRun">Die Anwendung aufrufen</a></li>
+    <li>Weiter bei „Konfigurieren“ – Datenbanknutzer ist <code>root</code>, Servername ist <code>mysql</code></li>
+</ol>
 
 <h2>Konfiguration</h2>
 <ol>

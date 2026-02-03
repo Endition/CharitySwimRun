@@ -10,8 +10,8 @@ services:
       - "8080:80"
     environment:
        DB_SERVER: mysql
-       DB_BENUTZER: root
-       DB_PASSWORT: root_password
+       DB_BENUTZER: 24h 
+       DB_PASSWORT: 24h
     depends_on:
       mysql:
         condition: service_healthy
@@ -26,6 +26,8 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: 24h
+      MYSQL_PASSWORD: 24h
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
       start_period: 5s
