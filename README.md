@@ -76,7 +76,21 @@ Das Userinferface ist in deutsch. (Aus historischen Gründen ist der Code auch i
     <li>ChartJs via Composer kommt nicht zusammengebaut. Daher manueller Download von <a href="https://www.jsdelivr.com/package/npm/chart.js?path=dist">jsdelivr</a> erforderlich. Anschließend verschieben des /dist Ordner in den vendoer/nnnick/chartjs</li>
 </ol>
 
-
+<h3>Docker-Compose</h3>
+<ol>
+    <li><a href="https://docs.docker.com/engine/install/">Docker</a> installieren</li>
+    <li><a href="https://docs.docker.com/compose/install/">Docker Compose</a> installieren</li>
+    <li>In der Datei <code>docker-compose.yml</code> das Datenbankpasswort für alle drei Container auf ein eigenes Passwort setzen</li>
+    <li>
+        Die Container starten:
+        <ul>
+            <li><code>docker-compose up</code></li>
+        </ul>
+    </li>
+    <li><a href="http://localhost:8081">phpMyAdmin aufrufen</a></li>
+    <li><a href="http://localhost:8080/CharitySwimRun">Die Anwendung aufrufen</a></li>
+    <li>Weiter bei „Konfigurieren“ – Datenbanknutzer ist <code>root</code>, Servername ist <code>mysql</code></li>
+</ol>
 
 <h2>Konfiguration</h2>
 <ol>

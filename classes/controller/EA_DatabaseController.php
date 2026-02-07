@@ -81,7 +81,8 @@ class EA_DatabaseController
         $this->EA_Repository->createDatabase();
 
         if ($this->EA_Repository->isDoctrineConnected() === true) {
-            $this->writeDbConfigDatenFile(ROOT_PATH . '\config\dbConfigDaten.php');
+            $path = implode(DIRECTORY_SEPARATOR, [ROOT_PATH, 'config', 'dbConfigDaten.php']);
+	    $this->writeDbConfigDatenFile($path);
             $this->EA_Repository->createDatabaseTables();
             $this->createUrkundeStandardentries($this->EA_Repository->getEntityManager());
             $this->createTransponderStandardentries($this->EA_Repository->getEntityManager());

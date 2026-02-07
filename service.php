@@ -8,8 +8,9 @@ use \CharitySwimRun\classes\model\EA_Repository;
 
 require_once 'config/config.php';
 require_once CORE_PATH . 'EA_Autoloader.php';
-if (file_exists(ROOT_PATH . '\config\dbConfigDaten.php')) {
-    include_once(ROOT_PATH . '\config\dbConfigDaten.php');
+$path = implode(DIRECTORY_SEPARATOR, [ROOT_PATH, 'config', 'dbConfigDaten.php']);
+if (file_exists($path)) {
+    include_once($path);
 } 
 
 if(!isset($EA_SQL) || $EA_SQL === []){

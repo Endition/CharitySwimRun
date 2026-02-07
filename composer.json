@@ -62,6 +62,9 @@
     "psr-0": {"": "src/"}
   },
   "config": {
+    "audit": {
+      "block-insecure": false
+    },
     "preferred-install": "dist", 
     "comment": "Because the Admin use Laragon on Windows composer does not recognize the PHP version corret",
     "platform": {

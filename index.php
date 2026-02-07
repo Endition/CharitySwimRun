@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 // Session start, has to be the first thing
 session_start();
@@ -12,8 +11,9 @@ use \CharitySwimRun\classes\controller\EA_DatabaseController;
 
 require_once 'config/config.php';
 require_once CORE_PATH . 'EA_Autoloader.php';
-if (file_exists(ROOT_PATH . '\config\dbConfigDaten.php')) {
-    include_once(ROOT_PATH . '\config\dbConfigDaten.php');
+$path = implode(DIRECTORY_SEPARATOR, [ROOT_PATH, 'config', 'dbConfigDaten.php']);
+if (file_exists($path)) {
+    include_once($path);
 } 
 if(!isset($EA_SQL) || $EA_SQL === []){
     $EA_SQL = ["datenbank"=>"information_schema", "benutzer"=>"","passwort"=>"","server"=>""];
@@ -35,6 +35,7 @@ if($EA_Repository->isDoctrineConnected() === true){
 }
 
 ?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -121,6 +122,7 @@ if($EA_Repository->isDoctrineConnected() === true){
             <li class="sidebar-title">Menu</li>
             
             <?php
+                    $isSimulatorAvailable = false;
                     $menuerenderer = new EA_MenueRenderer();
                     $isTransponderActive = false;
                     $isTeamActive = true;

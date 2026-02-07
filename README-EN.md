@@ -70,6 +70,22 @@ The user interface is in German. (For historical reasons, the code is also in Ge
     <li>Change the database login mode (auth type) in phpmyadmin/config.inc.php to http</li>
 </ol>
 
+<h3>Docker Compose</h3>
+<ol>
+    <li><a href="https://docs.docker.com/engine/install/">Install Docker</a></li>
+    <li><a href="https://docs.docker.com/compose/install/">Install Docker Compose</a></li>
+    <li>In the file <code>docker-compose.yml</code>, set your own database password for all three containers</li>
+    <li>
+        Start the containers:
+        <ul>
+            <li><code>docker-compose up</code></li>
+        </ul>
+    </li>
+    <li><a href="http://localhost:8081">Open phpMyAdmin</a></li>
+    <li><a href="http://localhost:8080/CharitySwimRun">Open the application</a></li>
+    <li>Continue with “Configure” – database user is <code>root</code>, server name is <code>mysql</code></li>
+</ol>
+
 <h2>Configuration</h2>
 <ol>
     <li>Open the software: localhost/CharitySwimRun/</li>

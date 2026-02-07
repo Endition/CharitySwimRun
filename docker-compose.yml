@@ -1,0 +1,54 @@
+services:
+  # Apache and PHP service
+  web:
+    build: . 
+    #image: 24hphp
+    networks:
+     - intern 
+    container_name: php-apache-container
+    ports:
+      - "8080:80"
+    environment:
+       DB_SERVER: mysql
+       DB_BENUTZER: root 
+       DB_PASSWORT: root_password
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # MySQL service
+  mysql:
+    image: mysql:8.0
+    networks:
+      - intern
+    container_name: mysql-container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+  # phpMyAdmin service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    networks:
+      - intern
+    container_name: phpmyadmin-container
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root_password
+    depends_on:
+      - mysql
+
+# Define networks
+networks:
+  intern:

@@ -101,7 +101,7 @@
                         </div>
                             <div class="row">
                                 <div class="form-group col-sm-6">
-                                {include file='templateInputElement.tpl' name='sendeSelbstanmeldung' label='Zur Veranstaltung anmelden<' type='submit'}
+                                {include file='templateInputElement.tpl' name='sendeSelbstanmeldung' label='Zur Veranstaltung anmelden' type='submit'}
                                 </div>
                             </div>
                         </form>

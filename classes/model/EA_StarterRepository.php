@@ -252,7 +252,7 @@ class EA_StarterRepository extends EA_Repository
         return $query->getResult();
     }
 
-    public function loadListSmartyZugriff(?int $streckeId, ?int $altersklasseId, ?string $geschlecht, ?string $platzfilter = null, string $order = "gesamtplatz", int $moreHitsThan = null): array
+    public function loadListSmartyZugriff(?int $streckeId, ?int $altersklasseId, ?string $geschlecht, ?string $platzfilter = null, string $order = "gesamtplatz", ?int $moreHitsThan = null): array
     {
         $strecke = null;
         $altersklasse = null;

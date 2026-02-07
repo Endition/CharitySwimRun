@@ -232,24 +232,51 @@ class EA_AdminController extends EA_Controller
     private function getServerNetworkIP(): array
     {
         $meldungen = [];
-
-        //search for port, in case it is not :80
-        $parsedUrl = parse_url($_SERVER['HTTP_HOST']);
-        $ip = $parsedUrl['host'];
-        $port = ":".$parsedUrl['port'];
-
-    	$IP_Config = shell_exec("ipconfig");
-        $pfadarray = explode("/", getenv('SCRIPT_FILENAME')); // Splittet den PfadNamen anhand / auf und zerteilt ihn
-        // echo $IP_Config; //Gibt ipconfig komplett aus
-        $matches = [];
-        preg_match_all('([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})', $IP_Config, $matches); // Ps rausfiltern
-        foreach ($matches [0] as $ip) { // �?ber alle Werte laufen, matches[0] ergibts sich aus der speicherung der werte in preg_match_all
-            $aufgesplittet = explode(".", $ip); // Ips aufsplitten
-            if ($aufgesplittet [0] != "255" and $aufgesplittet [1] != "255") { // Subnetzmasken Filtern
-                $meldungen [] = $ip . "".$port."/" . $pfadarray [count($pfadarray) - 2] . "/";
-            }
+    
+        // Host & Port bestimmen
+        $parsedUrl = parse_url((isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST']);
+        $port = isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '';
+    
+        // Projektordner bestimmen
+        $pfadarray = explode('/', $_SERVER['SCRIPT_FILENAME']);
+        $projektOrdner = $pfadarray[count($pfadarray) - 2];
+    
+        // Betriebssystem erkennen
+        if (stripos(PHP_OS, 'WIN') === 0) {
+            // Windows
+            $ipOutput = shell_exec('ipconfig');
+            $regex = '/\b([0-9]{1,3}(?:\.[0-9]{1,3}){3})\b/';
+        } else {
+            // Linux / Unix
+            $ipOutput = shell_exec('ip -4 addr show');
+            $regex = '/inet\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/';
         }
-        // print_r($matches[0]); //Gibt das Ergebnisarray mit allen IPs aus
-        return $meldungen;
+    
+        if (!$ipOutput) {
+            return [];
+        }
+    
+        preg_match_all($regex, $ipOutput, $matches);
+    
+        // Bei Linux stehen die IPs in $matches[1], bei Windows in $matches[0]
+        $ips = $matches[1] ?? $matches[0];
+    
+        foreach ($ips as $ip) {
+            $teile = explode('.', $ip);
+    
+            // Ungültige IPs filtern
+            if (
+                $ip === '127.0.0.1' ||
+                $teile[0] === '255' ||
+                $teile[1] === '255'
+            ) {
+                continue;
+            }
+    
+            $meldungen[] = $ip . $port . '/' . $projektOrdner . '/';
+        }
+    
+        return array_unique($meldungen);
     }
+
 }

@@ -1,0 +1,7 @@
+README.md
+LICENSE
+docker-compose.yml  
+README-EN.md
+composer.lock
+mysql-data 
+config/dbConfigDaten.php
