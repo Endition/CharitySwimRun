@@ -115,27 +115,6 @@ class EA_Repository{
         try{
             $connection = DriverManager::getConnection($connectionParams,$config);
             $connection->executeQuery("SET NAMES 'utf8mb4'");
-
-            $version = $connection->fetchOne('SELECT VERSION()');
-
-
-            if (version_compare($version, '8.0.0', '>=')) {
-                $connection->executeQuery("
-                    SET SESSION sql_mode = (
-                        SELECT
-                            REPLACE(
-                                REPLACE(
-                                    REPLACE(@@sql_mode,
-                                        'ONLY_FULL_GROUP_BY', ''
-                                    ),
-                                    'NO_ZERO_DATE', ''
-                                ),
-                                'NO_ZERO_IN_DATE', ''
-                            )
-                    )
-                ");
-            }
-
             $this->entityManager = new EntityManager($connection, $config);
         }catch(Exception $e){
             echo "Es gab einen Fehler beim Herstellen der Verbindung: " . $e->getMessage();
