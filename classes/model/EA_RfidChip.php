@@ -467,6 +467,7 @@ class EA_RfidChip
         $list[] = new EA_RfidChip(41, '01 04 79 EE E2');
         $list[] = new EA_RfidChip(45, '1F 00 A0 52 2D');
         $list[] = new EA_RfidChip(210, '1F 00 A0 55 5B');
+        $list[] = new EA_RfidChip(480, '1F 00 A0 10 65');
         $list[] = new EA_RfidChip(1000, 'E0040100169EABBF');
         $list[] = new EA_RfidChip(1001, 'E0040100169EAA4C');
         $list[] = new EA_RfidChip(1002, 'E00401001CFF3189');
