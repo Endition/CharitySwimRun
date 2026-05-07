@@ -21,6 +21,15 @@ class EA_HitRepository extends EA_Repository
     public function create(EA_Hit $impuls): EA_Hit
     {
         $this->entityManager->persist($impuls);
+        
+        // Sofortiges Update des Caches beim Teilnehmer, damit der Live-Ticker nicht 0 anzeigt
+        if ($impuls->getTeilnehmer() !== null) {
+            $teilnehmer = $impuls->getTeilnehmer();
+            $teilnehmer->setImpulseCache($teilnehmer->getImpulse() + 1);
+            // Wir müssen hier nicht zwingend flush() aufrufen, da create() meist in einem Kontext
+            // aufgerufen wird, der danach flush() macht oder wir rufen $this->update() auf.
+        }
+        
         $this->update();
         return $impuls;
     }
@@ -101,15 +110,24 @@ class EA_HitRepository extends EA_Repository
 
     public function delete(EA_Hit $impuls): void
     {
+        $teilnehmer = $impuls->getTeilnehmer();
         $this->entityManager->remove($impuls);
         $this->update();
+        
+        if ($teilnehmer !== null) {
+            $teilnehmer->setImpulseCache(max(0, $teilnehmer->getImpulse() - 1));
+            $this->update();
+        }
     }
 
     public function deleteAllByTeilnehmer(EA_Starter $EA_Starter): bool
     {
-        $query = $this->entityManager->createQuery('DELETE CharitySwimRun\classes\model\EA_Hit i WHERE i.teilnehmerId = :teilnehmerId');
-        $query->setParameter(":teilnehmerId", $EA_Starter->getId());
+        $query = $this->entityManager->createQuery('DELETE CharitySwimRun\classes\model\EA_Hit i WHERE i.teilnehmer = :teilnehmer');
+        $query->setParameter(":teilnehmer", $EA_Starter);
         $query->execute();
+        
+        $EA_Starter->setImpulseCache(0);
+        $this->update();
         return true;
     }
 
