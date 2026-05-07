@@ -44,7 +44,7 @@ class EA_StatisticsHelper
         if($typ === "TNproLeser"){
             $query = "SELECT Leser, COUNT(DISTINCT TeilnehmerId) AS 'Anzahl'  FROM " . EA_Repository::TB_LOG . " WHERE Timestamp >  UNIX_TIMESTAMP()-180 AND geloescht = 0  GROUP BY Leser ORDER BY Leser ASC;";
         }elseif($typ === "BuchungenProStunde"){
-            $query = "SELECT Startzeit, HOUR(FROM_UNIXTIME(Timestamp, '%Y-%m-%d %H.%i.%s')) AS 'Stunde', DAY(FROM_UNIXTIME(Timestamp, '%Y-%m-%d %H.%i.%s')) AS 'Tag', COUNT(Timestamp) AS 'Anzahl'
+            $query = "SELECT HOUR(FROM_UNIXTIME(Timestamp, '%Y-%m-%d %H.%i.%s')) AS 'Stunde', DAY(FROM_UNIXTIME(Timestamp, '%Y-%m-%d %H.%i.%s')) AS 'Tag', COUNT(Timestamp) AS 'Anzahl'
                         FROM " . EA_Repository::TB_LOG . "
                         INNER JOIN " . EA_Repository::TB_TEILNEHMER . " ON " . EA_Repository::TB_TEILNEHMER . ".Id = " . EA_Repository::TB_LOG . ".TeilnehmerId \n
                         WHERE geloescht = 0 \n ";
@@ -60,7 +60,7 @@ class EA_StatisticsHelper
         }elseif($typ === "GestarteteTNproStunde"){
             $query = "SELECT HOUR(Startzeit) AS 'Stunde', DAY(Startzeit) AS 'Tag', COUNT(Startzeit) AS 'Anzahl' FROM " . EA_Repository::TB_TEILNEHMER . " GROUP BY Stunde, Tag ORDER BY Tag, Stunde ASC;";
         }elseif($typ === "AktiveTNproStunde"){
-            $query = "SELECT COUNT(DISTINCT TeilnehmerId) AS 'Anzahl', HOUR(FROM_UNIXTIME(Timestamp, '%Y-%m-%d %H.%i.%s')) AS 'Stunde',DAY(FROM_UNIXTIME(Timestamp, '%Y-%m-%d %H.%i.%s')) AS 'Tag' FROM " . EA_Repository::TB_LOG . " WHERE geloescht = 0 GROUP BY Stunde ORDER BY Stunde ASC;";
+            $query = "SELECT COUNT(DISTINCT TeilnehmerId) AS 'Anzahl', HOUR(FROM_UNIXTIME(Timestamp, '%Y-%m-%d %H.%i.%s')) AS 'Stunde',DAY(FROM_UNIXTIME(Timestamp, '%Y-%m-%d %H.%i.%s')) AS 'Tag' FROM " . EA_Repository::TB_LOG . " WHERE geloescht = 0 GROUP BY Tag, Stunde ORDER BY Tag, Stunde ASC;";
         }elseif($typ === "Performance"){
             $query = "SELECT MINUTE(FROM_UNIXTIME(Timestamp, '%Y-%m-%d %H.%i.%s')) AS 'Minute',  COUNT(Timestamp) AS 'Anzahl' FROM " . EA_Repository::TB_LOG . " WHERE geloescht = 0   AND from_unixtime(timestamp) > DATE_SUB(NOW(), INTERVAL 15 MINUTE) GROUP BY Minute ORDER BY Minute ASC;";
         }
