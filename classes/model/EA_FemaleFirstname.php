@@ -21,8 +21,10 @@ class EA_FemaleFirstname
 
 
 
-    public function __construct()
+    public function __construct(?int $id = null, string $firstname = "")
     {
+        $this->id = $id;
+        $this->firstname = $firstname;
     }
 
     public function getId(): ?int
