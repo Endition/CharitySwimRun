@@ -234,7 +234,7 @@ class EA_ApiController extends EA_Controller
 
 
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
-        $responseList['body'] = json_encode($result);
+        $responseList['body'] = json_encode($result, JSON_INVALID_UTF8_SUBSTITUTE);
         return $responseList;
     }
 
@@ -263,7 +263,7 @@ class EA_ApiController extends EA_Controller
 
 
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
-        $responseList['body'] = json_encode($result);
+        $responseList['body'] = json_encode($result, JSON_INVALID_UTF8_SUBSTITUTE);
         return $responseList;
     }
 
@@ -283,7 +283,7 @@ class EA_ApiController extends EA_Controller
 
 
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
-        $responseList['body'] = json_encode($result);
+        $responseList['body'] = json_encode($result, JSON_INVALID_UTF8_SUBSTITUTE);
         return $responseList; 
     }
 
@@ -392,7 +392,7 @@ class EA_ApiController extends EA_Controller
         }
 
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
-        $responseList['body'] = json_encode($result);
+        $responseList['body'] = json_encode($result, JSON_INVALID_UTF8_SUBSTITUTE);
         return $responseList;
     }
 
@@ -440,7 +440,7 @@ class EA_ApiController extends EA_Controller
             }   
         }
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
-        $responseList['body'] = json_encode($result);
+        $responseList['body'] = json_encode($result, JSON_INVALID_UTF8_SUBSTITUTE);
         return $responseList;
     }
 

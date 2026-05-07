@@ -34,8 +34,10 @@ class EA_HitRepository extends EA_Repository
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
-            ->select('i')
+            ->select('i', 't', 'k')
             ->from(EA_Hit::class, 'i')
+            ->leftJoin('i.teilnehmer', 't')
+            ->leftJoin('t.konfiguration', 'k')
             ->where("i.geloescht = 0");
         if($bigerAsTimestamp){
             $queryBuilder->andWhere("i.timestamp > :biggerAsTimestamp")
