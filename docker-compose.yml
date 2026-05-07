@@ -12,6 +12,9 @@ services:
        DB_SERVER: mysql
        DB_BENUTZER: root 
        DB_PASSWORT: root_password
+    volumes:
+      - .:/var/www/html/CharitySwimRun
+      - /var/www/html/CharitySwimRun/vendor
     depends_on:
       mysql:
         condition: service_healthy
