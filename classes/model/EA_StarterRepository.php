@@ -656,5 +656,20 @@ class EA_StarterRepository extends EA_Repository
         return $query->getResult();
     }
 
+    public function loadRandomTeilnehmer(): ?EA_Starter
+    {
+        $count = $this->getAnzahlTeilnehmer();
+        if ($count === 0) {
+            return null;
+        }
 
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select('t')
+            ->from(EA_Starter::class, 't')
+            ->setFirstResult(rand(0, $count - 1))
+            ->setMaxResults(1);
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
 }

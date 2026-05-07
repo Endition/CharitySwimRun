@@ -18,11 +18,9 @@ class EA_SimulatorController extends EA_Controller
 
     public function createRandomTeilnehmer(): array
     {
-        $teilnehmerlist = $this->EA_StarterRepository->loadList();
+        $anzahlTeilnehmer = $this->EA_StarterRepository->getAnzahlTeilnehmer();
         $EA_Simulator = new EA_Simulator();
         $messages = [];
-       
-        $anzahlTeilnehmer = count($teilnehmerlist);
          //10% Chance to create a new TN
         if($anzahlTeilnehmer < 20 || rand(0,$anzahlTeilnehmer) < ($anzahlTeilnehmer/10)){
             $vereinszufall = rand(0,100);
@@ -99,13 +97,15 @@ class EA_SimulatorController extends EA_Controller
             $this->EA_StarterRepository->create($newTeilnehmer);  
             $messages[] =  "neuen Teilnehmer {$newTeilnehmer->getGesamtname()} angelegt";
         }
-        $this->createRandomImpuls($messages, $teilnehmerlist);
+        $teilnehmerZufall = $this->EA_StarterRepository->loadRandomTeilnehmer();
+        if ($teilnehmerZufall) {
+            $this->createRandomImpuls($messages, $teilnehmerZufall);
+        }
         return $messages;
     }
 
-    public function createRandomImpuls(&$messages, array $teilnehmerList): void
+    public function createRandomImpuls(&$messages, EA_Starter $teilnehmerZufall): void
     {
-        $teilnehmerZufall = $teilnehmerList[array_rand($teilnehmerList)];
         $impuls = new EA_Hit();
         $impuls->setTimestamp(time());
         $impuls->setTeilnehmer($teilnehmerZufall);
