@@ -7,17 +7,17 @@ use Doctrine\ORM\EntityManager;
 
 class EA_HitRepository extends EA_Repository
 {
-    
+
     private EntityManager $entityManager;
 
     //own constructor is necassery, therefore all repositories use the same entitymanager
     public function __construct(EntityManager $entitymanager)
     {
         $this->entityManager = $entitymanager;
-                //we need the same entityManager in the motherclass
-                parent::setEntityManager($entitymanager); 
+        //we need the same entityManager in the motherclass
+        parent::setEntityManager($entitymanager);
     }
-    
+
     public function create(EA_Hit $impuls): EA_Hit
     {
         $this->entityManager->persist($impuls);
@@ -30,7 +30,7 @@ class EA_HitRepository extends EA_Repository
         return $this->entityManager->getRepository('CharitySwimRun\classes\model\EA_Hit')->find($id);
     }
 
-    public function loadList(?string $order = "i.timestamp", ?string $orderRichtung = "ASC", ?int $limit = null,?string $groupby = null, ?int $bigerAsTimestamp=null): array
+    public function loadList(?string $order = "i.timestamp", ?string $orderRichtung = "ASC", ?int $limit = null, ?string $groupby = null, ?int $bigerAsTimestamp = null): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
@@ -39,18 +39,18 @@ class EA_HitRepository extends EA_Repository
             ->leftJoin('i.teilnehmer', 't')
             ->leftJoin('t.konfiguration', 'k')
             ->where("i.geloescht = 0");
-        if($bigerAsTimestamp){
+        if ($bigerAsTimestamp) {
             $queryBuilder->andWhere("i.timestamp > :biggerAsTimestamp")
-            ->setParameter(":biggerAsTimestamp",$bigerAsTimestamp);
+                ->setParameter(":biggerAsTimestamp", $bigerAsTimestamp);
         }
 
-        $queryBuilder->orderBy($order,$orderRichtung);
-        if($groupby){
+        $queryBuilder->orderBy($order, $orderRichtung);
+        if ($groupby) {
             $queryBuilder->groupBy($groupby);
-         } 
-        if($limit){
+        }
+        if ($limit) {
             $queryBuilder->setMaxResults($limit);
-        }  
+        }
         $query = $queryBuilder->getQuery();
         #$query->enableResultCache();
         return $query->getResult();
@@ -63,12 +63,12 @@ class EA_HitRepository extends EA_Repository
             ->select('i')
             ->from(EA_Hit::class, 'i')
             ->where("i.geloescht = 0")
-            ->orderBy("i.id","DESC")
+            ->orderBy("i.id", "DESC")
             ->setMaxResults(1);
-    
+
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
-    
+
     public function getNumberOfEntries(): int
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
@@ -82,9 +82,9 @@ class EA_HitRepository extends EA_Repository
 
     public function updateImpulseCache(): void
     {
-        $query = "UPDATE `".EA_Repository::TB_TEILNEHMER."` t
-        INNER JOIN ".EA_Repository::TB_LOG." i1 ON i1.TeilnehmerId = t.Id
-        SET t.impulseCache = (SELECT COUNT(i.ImpulsId) FROM ".EA_Repository::TB_LOG." i WHERE i.geloescht = 0 AND i.TeilnehmerId = t.Id GROUP BY i.TeilnehmerId); ";
+        $query = "UPDATE `" . EA_Repository::TB_TEILNEHMER . "` t
+        INNER JOIN " . EA_Repository::TB_LOG . " i1 ON i1.TeilnehmerId = t.Id
+        SET t.impulseCache = (SELECT COUNT(i.ImpulsId) FROM " . EA_Repository::TB_LOG . " i WHERE i.geloescht = 0 AND i.TeilnehmerId = t.Id GROUP BY i.TeilnehmerId); ";
         $this->entityManager->getConnection()->executeQuery($query);
     }
 
@@ -95,7 +95,7 @@ class EA_HitRepository extends EA_Repository
             ->select('i')
             ->from(EA_Hit::class, 'i')
             ->where("i.teilnehmer IS NULL");
-          
+
         return $queryBuilder->getQuery()->getResult();
     }
 
@@ -108,7 +108,7 @@ class EA_HitRepository extends EA_Repository
     public function deleteAllByTeilnehmer(EA_Starter $EA_Starter): bool
     {
         $query = $this->entityManager->createQuery('DELETE CharitySwimRun\classes\model\EA_Hit i WHERE i.teilnehmerId = :teilnehmerId');
-        $query->setParameter(":teilnehmerId",$EA_Starter->getId());
+        $query->setParameter(":teilnehmerId", $EA_Starter->getId());
         $query->execute();
         return true;
     }
@@ -124,15 +124,15 @@ class EA_HitRepository extends EA_Repository
         $data['erreichteMeter'] = $data['erreichteImpulse'] * $konfiguration->getRundenlaenge();
         $data['erreichtesGeld'] = $data['erreichteMeter'] * $konfiguration->getEuroprometer();
         $data['anzahlStreckenart'] = $data['erreichteImpulse'] * $konfiguration->getFaktor();
-        $data['erreichteMeterProTeilnehmer'] = ($data['gestarteteTeilnehmer'] > 0) ? round(($data['erreichteMeter'] / $data['gestarteteTeilnehmer']),2) : 0;
+        $data['erreichteMeterProTeilnehmer'] = ($data['gestarteteTeilnehmer'] > 0) ? round(($data['erreichteMeter'] / $data['gestarteteTeilnehmer']), 2) : 0;
         // Div by 0 wenn keine Einstellungen vorhanden sind
         if ($konfiguration->getEuroprometer() > 0) {
-                $data['zielmeter'] = $data['spendensumme'] / $konfiguration->getEuroprometer();
+            $data['zielmeter'] = $data['spendensumme'] / $konfiguration->getEuroprometer();
         } else {
-                $data['zielmeter'] = 0;
+            $data['zielmeter'] = 0;
         }
         $data['restmeter'] = $data['zielmeter'] - $data['erreichteMeter'];
-        if (($data['spendensumme'] - $data['erreichtesGeld'] ) > 0) {
+        if (($data['spendensumme'] - $data['erreichtesGeld']) > 0) {
             $data['restgeld'] = $data['spendensumme'] - $data['erreichtesGeld'];
             $data['erreichteProzent'] = ($data['erreichtesGeld'] > 0) ? round($data['erreichtesGeld'] / $data['spendensumme'] * 100, 2) : 0;
         } else {
@@ -141,7 +141,7 @@ class EA_HitRepository extends EA_Repository
             $data['restmeter'] = 0;
             $data['restgeld'] = 0;
             $data['erreichteProzent'] = 100;
-         }
+        }
 
         return $data;
     }

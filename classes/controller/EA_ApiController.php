@@ -9,7 +9,7 @@ use CharitySwimRun\classes\controller\EA_SimulatorController;
 class EA_ApiController extends EA_Controller
 {
 
-    public function __construct(EA_Repository $EA_Repository) 
+    public function __construct(EA_Repository $EA_Repository)
     {
         parent::__construct($EA_Repository->getEntityManager());
         // update ImpulseCache nur einmal pro Minute und User
@@ -19,15 +19,15 @@ class EA_ApiController extends EA_Controller
         }
     }
 
-    public function handleRequest(string $requestMethod, string $route, array $paramList) : string
+    public function handleRequest(string $requestMethod, string $route, array $paramList): string
     {
         //set standardvalue
         $responseList = $this->notFoundresponseList();
 
         if (isset($_SESSION['loggedin']) && $_SESSION['userroleId'] <= EA_User::USERROLE_ANMELDUNG) {
-            $responseList = $this->handleRequestAdministrativ($requestMethod,$route,$paramList);
-        }else{
-            $responseList =  $this->handleRequestPublic($requestMethod,$route,$paramList);
+            $responseList = $this->handleRequestAdministrativ($requestMethod, $route, $paramList);
+        } else {
+            $responseList = $this->handleRequestPublic($requestMethod, $route, $paramList);
         }
         header('Content-Type: application/json; charset=utf-8');
         header($responseList['status_code_header']);
@@ -38,12 +38,12 @@ class EA_ApiController extends EA_Controller
     }
 
 
-    private function handleRequestPublic(string $requestMethod, string $route, array $paramList) : array
+    private function handleRequestPublic(string $requestMethod, string $route, array $paramList): array
     {
         $responseList = [];
         switch ($requestMethod) {
             case 'GET':
-                $responseList = $this->handleGetRequestPublic($route,$paramList);
+                $responseList = $this->handleGetRequestPublic($route, $paramList);
                 break;
             default:
                 $responseList = $this->notFoundresponseList();
@@ -52,16 +52,16 @@ class EA_ApiController extends EA_Controller
         return $responseList;
     }
 
-    private function handleRequestAdministrativ(string $requestMethod, string $route, array $paramList) : array
+    private function handleRequestAdministrativ(string $requestMethod, string $route, array $paramList): array
     {
         $responseList = [];
 
         switch ($requestMethod) {
             case 'GET':
-                $responseList = $this->handleGetRequestAdministrativ($route,$paramList);
+                $responseList = $this->handleGetRequestAdministrativ($route, $paramList);
                 break;
             case 'POST':
-                $responseList = $this->handlePostRequestAdministrativ($route,$paramList);
+                $responseList = $this->handlePostRequestAdministrativ($route, $paramList);
                 break;
             case 'PUT':
                 // not implemented
@@ -128,7 +128,7 @@ class EA_ApiController extends EA_Controller
                 $responseList = $this->handlePostStatusAdministrativ($paramList);
                 break;
             case 'impulse':
-                 $responseList = $this->handlePostImpulseAdministrativ($paramList);
+                $responseList = $this->handlePostImpulseAdministrativ($paramList);
                 break;
             default:
                 $responseList = $this->notFoundresponseList();
@@ -141,9 +141,9 @@ class EA_ApiController extends EA_Controller
     {
         $responseList = [];
 
-        if($paramList[0] === "create"){
+        if ($paramList[0] === "create") {
             if (isset($_POST['id'])) {
-                $teilnehmerId = filter_input(INPUT_POST,"id",FILTER_SANITIZE_NUMBER_INT);
+                $teilnehmerId = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
             } else {
                 return $this->unprocessableEntityresponseList();
             }
@@ -167,14 +167,14 @@ class EA_ApiController extends EA_Controller
     {
         $responseList = [];
 
-        if($paramList[0] === "update"){
-            $EA_U = $this->EA_CertificateElementRepository->loadById(filter_input(INPUT_POST,"id",FILTER_SANITIZE_NUMBER_INT));
+        if ($paramList[0] === "update") {
+            $EA_U = $this->EA_CertificateElementRepository->loadById(filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT));
 
             $x_wert = (isset($_POST['x_wert'])) ? htmlspecialchars($_POST['x_wert']) : $EA_U->getX_wert();
             $y_wert = (isset($_POST['y_wert'])) ? htmlspecialchars($_POST['y_wert']) : $EA_U->getY_wert();
             $breite = (isset($_POST['breite'])) ? htmlspecialchars($_POST['breite']) : $EA_U->getBreite();
             $hoehe = (isset($_POST['hoehe'])) ? htmlspecialchars($_POST['hoehe']) : EA_U->getHoehe();
-        
+
             $EA_U->setX_wert($x_wert);
             $EA_U->setY_wert($y_wert);
             $EA_U->setBreite($breite);
@@ -192,10 +192,10 @@ class EA_ApiController extends EA_Controller
     {
         $responseList = [];
 
-        if($paramList[0] === "update"){
+        if ($paramList[0] === "update") {
             if (isset($_POST['status']) && $_POST['status'] > 0 && isset($_POST['id']) && $_POST['id'] > 0) {
-                $id = (int)filter_input(INPUT_POST,"id",FILTER_SANITIZE_NUMBER_INT);
-                $status = (int)filter_input(INPUT_POST,"status",FILTER_SANITIZE_NUMBER_INT);
+                $id = (int) filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
+                $status = (int) filter_input(INPUT_POST, "status", FILTER_SANITIZE_NUMBER_INT);
             } else {
                 return $this->unprocessableEntityresponseList();
             }
@@ -213,18 +213,18 @@ class EA_ApiController extends EA_Controller
     {
         $responseList = [];
         $result = [];
-        
-        if($paramList[0] === "search"){
+
+        if ($paramList[0] === "search") {
             $searchName = $paramList[0] === "search" ? htmlspecialchars(urldecode($paramList[1])) : null;
 
-            $vereinList = $this->EA_ClubRepository->loadList("verein",$searchName);            
+            $vereinList = $this->EA_ClubRepository->loadList("verein", $searchName);
             if ($vereinList === null) {
                 return $this->notFoundresponseList();
             }
-            foreach($vereinList as $verein){
-                $result[] = [   
-                    "id"=>$verein->getId(),
-                    "startnummer"=>$verein->getVerein(),
+            foreach ($vereinList as $verein) {
+                $result[] = [
+                    "id" => $verein->getId(),
+                    "startnummer" => $verein->getVerein(),
                     //JqueryUi needs exact these parameters
                     "label" => $verein->getVerein(),
                     "value" => $verein->getId()
@@ -242,18 +242,18 @@ class EA_ApiController extends EA_Controller
     {
         $responseList = [];
         $result = [];
-        
-        if($paramList[0] === "search"){
+
+        if ($paramList[0] === "search") {
             $searchName = $paramList[0] === "search" ? htmlspecialchars(urldecode($paramList[1])) : null;
 
-            $unternehmenList = $this->EA_CompanyRepository->loadList("unternehmen",$searchName);            
+            $unternehmenList = $this->EA_CompanyRepository->loadList("unternehmen", $searchName);
             if ($unternehmenList === null) {
                 return $this->notFoundresponseList();
             }
-            foreach($unternehmenList as $unternehmen){
-                $result[] = [   
-                    "id"=>$unternehmen->getId(),
-                    "startnummer"=>$unternehmen->getUnternehmen(),
+            foreach ($unternehmenList as $unternehmen) {
+                $result[] = [
+                    "id" => $unternehmen->getId(),
+                    "startnummer" => $unternehmen->getUnternehmen(),
                     //JqueryUi needs exact these parameters
                     "label" => $unternehmen->getUnternehmen(),
                     "value" => $unternehmen->getId()
@@ -271,124 +271,139 @@ class EA_ApiController extends EA_Controller
     {
         $responseList = [];
         $result = [];
-        
-        if($paramList[0] === "check"){
+
+        if ($paramList[0] === "check") {
             $searchName = $paramList[0] === "check" ? htmlspecialchars(urldecode($paramList[1])) : null;
-            
+
             $isFemaleFirstname = $this->EA_FemaleFirstnameRepository->isFemaleFirstname($searchName);
-                $result[] = [   
-                    "isFemaleFirstname"=>$isFemaleFirstname,
-                ];
+            $result[] = [
+                "isFemaleFirstname" => $isFemaleFirstname,
+            ];
         }
 
 
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
         $responseList['body'] = json_encode($result, JSON_INVALID_UTF8_SUBSTITUTE);
-        return $responseList; 
+        return $responseList;
     }
 
     private function handleGetTeilnehmerAdministrativ(array $paramList): array
     {
         $responseList = [];
         $result = [];
-        if($paramList[0] === "simulator"){
+        if ($paramList[0] === "simulator") {
             $EA_SimulatorController = new EA_SimulatorController($this->entityManager);
             $result = $EA_SimulatorController->createRandomTeilnehmer();
         }
-        if($paramList[0] === "startnummer"){
-            $startnummer = $paramList[0] === "startnummer" ? (int)$paramList[1] : null;
-            $teilnehmer = $this->EA_StarterRepository->loadByFilter(null,$startnummer);            
+        if ($paramList[0] === "startnummer") {
+            $startnummer = $paramList[0] === "startnummer" ? (int) $paramList[1] : null;
+            $teilnehmer = $this->EA_StarterRepository->loadByFilter(null, $startnummer);
             if ($teilnehmer === null) {
                 return $this->notFoundresponseList();
             }
 
-            $result = [   
-                "id"=>$teilnehmer->getId(),
-                "startnummer"=>$teilnehmer->getStartnummer(),
-                "vorname"=>$teilnehmer->getVorname(),
-                "name"=>$teilnehmer->getName(),
-                "meter"=>$teilnehmer->getMeter(),
-                "streckenart"=>$teilnehmer->getStreckenart(),
-                "wertung"=>$teilnehmer->getWertung("lang"),
-                "naechsteWertung"=>$teilnehmer->getNaechsteWertung(),
+            $result = [
+                "id" => $teilnehmer->getId(),
+                "startnummer" => $teilnehmer->getStartnummer(),
+                "vorname" => $teilnehmer->getVorname(),
+                "name" => $teilnehmer->getName(),
+                "meter" => $teilnehmer->getMeter(),
+                "streckenart" => $teilnehmer->getStreckenart(),
+                "wertung" => $teilnehmer->getWertung("lang"),
+                "naechsteWertung" => $teilnehmer->getNaechsteWertung(),
                 //JqueryUi needs these parameters
-                "label" => "StNr: ". $teilnehmer->getStartnummer()." - ".$teilnehmer->getGesamtname(),
+                "label" => "StNr: " . $teilnehmer->getStartnummer() . " - " . $teilnehmer->getGesamtname(),
                 "value" => $teilnehmer->getId()
             ];
         }
-        if($paramList[0] === "strecke"){
-            $strecke = $this->EA_DistanceRepository->loadById((int)$paramList[1]);
-            $teilnehmerList = $this->EA_StarterRepository->loadList($strecke,null,null,null,null,null,null,"startnummer","ASC");            
+        if ($paramList[0] === "strecke") {
+            $strecke = $this->EA_DistanceRepository->loadById((int) $paramList[1]);
+            $teilnehmerList = $this->EA_StarterRepository->loadList($strecke, null, null, null, null, null, null, "startnummer", "ASC");
             if ($teilnehmerList === []) {
                 return $this->notFoundresponseList();
             }
-            foreach($teilnehmerList as $teilnehmer){
-                $result[] = [   
-                    "id"=>$teilnehmer->getId(),
-                    "startnummer"=>$teilnehmer->getStartnummer(),
-                    "vorname"=>$teilnehmer->getVorname(),
-                    "name"=>$teilnehmer->getName(),
-                    "meter"=>$teilnehmer->getMeter(),
+            foreach ($teilnehmerList as $teilnehmer) {
+                $result[] = [
+                    "id" => $teilnehmer->getId(),
+                    "startnummer" => $teilnehmer->getStartnummer(),
+                    "vorname" => $teilnehmer->getVorname(),
+                    "name" => $teilnehmer->getName(),
+                    "meter" => $teilnehmer->getMeter(),
                 ];
             }
 
         }
 
-        if($paramList[0] === "search"){
-            
-            if(is_numeric($paramList[1])){
+        if ($paramList[0] === "search") {
+
+            if (is_numeric($paramList[1])) {
                 $searchStartnummer = $paramList[0] === "search" ? htmlspecialchars($paramList[1]) : null;
-                $searchName  = null;
+                $searchName = null;
                 $searchVorname = null;
-            }else{
+            } else {
                 //Da die Parameter per URL übergeben werden, wird in JS encodeURIComponent() gemacht. Hier dann decodeURIComponent()
                 $searchName = $paramList[0] === "search" ? htmlspecialchars(urldecode($paramList[1])) : null;
                 $searchVorname = $paramList[0] === "search" ? htmlspecialchars(urldecode($paramList[1])) : null;
                 $searchStartnummer = null;
             }
 
-            $teilnehmerList = $this->EA_StarterRepository->loadList(null,null,null,null,null,null,null,"name","ASC",null,null,null,null,null,$searchStartnummer,$searchName,$searchVorname);            
+            $teilnehmerList = $this->EA_StarterRepository->loadList(null, null, null, null, null, null, null, "name", "ASC", null, null, null, null, null, $searchStartnummer, $searchName, $searchVorname);
             if ($teilnehmerList === null) {
                 return $this->notFoundresponseList();
             }
-            foreach($teilnehmerList as $teilnehmer){
-                $result[] = [   
-                    "id"=>$teilnehmer->getId(),
-                    "startnummer"=>$teilnehmer->getStartnummer(),
-                    "vorname"=>$teilnehmer->getVorname(),
-                    "name"=>$teilnehmer->getName(),
-                    "meter"=>$teilnehmer->getMeter(),
-                    "streckenart"=>$teilnehmer->getStreckenart(),
-                    "wertung"=>$teilnehmer->getWertung("lang"),
-                    "naechsteWertung"=>$teilnehmer->getNaechsteWertung(),
+            foreach ($teilnehmerList as $teilnehmer) {
+                $result[] = [
+                    "id" => $teilnehmer->getId(),
+                    "startnummer" => $teilnehmer->getStartnummer(),
+                    "vorname" => $teilnehmer->getVorname(),
+                    "name" => $teilnehmer->getName(),
+                    "meter" => $teilnehmer->getMeter(),
+                    "streckenart" => $teilnehmer->getStreckenart(),
+                    "wertung" => $teilnehmer->getWertung("lang"),
+                    "naechsteWertung" => $teilnehmer->getNaechsteWertung(),
                     //JqueryUi needs exact these parameters
-                    "label" => "StNr: ". $teilnehmer->getStartnummer()." | ".$teilnehmer->getGesamtname()." | Wertung: ".$teilnehmer->getWertung()." | Meter: ".$teilnehmer->getMeter(),
+                    "label" => "StNr: " . $teilnehmer->getStartnummer() . " | " . $teilnehmer->getGesamtname() . " | Wertung: " . $teilnehmer->getWertung() . " | Meter: " . $teilnehmer->getMeter(),
                     "value" => $teilnehmer->getId()
                 ];
             }
         }
-        if($paramList[0] === "livebuchungen"){
-            $biggerAsTimestamp = (isset($paramList[1]) && $paramList[1] !== "") ? (int)$paramList[1] : null;
-            $impulseList = $this->EA_HitRepository->loadList("i.timestamp","DESC",20,null, $biggerAsTimestamp );
-            foreach($impulseList as $impuls){
-                    //catch error hits
-                    if($impuls->getTeilnehmer() === null){
-                        continue;
-                    }
-                    //costs 200% performance, calculates the time per round
-                    $impuls->getTeilnehmer()->getImpulseListGueltige(true);
-                    $result[] = [
-                        "id"=>$impuls->getTeilnehmer()->getId(),
-                        "gesamtname"=>$impuls->getTeilnehmer()->getGesamtname(),
-                        "startnummer"=>$impuls->getTeilnehmer()->getStartnummer(),
-                        "meter"=>$impuls->getTeilnehmer()->getMeter(),
-                        "streckenart"=>$impuls->getTeilnehmer()->getStreckenart(),
-                        "timestamp" => $impuls->getTimestamp(),
-                        "zeit" => date("H:i:s", $impuls->getTimestamp()),
-                        "rundezeit" => $impuls->getRundenzeit("H:i:s"),
-                        "gesamtzeit" => $impuls->getGesamtzeit("H:i:s"),
-                    ];
-            }   
+        if ($paramList[0] === "livebuchungen") {
+            $biggerAsTimestamp = (isset($paramList[1]) && $paramList[1] !== "") ? (int) $paramList[1] : null;
+            $impulseList = $this->EA_HitRepository->loadList("i.timestamp", "DESC", 20, null, $biggerAsTimestamp);
+            foreach ($impulseList as $impuls) {
+                //catch error hits
+                if ($impuls->getTeilnehmer() === null) {
+                    continue;
+                }
+                // Fast calculation instead of loading full history
+                $teilnehmer = $impuls->getTeilnehmer();
+                $startzeit = $teilnehmer->getStartzeit() ? $teilnehmer->getStartzeit()->getTimestamp() : $impuls->getTimestamp();
+                $impuls->setGesamtzeit(max(0, $impuls->getTimestamp() - $startzeit));
+                
+                $qb = $this->EA_HitRepository->getEntityManager()->createQueryBuilder();
+                $qb->select('MAX(i.timestamp)')
+                   ->from(\CharitySwimRun\classes\model\EA_Hit::class, 'i')
+                   ->where('i.teilnehmer = :teilnehmerId')
+                   ->andWhere('i.timestamp < :currentTimestamp')
+                   ->andWhere('i.geloescht = 0')
+                   ->setParameter('teilnehmerId', $teilnehmer->getId())
+                   ->setParameter('currentTimestamp', $impuls->getTimestamp());
+                
+                $prevTimestamp = $qb->getQuery()->getSingleScalarResult();
+                $prevTimestamp = $prevTimestamp ? (int)$prevTimestamp : $startzeit;
+                $impuls->setRundenzeit(max(0, $impuls->getTimestamp() - $prevTimestamp));
+                $result[] = [
+                    "id" => $impuls->getTeilnehmer()->getId(),
+                    "gesamtname" => $impuls->getTeilnehmer()->getGesamtname(),
+                    "startnummer" => $impuls->getTeilnehmer()->getStartnummer(),
+                    "meter" => $impuls->getTeilnehmer()->getMeter(),
+                    "streckenart" => $impuls->getTeilnehmer()->getStreckenart(),
+                    "timestamp" => $impuls->getTimestamp(),
+                    "zeit" => date("H:i:s", $impuls->getTimestamp()),
+                    "rundezeit" => $impuls->getRundenzeit("H:i:s"),
+                    "gesamtzeit" => $impuls->getGesamtzeit("H:i:s"),
+                ];
+            }
         }
 
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
@@ -401,43 +416,58 @@ class EA_ApiController extends EA_Controller
         $responseList = [];
         $result = [];
 
-        if($paramList[0] === "startnummer"){
+        if ($paramList[0] === "startnummer") {
             $teilnehmer = $this->EA_StarterRepository->loadByFilter(null, $paramList[1]);
-            
+
             if ($teilnehmer === null) {
                 return $this->notFoundresponseList();
             }
 
             $result = [
-                "id"=>$teilnehmer->getId(),
-                "startnummer"=>$teilnehmer->getStartnummer(),
-                "meter"=>$teilnehmer->getMeter(),
-                "streckenart"=>$teilnehmer->getStreckenart(),
-                "wertung"=>$teilnehmer->getWertung("lang"),
-                "naechsteWertung"=>$teilnehmer->getNaechsteWertung(),
+                "id" => $teilnehmer->getId(),
+                "startnummer" => $teilnehmer->getStartnummer(),
+                "meter" => $teilnehmer->getMeter(),
+                "streckenart" => $teilnehmer->getStreckenart(),
+                "wertung" => $teilnehmer->getWertung("lang"),
+                "naechsteWertung" => $teilnehmer->getNaechsteWertung(),
             ];
         }
-        if($paramList[0] === "livebuchungen"){
-            $biggerAsTimestamp = (isset($paramList[1]) && $paramList[1] !== "") ? (int)$paramList[1] : null;
-            $impulseList = $this->EA_HitRepository->loadList("i.timestamp","DESC",20,null, $biggerAsTimestamp );
-            foreach($impulseList as $impuls){
-                    if($impuls->getTeilnehmer() === null){
-                        continue;
-                    }
-                    //costs 200% performance, calculates the time per round
-                    $impuls->getTeilnehmer()->getImpulseListGueltige(true);
-                    $result[] = [
-                        "id"=>$impuls->getTeilnehmer()->getId(),
-                        "gesamtname"=>$impuls->getTeilnehmer()->getGesamtname(),
-                        "startnummer"=>$impuls->getTeilnehmer()->getStartnummer(),
-                        "meter"=>$impuls->getTeilnehmer()->getMeter(),
-                        "streckenart"=>$impuls->getTeilnehmer()->getStreckenart(),
-                        "timestamp" => $impuls->getTimestamp(),
-                        "zeit" => date("H:i:s", $impuls->getTimestamp()),
-                        "rundezeit" => $impuls->getRundenzeit("H:i:s"),
-                        "gesamtzeit" => $impuls->getGesamtzeit("H:i:s"),
-                    ];
-            }   
+        if ($paramList[0] === "livebuchungen") {
+            $biggerAsTimestamp = (isset($paramList[1]) && $paramList[1] !== "") ? (int) $paramList[1] : null;
+            $impulseList = $this->EA_HitRepository->loadList("i.timestamp", "DESC", 20, null, $biggerAsTimestamp);
+            foreach ($impulseList as $impuls) {
+                if ($impuls->getTeilnehmer() === null) {
+                    continue;
+                }
+                // Fast calculation instead of loading full history
+                $teilnehmer = $impuls->getTeilnehmer();
+                $startzeit = $teilnehmer->getStartzeit() ? $teilnehmer->getStartzeit()->getTimestamp() : $impuls->getTimestamp();
+                $impuls->setGesamtzeit(max(0, $impuls->getTimestamp() - $startzeit));
+                
+                $qb = $this->EA_HitRepository->getEntityManager()->createQueryBuilder();
+                $qb->select('MAX(i.timestamp)')
+                   ->from(\CharitySwimRun\classes\model\EA_Hit::class, 'i')
+                   ->where('i.teilnehmer = :teilnehmerId')
+                   ->andWhere('i.timestamp < :currentTimestamp')
+                   ->andWhere('i.geloescht = 0')
+                   ->setParameter('teilnehmerId', $teilnehmer->getId())
+                   ->setParameter('currentTimestamp', $impuls->getTimestamp());
+                
+                $prevTimestamp = $qb->getQuery()->getSingleScalarResult();
+                $prevTimestamp = $prevTimestamp ? (int)$prevTimestamp : $startzeit;
+                $impuls->setRundenzeit(max(0, $impuls->getTimestamp() - $prevTimestamp));
+                $result[] = [
+                    "id" => $impuls->getTeilnehmer()->getId(),
+                    "gesamtname" => $impuls->getTeilnehmer()->getGesamtname(),
+                    "startnummer" => $impuls->getTeilnehmer()->getStartnummer(),
+                    "meter" => $impuls->getTeilnehmer()->getMeter(),
+                    "streckenart" => $impuls->getTeilnehmer()->getStreckenart(),
+                    "timestamp" => $impuls->getTimestamp(),
+                    "zeit" => date("H:i:s", $impuls->getTimestamp()),
+                    "rundezeit" => $impuls->getRundenzeit("H:i:s"),
+                    "gesamtzeit" => $impuls->getGesamtzeit("H:i:s"),
+                ];
+            }
         }
         $responseList['status_code_header'] = 'HTTP/1.1 200 OK';
         $responseList['body'] = json_encode($result, JSON_INVALID_UTF8_SUBSTITUTE);
