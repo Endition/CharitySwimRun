@@ -30,7 +30,9 @@ class EA_PDFController extends EA_Controller
 
         $pdf->Inhalt();
         //OB_Clean entfernt viele Ausgaben, verhinert aber die Ausgabe von xprint();
-        ob_clean();
+        if (ob_get_level() > 0) {
+            ob_clean();
+        }
         $dateiname = htmlspecialchars($_GET['doc']) . "_" . $filter['typ'] . "_" . $filter['strecke'] . "_" . $filter['altersklasse'] . "_" . $filter['geschlecht'];
         $pdfdestination = "D";
         return $pdf->Output($dateiname . '.pdf', $pdfdestination);
