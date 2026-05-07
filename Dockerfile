@@ -4,29 +4,43 @@ ENV DB_SERVER=mysql
 ENV DB_BENUTZER=my_db_user
 ENV DB_PASSWORT=my_db_user_password
 
-COPY entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
+# Install system dependencies, PHP extensions, and tools in one layer to keep image size minimal.
+# dos2unix converts entrypoint.sh from Windows CRLF to Unix LF (required on Windows hosts).
+# libzip-dev enables the PHP zip extension so Composer can download packages as ZIPs (much faster).
+RUN apt-get update && apt-get install -y \
+        dos2unix \
+        git \
+        iproute2 \
+        libzip-dev \
+        mariadb-client \
+        unzip \
+    && docker-php-ext-install mysqli pdo pdo_mysql zip \
+    && docker-php-ext-enable pdo_mysql \
+    && rm -rf /var/lib/apt/lists/*
 
-# installiere composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php && php -r "unlink('composer-setup.php');" && mv composer.phar /usr/local/bin/composer
+# Install Composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php \
+    && php -r "unlink('composer-setup.php');" \
+    && mv composer.phar /usr/local/bin/composer
+
+# Copy entrypoint and fix line endings for Linux compatibility
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN dos2unix /usr/local/bin/entrypoint.sh \
+    && chmod +x /usr/local/bin/entrypoint.sh
 
 RUN mkdir /var/www/html/CharitySwimRun
 COPY . /var/www/html/CharitySwimRun
 
 WORKDIR /var/www/html/CharitySwimRun
 
-RUN apt-get update && apt-get install git mariadb-client iproute2 -y
-RUN docker-php-ext-install mysqli pdo pdo_mysql \
-     && docker-php-ext-enable pdo_mysql
+RUN composer install --optimize-autoloader
 
-RUN composer update 
-RUN composer install 
-
-RUN chown -R www-data: /var/www/html/CharitySwimRun 
+RUN chown -R www-data: /var/www/html/CharitySwimRun
 
 RUN a2enmod rewrite
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["apache2-foreground"]
 
 EXPOSE 80
