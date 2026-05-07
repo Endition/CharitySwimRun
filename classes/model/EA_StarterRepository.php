@@ -92,7 +92,7 @@ class EA_StarterRepository extends EA_Repository
             ->setParameter(":gesamtplatz", $gesamtplatz);
         }  
         if($hasStartzeit === true){
-            $queryBuilder->andWhere("t.startzeit IS NOT NULL AND t.startzeit != '0000-00-00 00:00:00' ");
+            $queryBuilder->andWhere("t.startzeit IS NOT NULL");
         }   
         $queryBuilder->setMaxResults(1); 
         return $queryBuilder->getQuery()->getOneOrNullResult();
@@ -105,7 +105,7 @@ class EA_StarterRepository extends EA_Repository
             ->select('t')
             ->from(EA_Starter::class, 't')
             ->where("t.geschlecht = :geschlecht")
-            ->andWhere("t.startzeit IS NOT NULL AND t.startzeit != '0000-00-00 00:00:00' ")
+            ->andWhere("t.startzeit IS NOT NULL")
             ->orderBy("t.geburtsdatum", $sort)
             ->setMaxResults(1)
             ->setParameter(":geschlecht", $gender);
@@ -194,16 +194,11 @@ class EA_StarterRepository extends EA_Repository
         }
         if($hasStartzeit === true){
             $queryBuilder->andWhere("t.startzeit IS NOT NULL");
-            $queryBuilder->andWhere("t.startzeit != '0000-00-00 00:00:00'");
         }
         if($hasStartzeit === false){
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq("t.startzeit", ':startzeit'),
-                    $queryBuilder->expr()->isNull("t.startzeit")
-                )
+                $queryBuilder->expr()->isNull("t.startzeit")
             );
-            $queryBuilder->setParameter(":startzeit",'0000-00-00 00:00:00');
         }
         if($moreHitsThan){
             $queryBuilder->andWhere("t.impulseCache > :moreHitsThan");
@@ -345,12 +340,8 @@ class EA_StarterRepository extends EA_Repository
         ->setParameter("startzeit",$startzeit->format("Y-m-d H:i:s"));
         if($ueberschreiben === false){
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq("t.startzeit", ':startzeitAlt'),
-                    $queryBuilder->expr()->isNull("t.startzeit")
-                )
+                $queryBuilder->expr()->isNull("t.startzeit")
             );
-            $queryBuilder->setParameter(":startzeitAlt",'0000-00-00 00:00:00');
         }
         if($geschlecht){
             $queryBuilder->andWhere('t.geschlecht = :geschlecht')
@@ -482,7 +473,7 @@ class EA_StarterRepository extends EA_Repository
 
         //Prüfe wer eine gültige Buchung hat aber nicht Status 90
         $query = " SELECT " . EA_Repository::TB_TEILNEHMER . ".Id FROM " . EA_Repository::TB_TEILNEHMER . " ";
-        $query .= " WHERE Status < ".EA_Starter::STATUS_GESTARTET." AND Startzeit != '0000-00-00 00:00:00'  ";
+        $query .= " WHERE Status < ".EA_Starter::STATUS_GESTARTET." AND Startzeit IS NOT NULL  ";
         $query .= " ORDER BY " . EA_Repository::TB_TEILNEHMER . ".Id  ASC;";
 
         $query = $this->entityManager->createNativeQuery($query, $rsm);
@@ -610,7 +601,7 @@ class EA_StarterRepository extends EA_Repository
             ->select('t')
             ->from(EA_Starter::class, 't')
             ->where('t.altersklasse IS NULL')
-            ->orWhere('t.geburtsdatum = 0000-00-00');
+            ->orWhere('t.geburtsdatum IS NULL');
           
         return $queryBuilder->getQuery()->getResult();
     }
@@ -633,11 +624,19 @@ class EA_StarterRepository extends EA_Repository
             ->select('i')
             ->from(EA_Hit::class, 'i')
             ->where('i.teilnehmer  IS NULL')
-            ->andWhere('i.geloescht = 0')
-            ->groupBy('i.transponderId')
-            ->addGroupBy('i.leser');
+            ->andWhere('i.geloescht = 0');
           
-        return $queryBuilder->getQuery()->getResult();
+        $allHits = $queryBuilder->getQuery()->getResult();
+        $uniqueHits = [];
+        $seen = [];
+        foreach ($allHits as $hit) {
+            $key = $hit->getTransponderId() . '-' . $hit->getLeser();
+            if (!isset($seen[$key])) {
+                $seen[$key] = true;
+                $uniqueHits[] = $hit;
+            }
+        }
+        return $uniqueHits;
     }
 
 
@@ -648,7 +647,7 @@ class EA_StarterRepository extends EA_Repository
 
         $query = "SELECT t.* FROM " . EA_Repository::TB_TEILNEHMER . " t
         LEFT JOIN " . EA_Repository::TB_LOG . " i ON i.TeilnehmerId = t.Id 
-        WHERE t.Startzeit != '0000-00-00 00:00:00' 
+        WHERE t.Startzeit IS NOT NULL 
         AND i.Timestamp < UNIX_TIMESTAMP(t.Startzeit) 
         AND i.geloescht = 0 
         GROUP BY t.Id ;";
