@@ -412,8 +412,20 @@ class EA_Starter
 
     public function getLetzteBuchung(string $format = "d.m.Y H:i:s"): string
     {
-        if($this->getImpulseListGueltige()->last()){
-            return date($format, $this->getImpulseListGueltige()->last()->getTimestamp());
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('geloescht', false));
+            
+        if ($this->getStartzeit()) {
+            $criteria->andWhere(Criteria::expr()->gte('timestamp', $this->getStartzeit()->getTimestamp()));
+        }
+        
+        $criteria->orderBy(['timestamp' => Criteria::DESC])
+                 ->setMaxResults(1);
+                 
+        $lastHit = $this->impulsList->matching($criteria)->first();
+        
+        if ($lastHit) {
+            return date($format, $lastHit->getTimestamp());
         }
         return "";
     }
@@ -639,6 +651,11 @@ class EA_Starter
     public function setKonfiguration(EA_Configuration $konfiguration): void
     {
         $this->konfiguration = $konfiguration;
+    }
+
+    public function setImpulseCache(int $impulseCache): void
+    {
+        $this->impulseCache = $impulseCache;
     }
 
     public function __toString()
