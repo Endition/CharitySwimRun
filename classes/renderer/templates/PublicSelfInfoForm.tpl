@@ -1,20 +1,9 @@
 <style>
-/* Defines the styling for the self-service kiosk terminal. */
-.kiosk-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
 /* Styles the large numpad input field. */
 .kiosk-input {
     font-size: 4rem !important;
     height: 100px !important;
-    text-align: center;
-    font-weight: 700;
     letter-spacing: 5px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     border: 2px solid #38BDF8;
 }
 
@@ -37,23 +26,8 @@
     100% { box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-color: rgba(255,255,255,0.1); }
 }
 
-/* Styles individual result cards. */
-.result-card {
-    border-radius: 12px;
-    padding: 20px 25px;
-    margin-bottom: 15px;
-    border: 1px solid rgba(0,0,0,0.1);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    animation: slideDownCard 0.4s ease-out forwards;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.3rem;
-}
-
 /* Dark mode adjustments for result cards. */
 [data-bs-theme="dark"] .result-card {
-    border: 1px solid rgba(255,255,255,0.1);
     background: rgba(30, 41, 59, 0.5);
 }
 
@@ -66,45 +40,22 @@
 .new-kiosk-entry {
     animation: slideDownCard 0.4s ease-out forwards, kioskGlow 3s ease-out forwards;
 }
-
-/* Highlights the error cards. */
-.error-card {
-    border-left: 5px solid #EF4444;
-}
-
-/* Highlights the success cards. */
-.success-card {
-    border-left: 5px solid #10B981;
-}
-
-/* Emphasizes specific data points. */
-.data-badge {
-    background: rgba(56, 189, 248, 0.1);
-    color: #38BDF8;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-weight: bold;
-    margin: 0 5px;
-    display: inline-block;
-}
-
-.time-stamp {
-    font-size: 1.1rem;
-    color: var(--bs-gray-500);
+.result-card {
+    animation: slideDownCard 0.4s ease-out forwards;
 }
 </style>
 
-<div class="kiosk-container">
-    <div class="card shadow-sm border-0 mb-4">
+<div class="container p-4 mx-auto" style="max-width: 900px;">
+    <div class="card shadow-sm border-0 mb-4 rounded-4">
         <div class="card-body text-center p-5">
-            <h2 class="mb-3">Selbstauskunft</h2>
-            <p class="text-muted mb-4" style="font-size: 1.2rem;">
+            <h2 class="mb-3 fw-bold">Selbstauskunft</h2>
+            <p class="text-muted mb-4 fs-5">
                 Tippe deine Startnummer über den Ziffernblock ein und drücke <strong>Enter</strong>.<br>
-                <small>(Aus Datenschutzgründen wird dein Name nicht angezeigt)</small>
+                <small class="fs-6">(Aus Datenschutzgründen wird dein Name nicht angezeigt)</small>
             </p>
             
             <div class="form-group mb-0">
-                <input type="number" class="form-control kiosk-input" name="startnummer" id="startnummer" placeholder="StNr" required autofocus autocomplete="off">
+                <input type="number" class="form-control kiosk-input text-center fw-bold rounded-4 shadow-sm" name="startnummer" id="startnummer" placeholder="StNr" required autofocus autocomplete="off">
             </div>
         </div>
     </div>
@@ -153,8 +104,8 @@
                     
                     /* Constructs and prepends the error card. */
                     var errorCard = $(
-                        '<div class="result-card error-card new-kiosk-entry flex-column align-items-start flex-md-row align-items-md-center">' +
-                            '<div class="mb-2 mb-md-0 time-stamp">' + uhrzeit + ' Uhr</div>' +
+                        '<div class="result-card new-kiosk-entry d-flex flex-column align-items-start flex-md-row justify-content-between align-items-md-center rounded-3 p-4 mb-3 border border-danger border-5 border-top-0 border-end-0 border-bottom-0 shadow-sm fs-4">' +
+                            '<div class="mb-2 mb-md-0 text-secondary fs-5">' + uhrzeit + ' Uhr</div>' +
                             '<div class="text-danger fw-bold">' + errorMsg + ' (StNr: ' + startNr + ')</div>' +
                         '</div>'
                     );
@@ -171,13 +122,13 @@
                     
                     /* Constructs and prepends the success card with detailed participant data. */
                     var successCard = $(
-                        '<div class="result-card success-card new-kiosk-entry flex-column align-items-start flex-xl-row align-items-xl-center">' +
-                            '<div class="mb-2 mb-xl-0 time-stamp">' + uhrzeit + ' Uhr</div>' +
-                            '<div class="d-flex flex-wrap align-items-center gap-2">' +
-                                '<span>StNr <span class="data-badge">' + data.startnummer + '</span></span>' +
-                                '<span>Meter <span class="data-badge">' + data.meter + 'm</span></span>' +
-                                '<span>Wertung <span class="data-badge">' + data.wertung + '</span></span>' +
-                                '<span>Nächste <span class="data-badge">' + data.naechsteWertung + '</span></span>' +
+                        '<div class="result-card new-kiosk-entry d-flex flex-column align-items-start flex-xl-row justify-content-between align-items-xl-center rounded-3 p-4 mb-3 border border-success border-5 border-top-0 border-end-0 border-bottom-0 shadow-sm fs-4">' +
+                            '<div class="mb-3 mb-xl-0 text-secondary fs-5">' + uhrzeit + ' Uhr</div>' +
+                            '<div class="d-flex flex-wrap align-items-center gap-3">' +
+                                '<span>StNr <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3 py-2 ms-1">' + data.startnummer + '</span></span>' +
+                                '<span>Meter <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3 py-2 ms-1">' + data.meter + 'm</span></span>' +
+                                '<span>Wertung <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3 py-2 ms-1">' + data.wertung + '</span></span>' +
+                                '<span>Nächste <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3 py-2 ms-1">' + data.naechsteWertung + '</span></span>' +
                             '</div>' +
                         '</div>'
                     );
