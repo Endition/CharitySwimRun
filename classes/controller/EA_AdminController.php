@@ -44,13 +44,8 @@ class EA_AdminController extends EA_Controller
             $_GET['doc'] = "konfiguration";
         }
 
-
-        //update ImpulseCache on every Call
-        // update ImpulseCache nur einmal pro Minute und User
-        if (!isset($_SESSION['impulseCacheLastUpdate']) || time() - $_SESSION['impulseCacheLastUpdate'] > 60) {
-            $this->EA_HitRepository->updateImpulseCache();
-            $_SESSION['impulseCacheLastUpdate'] = time();
-        }
+        // Hinweis: Der ImpulseCache wird nicht mehr per PHP aktualisiert. 
+        // Dies geschieht nun automatisch und echtzeitfähig über MySQL-Trigger.
 
         switch ($_GET['doc']) {
             case "dashboard":

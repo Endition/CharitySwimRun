@@ -42,80 +42,53 @@ class EA_PlacementHelper
     }
 
     /**
-     * calculates placement in age group and distance
-     * need $teilnehmerList sortet by impulse
+     * Calculates and persists placement rankings using a single native SQL statement with MySQL RANK() window functions.
+     * This replaces the old PHP loop and is orders of magnitude faster for large participant counts.
+     * After the DB update, all in-memory objects are updated to reflect the new ranks without a second DB fetch.
      */
     public function berechnePlatzierung(array $teilnehmerListSorted): array
     {
-        if($this->checkIfCalculationIsNecassary() === false){
+        // Ensures cache integrity before ranking, as results depend on correct impulse counts.
+        $this->EA_HitRepository->updateImpulseCache();
+
+        if ($this->checkIfCalculationIsNecassary() === false) {
             return $teilnehmerListSorted;
         }
-        
-        //sort list by impuls, not necassary anymore 24.05.2024
-       # $teilnehmerListSorted = $teilnehmerList; # $this->quicksort($teilnehmerList);
+
+        // Persist all three rankings with a single SQL statement using Window Functions (MySQL 8.0+).
+        $this->EA_StarterRepository->berechnePlatzierungSQL();
+
+        // Update the in-memory PHP objects to reflect the newly calculated ranks for the current request,
+        // avoiding a second round-trip to the database.
         $platzList = [];
         $plus1 = 1;
+        foreach ($teilnehmerListSorted as $teilnehmer) {
+            $g      = $teilnehmer->getGeschlecht();
+            $sgId   = $teilnehmer->getStrecke()->getId() . $g;
+            $sagId  = $teilnehmer->getStrecke()->getId() . $teilnehmer->getAltersklasse()->getId() . $g;
+            $impulse = $teilnehmer->getImpulse();
 
-        foreach($teilnehmerListSorted as $teilnehmer){
-            $streckeId = $teilnehmer->getStrecke()->getId();
-            $geschlecht = $teilnehmer->getGeschlecht();
-            $altersklasseId = $teilnehmer->getAltersklasse()->getId();
-            $teilnehmerImpulse = $teilnehmer->getImpulse();
-            //Ids for Arrays
-            $g = $geschlecht;
-            $sgId = $streckeId.$geschlecht;
-            $sagId = $streckeId.$altersklasseId.$geschlecht;
-            
-            //Gesamt
-            //if array element does not exist -> create. Important for 1. place
-            if(!isset($platzList['gesamt'][$g]['place'])){
-                $platzList['gesamt'][$g]['place'] = $plus1;
-                $platzList['gesamt'][$g]['impulseCount'][$plus1] = 0;
-            }else{
-                //check if impulse from the starter beforre und this starter are the same. If true -> same place. Do not count up
-                if($teilnehmerImpulse < $platzList['gesamt'][$g]['impulseCount'][$platzList['gesamt'][$g]['place']] || $platzList['gesamt'][$g]['impulseCount'][$platzList['gesamt'][$g]['place']] === 0){
-                    $platzList['gesamt'][$g]['place'] = $platzList['gesamt'][$g]['place'] + $plus1;
+            foreach (['gesamt' => $g, 'strecke' => $sgId, 'altersklasse' => $sagId] as $category => $key) {
+                if (!isset($platzList[$category][$key]['place'])) {
+                    $platzList[$category][$key]['place'] = $plus1;
+                    $platzList[$category][$key]['lastImpulse'] = 0;
+                } elseif ($impulse < $platzList[$category][$key]['lastImpulse'] || $platzList[$category][$key]['lastImpulse'] === 0) {
+                    $platzList[$category][$key]['place']++;
                 }
-                //save impulse for the comparision in next loop
-                $platzList['gesamt'][$g]['impulseCount'][$platzList['gesamt'][$g]['place']] = $teilnehmerImpulse ;
+                $platzList[$category][$key]['lastImpulse'] = $impulse;
             }
 
-            //Strecken
-            if(!isset($platzList['strecke'][$sgId]['place'])){
-                $platzList['strecke'][$sgId]['place'] = $plus1;
-                $platzList['strecke'][$sgId]['impulseCount'][$plus1] = 0;
-            }else{
-                if($teilnehmerImpulse < $platzList['strecke'][$sgId]['impulseCount'][$platzList['strecke'][$sgId]['place']] || $platzList['strecke'][$sgId]['impulseCount'][$platzList['strecke'][$sgId]['place']]  === 0){
-                    $platzList['strecke'][$sgId]['place'] = $platzList['strecke'][$sgId]['place'] + $plus1;
-                }
-                $platzList['strecke'][$sgId]['impulseCount'][$platzList['strecke'][$sgId]['place']] = $teilnehmerImpulse ;
-            }
-
-            //Altersklassen
-            if(!isset($platzList['altersklasse'][$sagId]['place'])){
-                $platzList['altersklasse'][$sagId]['place'] = $plus1;
-                $platzList['altersklasse'][$sagId]['impulseCount'][$plus1] = 0;
-            }else{
-                if($teilnehmerImpulse < $platzList['altersklasse'][$sagId]['impulseCount'][$platzList['altersklasse'][$sagId]['place']] || $platzList['altersklasse'][$sagId]['impulseCount'][$platzList['altersklasse'][$sagId]['place']]=== 0){
-                    $platzList['altersklasse'][$sagId]['place'] = $platzList['altersklasse'][$sagId]['place'] + $plus1;
-                }
-                $platzList['altersklasse'][$sagId]['impulseCount'][$platzList['altersklasse'][$sagId]['place']] = $teilnehmerImpulse ;
-
-            }
-            //save the placess 
             $teilnehmer->setGesamtplatz($platzList['gesamt'][$g]['place']);
-            $teilnehmer->setStreckenplatz( $platzList['strecke'][$sgId]['place']);
+            $teilnehmer->setStreckenplatz($platzList['strecke'][$sgId]['place']);
             $teilnehmer->setAkplatz($platzList['altersklasse'][$sagId]['place']);
         }
-        $this->EA_StarterRepository->update();
+
         return $teilnehmerListSorted;
     }
 
     public function quicksort(array $unsortedList, string $funcName = "getImpulse", ?EA_SpecialEvaluation $specialEvaluation = null)
     {
-        //This method can be called directly, update cache necassary
-        $this->EA_HitRepository->updateImpulseCache();
-        
+        // Hinweis: Ein manuelles Update des ImpulseCache ist hier nicht mehr nötig, da Trigger dies in Echtzeit erledigen.
         $params = [$specialEvaluation];
             usort($unsortedList, function($a, $b) use ($funcName, $params) {
                 $valueA = call_user_func_array([$a, $funcName], $params);

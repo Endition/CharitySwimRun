@@ -12,11 +12,7 @@ class EA_ApiController extends EA_Controller
     public function __construct(EA_Repository $EA_Repository)
     {
         parent::__construct($EA_Repository->getEntityManager());
-        // update ImpulseCache nur einmal pro Minute und User
-        if (!isset($_SESSION['impulseCacheLastUpdate']) || time() - $_SESSION['impulseCacheLastUpdate'] > 60) {
-            $this->EA_HitRepository->updateImpulseCache();
-            $_SESSION['impulseCacheLastUpdate'] = time();
-        }
+        // Hinweis: Der ImpulseCache wird nicht mehr manuell berechnet, sondern über MySQL-Trigger aktuell gehalten.
     }
 
     public function handleRequest(string $requestMethod, string $route, array $paramList): string

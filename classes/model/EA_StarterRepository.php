@@ -331,6 +331,37 @@ class EA_StarterRepository extends EA_Repository
         $queryBuilder->getQuery()->execute();
     }
 
+    /**
+     * Calculates and persists all three placement rankings in a single native SQL statement.
+     * Uses MySQL 8.0+ RANK() window functions, which is significantly more efficient than
+     * iterating over participants in PHP and triggering individual Doctrine updates.
+     *
+     * Rankings calculated:
+     * - Gesamtplatz:   Overall rank, partitioned by gender
+     * - Streckenplatz: Rank per distance and gender
+     * - AKPlatz:       Rank per distance, age group and gender
+     */
+    public function berechnePlatzierungSQL(): void
+    {
+        $sql = "
+            UPDATE teilnehmer t
+            JOIN (
+                SELECT
+                    id,
+                    RANK() OVER (PARTITION BY Geschlecht ORDER BY impulseCache DESC)                         AS gesamt_rank,
+                    RANK() OVER (PARTITION BY Geschlecht, Strecke ORDER BY impulseCache DESC)                AS strecken_rank,
+                    RANK() OVER (PARTITION BY Geschlecht, Strecke, Altersklasse ORDER BY impulseCache DESC) AS ak_rank
+                FROM teilnehmer
+            ) r ON t.id = r.id
+            SET
+                t.Gesamtplatz  = r.gesamt_rank,
+                t.Streckenplatz = r.strecken_rank,
+                t.AKPlatz      = r.ak_rank
+        ";
+        $this->entityManager->getConnection()->executeStatement($sql);
+    }
+
+
     public function updateStartzeit(DateTimeInterface $startzeit, bool $ueberschreiben = false, ?string $geschlecht = null ,?string $spalteName = null, ?string $spalteWertString = null, ?array $spalteWertArray = null): int
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
