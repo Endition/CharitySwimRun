@@ -8,7 +8,8 @@ use Doctrine\ORM\Proxy\ProxyFactory;
 use Doctrine\ORM\Tools\SchemaTool;
 use Exception;
 
-class EA_Repository{
+class EA_Repository
+{
     private ?EntityManager $entityManager = null;
 
     private string $database = "";
@@ -45,7 +46,7 @@ class EA_Repository{
         'femalefirstnames',
     ];
 
-    public function __construct(string $user, string $password, string $server, bool $createConnection=false)
+    public function __construct(string $user, string $password, string $server, bool $createConnection = false)
     {
         $this->user = $user;
         $this->password = $password;
@@ -69,14 +70,14 @@ class EA_Repository{
     {
         //this is the only way thats works. isConntected() delivers false results
         try {
-            if($this->server === ""){
+            if ($this->server === "") {
                 return false;
             }
             $connection = $this->entityManager->getConnection();
             $sql = "SELECT 1"; // 
             $stmt = $connection->executeQuery($sql);
             $result = $stmt->fetchOne();
-        
+
             if ($result) {
                 return true;
             } else {
@@ -95,13 +96,13 @@ class EA_Repository{
 
     private function createEntityManager(): void
     {
-        $config = ORMSetup::createAttributeMetadataConfiguration([ROOT_PATH."/classes"],false,);
+        $config = ORMSetup::createAttributeMetadataConfiguration([ROOT_PATH . "/classes"], false, );
         //https://www.doctrine-project.org/projects/doctrine-orm/en/3.1/reference/advanced-configuration.html#query-cache-recommended
         // Manuell den Cache löschen: C:\laragon\www\CharitySwimRun\doctrineMetaDataCache2\doctrine_metadata
         //set false when not developing
-        $config->setAutoGenerateProxyClasses(true);
-       // $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata',0,ROOT_PATH."/doctrineMetaDataCache2"));
-       // $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
+        $config->setAutoGenerateProxyClasses(false);
+        $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata', 0, ROOT_PATH . "/doctrineMetaDataCache2"));
+        $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
 
         $connectionParams = [
             'dbname' => $this->database,
@@ -112,13 +113,13 @@ class EA_Repository{
             'charset' => 'utf8mb4',
         ];
 
-        try{
-            $connection = DriverManager::getConnection($connectionParams,$config);
+        try {
+            $connection = DriverManager::getConnection($connectionParams, $config);
             $connection->executeQuery("SET NAMES 'utf8mb4'");
             $this->entityManager = new EntityManager($connection, $config);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             echo "Es gab einen Fehler beim Herstellen der Verbindung: " . $e->getMessage();
-            $this->entityManager  = null;
+            $this->entityManager = null;
             return;
         }
     }
@@ -127,23 +128,29 @@ class EA_Repository{
     {
         $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
         // Check if the database already exists
-        if (!in_array(self::DATABASE,$schemaManager->listDatabases())) {
+        if (!in_array(self::DATABASE, $schemaManager->listDatabases())) {
             // Create the database
             $schemaManager->createDatabase(self::DATABASE);
         }
-      
-         // Create EntityManager with the correct database und set correct database in class
-         $this->database = self::DATABASE;
-         $this->createEntityManager();
+
+        // Create EntityManager with the correct database und set correct database in class
+        $this->database = self::DATABASE;
+        $this->createEntityManager();
     }
 
 
-    public function getDatabaseTableList():array
+    public function getDatabaseTableList(): array
     {
         $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
         return $schemaManager->listTables();
     }
 
+    /**
+     * Creates the database tables based on the entity metadata.
+     * Automatically installs necessary database triggers after schema creation.
+     * 
+     * @return void
+     */
     public function createDatabaseTables(): void
     {
         // SchemaTool instanziieren
@@ -171,16 +178,80 @@ class EA_Repository{
             $this->entityManager->getClassMetadata(EA_Cache::class),
             $this->entityManager->getClassMetadata(EA_RfidChip::class),
 
-           //CREATE VALUES
+            //CREATE VALUES
         ];
 
         // Schema erstellen
         try {
             $schemaTool->createSchema($classes);
+            $this->installTriggers();
             echo "Die Datenbanktabelle wurde erfolgreich erstellt.";
         } catch (Exception $e) {
             echo "Es gab einen Fehler beim Erstellen der Tabelle: " . $e->getMessage();
         }
+    }
+
+    /**
+     * Installs MySQL triggers to automatically manage the impulseCache in the participants table.
+     * These triggers handle INSERT, UPDATE, and DELETE operations on the log table.
+     * 
+     * @return void
+     */
+    private function installTriggers(): void
+    {
+        $conn = $this->entityManager->getConnection();
+
+        // 1. Trigger for INSERT
+        $conn->executeQuery("DROP TRIGGER IF EXISTS trg_hit_insert");
+        $conn->executeQuery("
+            CREATE TRIGGER trg_hit_insert
+            AFTER INSERT ON log
+            FOR EACH ROW
+            BEGIN
+                IF NEW.geloescht = 0 AND NEW.TeilnehmerId IS NOT NULL THEN
+                    UPDATE teilnehmer SET impulseCache = impulseCache + 1 WHERE id = NEW.TeilnehmerId;
+                END IF;
+            END
+        ");
+
+        // 2. Trigger for UPDATE
+        $conn->executeQuery("DROP TRIGGER IF EXISTS trg_hit_update");
+        $conn->executeQuery("
+            CREATE TRIGGER trg_hit_update
+            AFTER UPDATE ON log
+            FOR EACH ROW
+            BEGIN
+                IF OLD.geloescht = 0 AND NEW.geloescht = 1 THEN
+                    IF OLD.TeilnehmerId IS NOT NULL THEN
+                        UPDATE teilnehmer SET impulseCache = impulseCache - 1 WHERE id = OLD.TeilnehmerId;
+                    END IF;
+                ELSEIF OLD.geloescht = 1 AND NEW.geloescht = 0 THEN
+                    IF NEW.TeilnehmerId IS NOT NULL THEN
+                        UPDATE teilnehmer SET impulseCache = impulseCache + 1 WHERE id = NEW.TeilnehmerId;
+                    END IF;
+                ELSEIF OLD.geloescht = 0 AND NEW.geloescht = 0 AND (OLD.TeilnehmerId != NEW.TeilnehmerId OR (OLD.TeilnehmerId IS NULL AND NEW.TeilnehmerId IS NOT NULL) OR (OLD.TeilnehmerId IS NOT NULL AND NEW.TeilnehmerId IS NULL)) THEN
+                    IF OLD.TeilnehmerId IS NOT NULL THEN
+                        UPDATE teilnehmer SET impulseCache = impulseCache - 1 WHERE id = OLD.TeilnehmerId;
+                    END IF;
+                    IF NEW.TeilnehmerId IS NOT NULL THEN
+                        UPDATE teilnehmer SET impulseCache = impulseCache + 1 WHERE id = NEW.TeilnehmerId;
+                    END IF;
+                END IF;
+            END
+        ");
+
+        // 3. Trigger for DELETE
+        $conn->executeQuery("DROP TRIGGER IF EXISTS trg_hit_delete");
+        $conn->executeQuery("
+            CREATE TRIGGER trg_hit_delete
+            AFTER DELETE ON log
+            FOR EACH ROW
+            BEGIN
+                IF OLD.geloescht = 0 AND OLD.TeilnehmerId IS NOT NULL THEN
+                    UPDATE teilnehmer SET impulseCache = impulseCache - 1 WHERE id = OLD.TeilnehmerId;
+                END IF;
+            END
+        ");
     }
 
     public function resetDatabase(string $modus = "TRUNCATE"): void
@@ -188,17 +259,17 @@ class EA_Repository{
         $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 0;")->executeQuery();
         $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
         foreach ($schemaManager->listTableNames() as $tableName) {
-                if($modus === "RESETEVENT" && in_array($tableName, ['konfiguration','specialevaluation','users','aks','strecken','verein','unternehmen','mannschaft','mannschaft_kategorien','urkunden','transponder','femalefirstnames'])){
-                    continue;
-                }
-                //Do not truncate this tables, but drop them if necassary
-                if($modus === "TRUNCATE" && ($tableName === "users" || $tableName === "transponder" || $tableName === "femalefirstnames")){
-                    continue;
-                }
-                $sql = ''.$modus === "DROP" ? "DROP" : "TRUNCATE".'  TABLE ' . $tableName;
-                $this->entityManager->getConnection()->prepare($sql)->executeQuery();
+            if ($modus === "RESETEVENT" && in_array($tableName, ['konfiguration', 'specialevaluation', 'users', 'aks', 'strecken', 'verein', 'unternehmen', 'mannschaft', 'mannschaft_kategorien', 'urkunden', 'transponder', 'femalefirstnames'])) {
+                continue;
+            }
+            //Do not truncate this tables, but drop them if necassary
+            if ($modus === "TRUNCATE" && ($tableName === "users" || $tableName === "transponder" || $tableName === "femalefirstnames")) {
+                continue;
+            }
+            $sql = '' . $modus === "DROP" ? "DROP" : "TRUNCATE" . '  TABLE ' . $tableName;
+            $this->entityManager->getConnection()->prepare($sql)->executeQuery();
         }
-        $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 1;")->executeQuery();  
+        $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 1;")->executeQuery();
     }
 
     public function update(): void
@@ -207,7 +278,7 @@ class EA_Repository{
     }
     //performance
     //php.ini -> realpath_cache_size = 64M
-  
+
 
     //####################################################################################
 
@@ -216,7 +287,7 @@ class EA_Repository{
         return $this->database;
     }
 
-    public function setDatabase(string $database):void
+    public function setDatabase(string $database): void
     {
         $this->database = $database;
     }
@@ -226,7 +297,7 @@ class EA_Repository{
         return $this->user;
     }
 
-    public function setUser(string  $user):void
+    public function setUser(string $user): void
     {
         $this->user = $user;
     }
@@ -238,7 +309,7 @@ class EA_Repository{
     }
 
 
-    public function setPassword(string $password):void
+    public function setPassword(string $password): void
     {
         $this->password = $password;
     }
@@ -248,7 +319,7 @@ class EA_Repository{
         return $this->server;
     }
 
-    public function setServer(string $server):void
+    public function setServer(string $server): void
     {
         $this->server = $server;
     }

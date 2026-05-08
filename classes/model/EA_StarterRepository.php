@@ -656,6 +656,12 @@ class EA_StarterRepository extends EA_Repository
         return $query->getResult();
     }
 
+    /**
+     * Loads a single random participant from the database.
+     * Uses an efficient count and offset strategy to ensure performance with many entries.
+     * 
+     * @return EA_Starter|null A random participant or null if the list is empty.
+     */
     public function loadRandomTeilnehmer(): ?EA_Starter
     {
         $count = $this->getAnzahlTeilnehmer();

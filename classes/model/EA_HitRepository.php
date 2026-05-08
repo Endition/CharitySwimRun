@@ -18,18 +18,16 @@ class EA_HitRepository extends EA_Repository
         parent::setEntityManager($entitymanager);
     }
 
+    /**
+     * Persists a new hit entry into the database.
+     * Database triggers will automatically update the participant's impulse cache.
+     * 
+     * @param EA_Hit $impuls The hit entity to create.
+     * @return EA_Hit The persisted hit entity.
+     */
     public function create(EA_Hit $impuls): EA_Hit
     {
         $this->entityManager->persist($impuls);
-        
-        // Sofortiges Update des Caches beim Teilnehmer, damit der Live-Ticker nicht 0 anzeigt
-        if ($impuls->getTeilnehmer() !== null) {
-            $teilnehmer = $impuls->getTeilnehmer();
-            $teilnehmer->setImpulseCache($teilnehmer->getImpulse() + 1);
-            // Wir müssen hier nicht zwingend flush() aufrufen, da create() meist in einem Kontext
-            // aufgerufen wird, der danach flush() macht oder wir rufen $this->update() auf.
-        }
-        
         $this->update();
         return $impuls;
     }
@@ -108,16 +106,17 @@ class EA_HitRepository extends EA_Repository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    /**
+     * Removes a hit entry from the database.
+     * Database triggers will automatically decrement the participant's impulse cache.
+     * 
+     * @param EA_Hit $impuls The hit entity to remove.
+     * @return void
+     */
     public function delete(EA_Hit $impuls): void
     {
-        $teilnehmer = $impuls->getTeilnehmer();
         $this->entityManager->remove($impuls);
         $this->update();
-        
-        if ($teilnehmer !== null) {
-            $teilnehmer->setImpulseCache(max(0, $teilnehmer->getImpulse() - 1));
-            $this->update();
-        }
     }
 
     public function deleteAllByTeilnehmer(EA_Starter $EA_Starter): bool
@@ -126,6 +125,8 @@ class EA_HitRepository extends EA_Repository
         $query->setParameter(":teilnehmer", $EA_Starter);
         $query->execute();
         
+        // Der Trigger greift bei DQL DELETE oft nicht direkt auf Tabellenebene,
+        // daher setzen wir den Cache hier manuell auf 0 zur Sicherheit.
         $EA_Starter->setImpulseCache(0);
         $this->update();
         return true;
