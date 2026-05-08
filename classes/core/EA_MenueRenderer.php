@@ -46,6 +46,7 @@ class EA_MenueRenderer
                 "04-06-00" => array("name" => "Urkunden", "doc" => "urkunden", "icon" => "fa fa-file fa-fw", "necassaryRoleId"=>EA_User::USERROLE_ANMELDUNG),
                 "04-07-00" => array("name" => "Meldelisten", "doc" => "meldelisten", "icon" => "fa fa-file-alt fa-fw", "necassaryRoleId"=>EA_User::USERROLE_ANMELDUNG),
                 "04-08-00" => array("name" => "Statistik", "doc" => "statistik", "icon" => "fa fa-chart-line fa-fw", "necassaryRoleId"=>EA_User::USERROLE_ANMELDUNG),
+                "04-09-00" => array("name" => "Pressemitteilung", "doc" => "pressartikel", "icon" => "fa fa-newspaper fa-fw", "necassaryRoleId"=>EA_User::USERROLE_ANMELDUNG),
             )
         ),
         "05-00-00" => array("name" => "Livebuchungen", "doc" => "livebuchungen.php", "href" => "special", "icon" => "fa fa-heart-pulse fa-fw", "necassaryRoleId"=>EA_User::USERROLE_REMOTE_DISPLAY),

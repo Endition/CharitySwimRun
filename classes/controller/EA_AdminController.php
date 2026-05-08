@@ -140,6 +140,10 @@ class EA_AdminController extends EA_Controller
                 $spezialabfragenController = new EA_SpecialInformation($this->entityManager);
                 $innercontent .= $spezialabfragenController->getPageSpezialabfragen();
                 break;
+            case "pressartikel":
+                $pressartikelController = new EA_PressArticleController($this->entityManager);
+                $innercontent .= $pressartikelController->getPagePressartikel();
+                break;
             case "ergebnisse":
                 $ergebnisController = new EA_ResultController($this->entityManager);
                 $innercontent .= $ergebnisController->getPageErgebnisse();
