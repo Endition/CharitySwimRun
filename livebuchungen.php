@@ -1,6 +1,11 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#172554">
+    <title>Livebuchungen - Charity Swim & Run</title>
     <script src="vendor/components/jquery/jquery.min.js"></script>
     <link href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -147,6 +152,12 @@
             }
 
             checkForUpdates();
+            
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js');
+              });
+            }
         });
     </script>
 </body>
