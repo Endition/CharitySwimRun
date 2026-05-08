@@ -43,6 +43,10 @@ class EA_DatabaseController
             $this->dropDatabase();
         }
 
+        if (isset($_POST['populateData']) && $_GET['action'] === "populateData") {
+            $this->populateStandardData();
+        }
+
         $content .= $this->EA_FR->getFormDatabaseData($this->EA_Repository);
        
         if($this->EA_Repository->isDoctrineConnected()){
@@ -70,6 +74,30 @@ class EA_DatabaseController
         $this->EA_Repository->resetDatabase("DROP");  
         $this->EA_Repository->createDatabaseTables();
         $this->EA_Messages->addMessage("Datenbank neu erstellt",537567354477,EA_Message::MESSAGE_SUCCESS);            
+    }
+
+    /**
+     * Populates the database with standard entries for transponders, female firstnames, and certificates.
+     * Existing data in these tables will be deleted first.
+     * 
+     * @return void
+     */
+    private function populateStandardData(): void
+    {
+        $entityManager = $this->EA_Repository->getEntityManager();
+        $connection = $entityManager->getConnection();
+        
+        $connection->executeStatement("SET FOREIGN_KEY_CHECKS = 0;");
+        $connection->executeStatement("TRUNCATE TABLE transponder");
+        $connection->executeStatement("TRUNCATE TABLE femalefirstnames");
+        $connection->executeStatement("TRUNCATE TABLE urkunden");
+        $connection->executeStatement("SET FOREIGN_KEY_CHECKS = 1;");
+
+        $this->createUrkundeStandardentries($entityManager);
+        $this->createTransponderStandardentries($entityManager);
+        $this->createFemaleFirstnamesStandardentries($entityManager);
+        
+        $this->EA_Messages->addMessage("Standarddaten (Transponder, Vornamen, Urkunden) wurden erfolgreich angelegt.", 987654321, EA_Message::MESSAGE_SUCCESS);
     }
 
     private function saveDatabaseData()
