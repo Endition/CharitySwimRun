@@ -114,7 +114,7 @@ class EA_Repository
 
         try {
             $connection = DriverManager::getConnection($connectionParams, $config);
-            $connection->executeQuery("SET NAMES 'utf8mb4'");
+            $connection->executeStatement("SET NAMES 'utf8mb4'");
             $this->entityManager = new EntityManager($connection, $config);
         } catch (Exception $e) {
             echo "Es gab einen Fehler beim Herstellen der Verbindung: " . $e->getMessage();
@@ -201,8 +201,8 @@ class EA_Repository
         $conn = $this->entityManager->getConnection();
 
         // 1. Trigger for INSERT
-        $conn->executeQuery("DROP TRIGGER IF EXISTS trg_hit_insert");
-        $conn->executeQuery("
+        $conn->executeStatement("DROP TRIGGER IF EXISTS trg_hit_insert");
+        $conn->executeStatement("
             CREATE TRIGGER trg_hit_insert
             AFTER INSERT ON log
             FOR EACH ROW
@@ -214,8 +214,8 @@ class EA_Repository
         ");
 
         // 2. Trigger for UPDATE
-        $conn->executeQuery("DROP TRIGGER IF EXISTS trg_hit_update");
-        $conn->executeQuery("
+        $conn->executeStatement("DROP TRIGGER IF EXISTS trg_hit_update");
+        $conn->executeStatement("
             CREATE TRIGGER trg_hit_update
             AFTER UPDATE ON log
             FOR EACH ROW
@@ -240,8 +240,8 @@ class EA_Repository
         ");
 
         // 3. Trigger for DELETE
-        $conn->executeQuery("DROP TRIGGER IF EXISTS trg_hit_delete");
-        $conn->executeQuery("
+        $conn->executeStatement("DROP TRIGGER IF EXISTS trg_hit_delete");
+        $conn->executeStatement("
             CREATE TRIGGER trg_hit_delete
             AFTER DELETE ON log
             FOR EACH ROW
@@ -253,22 +253,35 @@ class EA_Repository
         ");
     }
 
+    /**
+     * Resets the database tables based on the specified mode.
+     * 
+     * @param string $modus The reset mode: 'TRUNCATE' (default), 'RESETEVENT', or 'DROP'.
+     * @return void
+     */
     public function resetDatabase(string $modus = "TRUNCATE"): void
     {
-        $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 0;")->executeQuery();
-        $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
+        $connection = $this->entityManager->getConnection();
+        $connection->executeStatement("SET FOREIGN_KEY_CHECKS = 0;");
+        $schemaManager = $connection->createSchemaManager();
+
         foreach ($schemaManager->listTableNames() as $tableName) {
+            // Keep system configuration and base data if only resetting the event
             if ($modus === "RESETEVENT" && in_array($tableName, ['konfiguration', 'specialevaluation', 'users', 'aks', 'strecken', 'verein', 'unternehmen', 'mannschaft', 'mannschaft_kategorien', 'urkunden', 'transponder', 'femalefirstnames'])) {
                 continue;
             }
-            //Do not truncate this tables, but drop them if necassary
-            if ($modus === "TRUNCATE" && ($tableName === "users" || $tableName === "transponder" || $tableName === "femalefirstnames")) {
+
+            // Do not truncate system tables, but allow dropping them for a full structure regeneration
+            if ($modus === "TRUNCATE" && in_array($tableName, ["users", "transponder", "femalefirstnames"])) {
                 continue;
             }
-            $sql = ($modus === "DROP" ? "DROP" : "TRUNCATE") . ' TABLE ' . $tableName;
-            $this->entityManager->getConnection()->executeQuery($sql);
+
+            $command = ($modus === "DROP") ? "DROP" : "TRUNCATE";
+            $sql = $command . " TABLE " . $connection->quoteIdentifier($tableName);
+            $connection->executeStatement($sql);
         }
-        $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 1;")->executeQuery();
+
+        $connection->executeStatement("SET FOREIGN_KEY_CHECKS = 1;");
     }
 
     public function update(): void
