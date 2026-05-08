@@ -1,4 +1,4 @@
-FROM php:8.4.17-apache
+FROM php:8.4-apache
 
 ENV DB_SERVER=mysql
 ENV DB_BENUTZER=my_db_user
@@ -18,11 +18,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php \
-    && php -r "unlink('composer-setup.php');" \
-    && mv composer.phar /usr/local/bin/composer
+# Install Composer via official image
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy entrypoint and fix line endings for Linux compatibility
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
