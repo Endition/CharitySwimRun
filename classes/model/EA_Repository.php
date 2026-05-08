@@ -99,8 +99,7 @@ class EA_Repository
         $config = ORMSetup::createAttributeMetadataConfiguration([ROOT_PATH . "/classes"], false, );
         //https://www.doctrine-project.org/projects/doctrine-orm/en/3.1/reference/advanced-configuration.html#query-cache-recommended
         // Manuell den Cache löschen: C:\laragon\www\CharitySwimRun\doctrineMetaDataCache2\doctrine_metadata
-        //set false when not developing
-        $config->setAutoGenerateProxyClasses(false);
+        $config->setAutoGenerateProxyClasses(true);
         $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata', 0, ROOT_PATH . "/doctrineMetaDataCache2"));
         $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
 
@@ -266,8 +265,8 @@ class EA_Repository
             if ($modus === "TRUNCATE" && ($tableName === "users" || $tableName === "transponder" || $tableName === "femalefirstnames")) {
                 continue;
             }
-            $sql = '' . $modus === "DROP" ? "DROP" : "TRUNCATE" . '  TABLE ' . $tableName;
-            $this->entityManager->getConnection()->prepare($sql)->executeQuery();
+            $sql = ($modus === "DROP" ? "DROP" : "TRUNCATE") . ' TABLE ' . $tableName;
+            $this->entityManager->getConnection()->executeQuery($sql);
         }
         $this->entityManager->getConnection()->prepare("SET FOREIGN_KEY_CHECKS = 1;")->executeQuery();
     }
