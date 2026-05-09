@@ -133,6 +133,8 @@ class EA_ApiController extends EA_Controller
         return $responseList;
     }
 
+
+
     private function handlePostImpulseAdministrativ(array $paramList): array
     {
         $responseList = [];
@@ -288,8 +290,9 @@ class EA_ApiController extends EA_Controller
         $responseList = [];
         $result = [];
         if ($paramList[0] === "simulator") {
+            $mode = $paramList[0] === "simulator" ? $paramList[1] : 'log';
             $EA_SimulatorController = new EA_SimulatorController($this->entityManager);
-            $result = $EA_SimulatorController->createRandomTeilnehmer();
+            $result = $EA_SimulatorController->createRandomTeilnehmer($mode);
         }
         if ($paramList[0] === "startnummer") {
             $startnummer = $paramList[0] === "startnummer" ? (int) $paramList[1] : null;
