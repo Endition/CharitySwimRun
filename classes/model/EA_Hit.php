@@ -39,7 +39,7 @@ class EA_Hit
     #[ORM\Column(type: Types::BOOLEAN,name:"berechnet",options:["default"=>0])]
     private bool $berechnet = false;
 
-    #[ORM\Column(type: Types::BOOLEAN,name:"geloescht",options:["default"=>null])]
+    #[ORM\Column(type: Types::BOOLEAN,name:"geloescht",options:["default"=>0])]
     private bool $geloescht = false;
 
     public function __construct()
