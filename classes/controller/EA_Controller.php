@@ -39,16 +39,17 @@ class EA_Controller
     protected EA_DistanceRepository $EA_DistanceRepository;
     protected EA_TeamCategoryRepository $EA_TeamCategoryRepository;
     protected EA_UserRepository $EA_UserRepository;
-    protected EA_CertificateElementRepository $EA_CertificateElementRepository;  
+    protected EA_CertificateElementRepository $EA_CertificateElementRepository;
     protected EA_FemaleFirstnameRepository $EA_FemaleFirstnameRepository;
 
     protected EA_Messages $EA_Messages;
     protected ?EA_Configuration $konfiguration;
 
-    
-    public function __construct(EntityManager $entityManager){
+
+    public function __construct(EntityManager $entityManager)
+    {
         $this->entityManager = $entityManager;
-        
+
         $this->EA_FR = new EA_FormRenderer();
         $this->EA_R = new EA_Renderer();
         $this->EA_Messages = new EA_Messages();
