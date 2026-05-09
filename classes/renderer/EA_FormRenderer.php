@@ -31,26 +31,29 @@ use CharitySwimRun\classes\model\EA_ClubRepository;
 use CharitySwimRun\classes\model\EA_CompanyRepository;
 use Smarty\Smarty;
 
-class EA_FormRenderer extends EA_AbstractRenderer {
-    
+class EA_FormRenderer extends EA_AbstractRenderer
+{
+
     private EA_Helper $EA_H;
     private string $ds;
     private Smarty $smarty;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->EA_H = new EA_Helper();
         $this->ds = DIRECTORY_SEPARATOR;
         $this->smarty = new Smarty();
         $this->smarty->setTemplateDir(dirname(__FILE__) . "" . $this->ds . "templates" . $this->ds)
-                ->setCompileDir(dirname(__FILE__) . "" . $this->ds . "templates_c" . $this->ds)
-                ->setCacheDir(dirname(__FILE__) . "" . $this->ds . "cache" . $this->ds)
-                ->setConfigDir(dirname(__FILE__) . "" . $this->ds . "configs" . $this->ds);
+            ->setCompileDir(dirname(__FILE__) . "" . $this->ds . "templates_c" . $this->ds)
+            ->setCacheDir(dirname(__FILE__) . "" . $this->ds . "cache" . $this->ds)
+            ->setConfigDir(dirname(__FILE__) . "" . $this->ds . "configs" . $this->ds);
         $this->smarty->debugging = false;
         //$this->tplpfad = dirname(__FILE__)."".$this->ds."templates".$this->ds;
     }
 
-    private function getStandardIncludes(EntityManager $entityManager, array $includes = []) {
+    private function getStandardIncludes(EntityManager $entityManager, array $includes = [])
+    {
         $altersklasseRepository = new EA_AgeGroupRepository($entityManager);
         $streckeRepository = new EA_DistanceRepository($entityManager);
         $vereinRepository = new EA_ClubRepository($entityManager);
@@ -93,7 +96,8 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         }
     }
 
-    public function getFormDatabaseData(EA_Repository $EA_Repository) {
+    public function getFormDatabaseData(EA_Repository $EA_Repository)
+    {
         $content = "";
         $this->smarty->assign("EA_Repository", $EA_Repository);
         $this->smarty->assign('actionurl', 'index.php?doc=db');
@@ -162,14 +166,14 @@ class EA_FormRenderer extends EA_AbstractRenderer {
     public function getFormSpecialEvaluation(EntityManager $entityManager, EA_SpecialEvaluation $EA_SE): string
     {
         $content = "";
-        $this->getStandardIncludes($entityManager, array("konfiguration" => true,"strecken"=>true,"altersklassen"=>true,"geschlechter"=>true));
+        $this->getStandardIncludes($entityManager, array("konfiguration" => true, "strecken" => true, "altersklassen" => true, "geschlechter" => true));
         $this->smarty->assign('specialEvaluation', $EA_SE);
         $this->smarty->assign('actionurl', 'index.php?doc=specialevaluation');
         $content .= $this->smarty->fetch('SpecialEvaluationFormCreateEdit.tpl');
         return $content;
     }
 
-    public function getFormUser(?EA_User $user=null): string
+    public function getFormUser(?EA_User $user = null): string
     {
         $content = "";
         $this->smarty->assign('user', $user);
@@ -188,7 +192,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
 
     public function getFormMannschaftskategorie(EA_TeamCategory $EA_MK): string
     {
-        $content = "";       
+        $content = "";
         $this->smarty->assign('mannschaftskategorie', $EA_MK);
         $this->smarty->assign('actionurl', 'index.php?doc=mannschaftskategorie');
         $content .= $this->smarty->fetch('TeamCategoryFormCreateEdit.tpl');
@@ -227,9 +231,9 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true, "mannschaften" => true, "strecken" => true, "startgruppen" => true, "geschlechter" => true, "stati" => true));
 
-        if($konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE){
+        if ($konfiguration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE) {
             $this->smarty->assign('jahrgang', false);
-        }else{
+        } else {
             $this->smarty->assign('jahrgang', true);
         }
 
@@ -254,10 +258,10 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         //if there ist only one distance, set standardvalue to save work
         $distanceList = $distanceRepository->loadList();
         $selectedDistanceId = count($distanceList) === 1 ? $distanceList[array_key_first($distanceList)]->getId() : null;
-        
-        if($configuration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE){
+
+        if ($configuration->getAltersklassen() === EA_Configuration::AGEGROUPMODUS_AGE) {
             $this->smarty->assign('jahrgang', false);
-        }else{
+        } else {
             $this->smarty->assign('jahrgang', true);
         }
 
@@ -314,7 +318,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
     public function getFormStartzeiten(EntityManager $entityManager, array $nichtgestarteteteilnehmer, array $gestarteteteilnehmer): string
     {
         $content = "";
-        $this->getStandardIncludes($entityManager, array("streckenV1" => true, "startgruppen" => true, "geschlechter" => true, "stati" => true,'altersklassen'=>true));
+        $this->getStandardIncludes($entityManager, array("streckenV1" => true, "startgruppen" => true, "geschlechter" => true, "stati" => true, 'altersklassen' => true));
         $this->smarty->assign('nichtgestarteteteilnehmer', $nichtgestarteteteilnehmer);
         $this->smarty->assign('gestarteteteilnehmer', $gestarteteteilnehmer);
         $this->smarty->assign('datum', date('d.m.Y'));
@@ -333,8 +337,8 @@ class EA_FormRenderer extends EA_AbstractRenderer {
     }
 
     public function getFormBuchungenStarter(EntityManager $entityManager, EA_Starter $teilnehmer, array $statisticsDaten): string
-    {   
-        
+    {
+
         //important to call here. When it is called in the assign method, roundtimes are not calculated
         $hitList = $teilnehmer->getImpulseListGueltige(true);
         $content = "";
@@ -448,15 +452,15 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $StreckenTeilnehmerVerteilung,
         $StreckenAltersklassenTeilnehmerVerteilung,
         EA_StarterRepository $EA_StarterRepository,
-        EntityManager $entityManager): string
-    {
+        EntityManager $entityManager
+    ): string {
         $content = "";
-        $this->getStandardIncludes($entityManager, array("konfiguration"=>true,"streckenV1" => true, "geschlechterKurz" => true, "altersklassen" => true, "vereine" => true));
+        $this->getStandardIncludes($entityManager, array("konfiguration" => true, "streckenV1" => true, "geschlechterKurz" => true, "altersklassen" => true, "vereine" => true));
 
-        $this->smarty->assign('vereineLeistung',$vereineLeistung);
+        $this->smarty->assign('vereineLeistung', $vereineLeistung);
         $this->smarty->assign('aeltesterTeilnehmerMann', $teilnehmer['MMax']);
         $this->smarty->assign('juengsterTeilnehmerMann', $teilnehmer['MMin']);
-        $this->smarty->assign('aeltesterTeilnehmerFrau',$teilnehmer['WMax']);
+        $this->smarty->assign('aeltesterTeilnehmerFrau', $teilnehmer['WMax']);
         $this->smarty->assign('juengsterTeilnehmerFrau', $teilnehmer['WMin']);
         $this->smarty->assign('gemeldeteTeilnehmer', count($gemeldeteTeilnehmer));
         $this->smarty->assign('teilnehmerRepository', $EA_StarterRepository);
@@ -467,10 +471,10 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $this->smarty->assign('besterTeilnehmer', $besterTeilnehmer);
         $this->smarty->assign('StreckenTeilnehmerVerteilung', $StreckenTeilnehmerVerteilung);
         $this->smarty->assign('StreckenAltersklassenTeilnehmerVerteilung', $StreckenAltersklassenTeilnehmerVerteilung);
-        $this->smarty->assign('meter', $globaleVeranstaltungsdaten['erreichteMeter']  );
+        $this->smarty->assign('meter', $globaleVeranstaltungsdaten['erreichteMeter']);
         $this->smarty->assign('geld', $globaleVeranstaltungsdaten['erreichtesGeld']);
-        $this->smarty->assign('anzahlStreckenart', $globaleVeranstaltungsdaten['anzahlStreckenart'] );
-        $this->smarty->assign('meterProTeilnehmer', $globaleVeranstaltungsdaten['erreichteMeterProTeilnehmer'] );               
+        $this->smarty->assign('anzahlStreckenart', $globaleVeranstaltungsdaten['anzahlStreckenart']);
+        $this->smarty->assign('meterProTeilnehmer', $globaleVeranstaltungsdaten['erreichteMeterProTeilnehmer']);
 
         $this->smarty->registerPlugin('modifier', 'is_object', 'is_object');
         $content .= $this->smarty->fetch('SpecialInformationPage.tpl');
@@ -485,20 +489,20 @@ class EA_FormRenderer extends EA_AbstractRenderer {
     }
 
     public function getContentErgebnisse(
-        $filter, 
-        $ergebnisse, 
-        $StreckenAltersklassenTeilnehmerVerteilung, 
-        $AltersklassenTeilnehmerVerteilung, 
+        $filter,
+        $ergebnisse,
+        $StreckenAltersklassenTeilnehmerVerteilung,
+        $AltersklassenTeilnehmerVerteilung,
         ?EA_SpecialEvaluation $specialEvaluation,
         EA_SpecialEvaluationRepository $EA_SpecialEvaluationRepository,
-        EntityManager $entityManager): string
-    {
+        EntityManager $entityManager
+    ): string {
         $content = "";
         $this->getStandardIncludes($entityManager, array("streckenV1" => true, "konfiguration" => true, "geschlechterKurz" => true, "altersklassen" => true, "startgruppen" => true));
         $this->smarty->assign('ausgabetyp', "HTML");
         $this->smarty->assign('filter', $filter);
         $this->smarty->assign('specialEvaluation', $specialEvaluation);
-        $this->smarty->assign('specialEvaluationList', $EA_SpecialEvaluationRepository->getListForSelectField() );
+        $this->smarty->assign('specialEvaluationList', $EA_SpecialEvaluationRepository->getListForSelectField());
         $this->smarty->assign('AltersklassenTeilnehmerVerteilung', $AltersklassenTeilnehmerVerteilung);
         $this->smarty->assign('StreckenAltersklassenTeilnehmerVerteilung', $StreckenAltersklassenTeilnehmerVerteilung);
         $this->smarty->assign('actionurl', 'index.php?doc=ergebnisse');
@@ -508,7 +512,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getContentUrkunden(EntityManager $entityManager, $StreckenAltersklassenTeilnehmerVerteilung,$AltersklassenTeilnehmerVerteilung): string
+    public function getContentUrkunden(EntityManager $entityManager, $StreckenAltersklassenTeilnehmerVerteilung, $AltersklassenTeilnehmerVerteilung): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("geschlechterKurz" => true, "altersklassen" => true, "streckenV1" => true, "startgruppen" => true));
@@ -520,7 +524,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getContentMeldelisten(EntityManager $entityManager, $StreckenAltersklassenTeilnehmerVerteilung,$AltersklassenTeilnehmerVerteilung): string
+    public function getContentMeldelisten(EntityManager $entityManager, $StreckenAltersklassenTeilnehmerVerteilung, $AltersklassenTeilnehmerVerteilung): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("streckenV1" => true, "geschlechterKurz" => true, "altersklassen" => true, "startgruppen" => true));
@@ -532,20 +536,20 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
-    public function getContentStatistik(EntityManager $entityManager, string $template="", array $daten=[], string $title="",string $explanation=""): string
+    public function getContentStatistik(EntityManager $entityManager, string $template = "", array $daten = [], string $title = "", string $explanation = ""): string
     {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true));
         $this->smarty->assign('actionurl', 'index.php?doc=statistik');
         $this->smarty->assign('EA_H', $this->EA_H);
-        
+
         $content .= $this->smarty->fetch('StatisticsFormSelect.tpl');
-        
-        if($template !== ""){
+
+        if ($template !== "") {
             $this->smarty->assign('daten', $daten);
             $this->smarty->assign('title', $title);
             $this->smarty->assign('explanation', $explanation);
-            $content .= $this->smarty->fetch($template);         
+            $content .= $this->smarty->fetch($template);
         }
         return $content;
     }
@@ -555,14 +559,14 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         $content = "";
         $this->getStandardIncludes($entityManager, array("konfiguration" => true));
         $this->smarty->assign('gestarteteTeilnehmer', $globaleLeistungsdaten['gestarteteTeilnehmer']);
-        $this->smarty->assign('streckenart', $globaleLeistungsdaten['streckenart'] );
-        $this->smarty->assign('meter', $globaleLeistungsdaten['erreichteMeter'] );
-        $this->smarty->assign('restmeter', $globaleLeistungsdaten['restmeter'] );
-        $this->smarty->assign('bahnen', $globaleLeistungsdaten['anzahlStreckenart'] );
-        $this->smarty->assign('geld', $globaleLeistungsdaten['erreichtesGeld'] );
-        $this->smarty->assign('restgeld', $globaleLeistungsdaten['restgeld'] );
-        $this->smarty->assign('prozent', $globaleLeistungsdaten['erreichteProzent'] );
-        $this->smarty->assign('spendensumme', $globaleLeistungsdaten['spendensumme'] );
+        $this->smarty->assign('streckenart', $globaleLeistungsdaten['streckenart']);
+        $this->smarty->assign('meter', $globaleLeistungsdaten['erreichteMeter']);
+        $this->smarty->assign('restmeter', $globaleLeistungsdaten['restmeter']);
+        $this->smarty->assign('bahnen', $globaleLeistungsdaten['anzahlStreckenart']);
+        $this->smarty->assign('geld', $globaleLeistungsdaten['erreichtesGeld']);
+        $this->smarty->assign('restgeld', $globaleLeistungsdaten['restgeld']);
+        $this->smarty->assign('prozent', $globaleLeistungsdaten['erreichteProzent']);
+        $this->smarty->assign('spendensumme', $globaleLeistungsdaten['spendensumme']);
 
         $this->smarty->assign('actionurl', 'index.php?doc=teilnehmer');
         $this->smarty->registerPlugin('modifier', 'date', 'date');
@@ -576,8 +580,7 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         ?array $teilnehmerWrongTransponderList,
         ?array $teilnehmerWrongStartzeit1List,
         ?array $teilnehmerWrongStartzeit2List
-    ): string
-    {
+    ): string {
         $this->smarty->assign('teilnehmerWrongStreckeList', $teilnehmerWrongStreckeList);
         $this->smarty->assign('teilnehmerWrongAltersklasseList', $teilnehmerWrongAltersklasseList);
         $this->smarty->assign('teilnehmerWrongTransponderList', $teilnehmerWrongTransponderList);

@@ -47,15 +47,17 @@ class EA_AdminController extends EA_Controller
         // Hinweis: Der ImpulseCache wird nicht mehr per PHP aktualisiert. 
         // Dies geschieht nun automatisch und echtzeitfähig über MySQL-Trigger.
 
-        // Datenbank-Integrität prüfen (Trigger & Events)
-        $integrity = $this->EA_Repository->checkDatabaseIntegrity();
-        if ($integrity['status'] === false) {
-            $missingList = implode(", ", $integrity['missing']);
-            $this->EA_Messages->addMessage(
-                "<strong>Achtung:</strong> Die Datenbank-Integrität ist nicht vollständig. Fehlende Komponenten: $missingList. <a href='index.php?doc=db&action=repair_integrity' class='btn btn-sm btn-warning ms-2'>Jetzt reparieren</a>", 
-                9911223344, 
-                EA_Message::MESSAGE_WARNING
-            );
+        // Datenbank-Integrität nur auf dem Dashboard und der DB-Seite prüfen, um Last zu sparen
+        if ($_GET['doc'] === "dashboard" || $_GET['doc'] === "db" || $_GET['doc'] === null) {
+            $integrity = $this->EA_Repository->checkDatabaseIntegrity();
+            if ($integrity['status'] === false) {
+                $missingList = implode(", ", $integrity['missing']);
+                $this->EA_Messages->addMessage(
+                    "<strong>Achtung:</strong> Die Datenbank-Integrität ist nicht vollständig. Fehlende Komponenten: $missingList. <a href='index.php?doc=db&action=repair_integrity' class='btn btn-sm btn-warning ms-2'>Jetzt reparieren</a>", 
+                    9911223344, 
+                    EA_Message::MESSAGE_WARNING
+                );
+            }
         }
 
         switch ($_GET['doc']) {
