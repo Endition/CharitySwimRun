@@ -25,6 +25,11 @@ class EA_RfidChip
         $this->Transponderschluessel = $transponderschluessel;
     }
 
+    public function getTransponderschluessel(): string
+    {
+        return $this->Transponderschluessel;
+    }
+
     public static function getStandardElemente(): array
     {
         $list[] = new EA_RfidChip(1, '01 04 79 E0 10');
