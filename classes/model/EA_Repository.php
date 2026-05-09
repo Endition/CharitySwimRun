@@ -251,6 +251,51 @@ class EA_Repository
                 END IF;
             END
         ");
+
+        // 4. Trigger for cache processing (Automation for RFID)
+        $conn->executeStatement("DROP TRIGGER IF EXISTS trg_cache_insert");
+        $conn->executeStatement("
+            CREATE TRIGGER trg_cache_insert
+            AFTER INSERT ON cache
+            FOR EACH ROW
+            BEGIN
+                DECLARE v_teilnehmer_id INT;
+                DECLARE v_transponder_id INT;
+                DECLARE v_last_timestamp INT;
+                DECLARE v_startzeit INT;
+                DECLARE v_buchungssperre INT DEFAULT 10;
+                
+                -- Get buchungssperre from configuration
+                SELECT buchungssperre INTO v_buchungssperre FROM konfiguration LIMIT 1;
+                
+                -- Get Teilnehmer and Transponder IDs
+                SELECT t.id, tr.Transpondernummer, UNIX_TIMESTAMP(t.Startzeit)
+                INTO v_teilnehmer_id, v_transponder_id, v_startzeit
+                FROM transponder tr
+                JOIN teilnehmer t ON t.transponder = tr.Transpondernummer
+                WHERE tr.Transponderschluessel = NEW.Transponderschluessel
+                LIMIT 1;
+                
+                IF v_teilnehmer_id IS NOT NULL THEN
+                    -- Check last hit in log
+                    SELECT MAX(Timestamp) INTO v_last_timestamp
+                    FROM log
+                    WHERE TeilnehmerId = v_teilnehmer_id AND geloescht = 0;
+                    
+                    -- Logic: check startzeit and buchungssperre (configurable)
+                    -- If mass start (ms) and startzeit is 0, we still allow it (matches VB.NET logic)
+                    IF (NEW.Buchungszeit >= v_startzeit OR v_startzeit IS NULL OR v_startzeit = 0) AND 
+                       (v_last_timestamp IS NULL OR NEW.Buchungszeit >= v_last_timestamp + v_buchungssperre) THEN
+                        
+                        INSERT INTO log (TeilnehmerId, TransponderId, Timestamp, Leser, geloescht, berechnet)
+                        VALUES (v_teilnehmer_id, v_transponder_id, NEW.Buchungszeit, NEW.Leser, 0, 0);
+                        
+                    END IF;
+                    
+                    -- Mark as processed
+                END IF;
+            END
+        ");
     }
 
     /**
@@ -271,7 +316,7 @@ class EA_Repository
                 continue;
             }
 
-            // Do not truncate system tables, but allow dropping them for a full structure regeneration
+            // Do not truncate system tables
             if ($modus === "TRUNCATE" && in_array($tableName, ["users", "transponder", "femalefirstnames"])) {
                 continue;
             }
