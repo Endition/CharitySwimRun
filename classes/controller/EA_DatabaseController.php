@@ -47,9 +47,17 @@ class EA_DatabaseController
             $this->populateStandardData();
         }
 
+        if (isset($_GET['action']) && $_GET['action'] === "repair_integrity") {
+            $this->EA_Repository->repairDatabaseIntegrity();
+            $this->EA_Messages->addMessage("Datenbank-Integrität (Trigger & Events) erfolgreich wiederhergestellt.", 1122334455, EA_Message::MESSAGE_SUCCESS);
+        }
+
         $content .= $this->EA_FR->getFormDatabaseData($this->EA_Repository);
        
         if($this->EA_Repository->isDoctrineConnected()){
+            $integrity = $this->EA_Repository->checkDatabaseIntegrity();
+            $content .= $this->EA_FR->getDatabaseIntegrityStatus($integrity);
+            
             $test = $this->EA_Repository->getDatabaseTableList();
             $content .= $this->EA_FR->getTablesInDatabase($this->EA_Repository->getDatabaseTableList());
         }

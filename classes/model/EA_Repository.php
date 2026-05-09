@@ -332,6 +332,61 @@ class EA_Repository
     }
 
     /**
+     * Checks if all required triggers and events exist in the database.
+     * 
+     * @return array An associative array with 'status' (bool) and 'missing' (array of names).
+     */
+    public function checkDatabaseIntegrity(): array
+    {
+        $conn = $this->entityManager->getConnection();
+        $missing = [];
+        
+        // Required Triggers
+        $requiredTriggers = ['trg_hit_insert', 'trg_hit_update', 'trg_hit_delete', 'trg_cache_insert'];
+        $existingTriggers = $conn->iterateAssociative("SHOW TRIGGERS");
+        $foundTriggers = [];
+        foreach ($existingTriggers as $t) {
+            $foundTriggers[] = $t['Trigger'];
+        }
+        
+        foreach ($requiredTriggers as $rt) {
+            if (!in_array($rt, $foundTriggers)) {
+                $missing[] = "Trigger: $rt";
+            }
+        }
+
+        // Required Events
+        $requiredEvents = ['e_aktualisiere_ranking'];
+        $existingEvents = $conn->iterateAssociative("SHOW EVENTS");
+        $foundEvents = [];
+        foreach ($existingEvents as $e) {
+            $foundEvents[] = $e['Name'];
+        }
+
+        foreach ($requiredEvents as $re) {
+            if (!in_array($re, $foundEvents)) {
+                $missing[] = "Event: $re";
+            }
+        }
+
+        return [
+            'status' => empty($missing),
+            'missing' => $missing
+        ];
+    }
+
+    /**
+     * Re-installs all triggers and events to fix integrity issues.
+     * 
+     * @return void
+     */
+    public function repairDatabaseIntegrity(): void
+    {
+        $this->installTriggers();
+        $this->installEvents();
+    }
+
+    /**
      * Resets the database tables based on the specified mode.
      * 
      * @param string $modus The reset mode: 'TRUNCATE' (default), 'RESETEVENT', or 'DROP'.

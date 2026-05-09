@@ -110,6 +110,13 @@ class EA_FormRenderer extends EA_AbstractRenderer {
         return $content;
     }
 
+    public function getDatabaseIntegrityStatus(array $integrity): string
+    {
+        $this->smarty->assign('integrity', $integrity);
+        $this->smarty->assign('actionurl', 'index.php?doc=db');
+        return $this->smarty->fetch('DatabaseIntegrityStatus.tpl');
+    }
+
     public function getFormKonfiguration(array $fields): string
     {
         $content = "";
