@@ -28,6 +28,51 @@ class EA_Cache
     #[ORM\Column(type: Types::BOOLEAN,nullable:true,options:["default"=>null])]
     private ?bool $verarbeitet = null;
     
-    #[ORM\Column(type: Types::INTEGER,nullable:false,options:["default"=>0])]
+    #[ORM\Column(type: Types::INTEGER,name:"Leser",nullable:false,options:["default"=>0])]
     private int $Leser = 0;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTransponderschluessel(): ?string
+    {
+        return $this->Transponderschluessel;
+    }
+
+    public function setTransponderschluessel(?string $Transponderschluessel): void
+    {
+        $this->Transponderschluessel = $Transponderschluessel;
+    }
+
+    public function getBuchungszeit(): ?int
+    {
+        return $this->Buchungszeit;
+    }
+
+    public function setBuchungszeit(?int $Buchungszeit): void
+    {
+        $this->Buchungszeit = $Buchungszeit;
+    }
+
+    public function getVerarbeitet(): ?bool
+    {
+        return $this->verarbeitet;
+    }
+
+    public function setVerarbeitet(?bool $verarbeitet): void
+    {
+        $this->verarbeitet = $verarbeitet;
+    }
+
+    public function getLeser(): int
+    {
+        return $this->Leser;
+    }
+
+    public function setLeser(int $Leser): void
+    {
+        $this->Leser = $Leser;
+    }
 }
