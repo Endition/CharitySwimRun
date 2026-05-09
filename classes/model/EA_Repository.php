@@ -190,17 +190,11 @@ class EA_Repository
         }
     }
 
-    /**
-     * Installs MySQL triggers to automatically manage the impulseCache in the participants table.
-     * These triggers handle INSERT, UPDATE, and DELETE operations on the log table.
-     * 
-     * @return void
-     */
     private function installTriggers(): void
     {
         $conn = $this->entityManager->getConnection();
 
-        // 1. Trigger for INSERT
+        // 1. Trigger for INSERT on log (updates impulseCache)
         $conn->executeStatement("DROP TRIGGER IF EXISTS trg_hit_insert");
         $conn->executeStatement("
             CREATE TRIGGER trg_hit_insert
@@ -213,7 +207,7 @@ class EA_Repository
             END
         ");
 
-        // 2. Trigger for UPDATE
+        // 2. Trigger for UPDATE on log (updates impulseCache)
         $conn->executeStatement("DROP TRIGGER IF EXISTS trg_hit_update");
         $conn->executeStatement("
             CREATE TRIGGER trg_hit_update
@@ -239,7 +233,7 @@ class EA_Repository
             END
         ");
 
-        // 3. Trigger for DELETE
+        // 3. Trigger for DELETE on log (updates impulseCache)
         $conn->executeStatement("DROP TRIGGER IF EXISTS trg_hit_delete");
         $conn->executeStatement("
             CREATE TRIGGER trg_hit_delete
@@ -252,47 +246,42 @@ class EA_Repository
             END
         ");
 
-        // 4. Trigger for cache processing (Automation for RFID)
+        // 4. Trigger for cache processing (RFID Hardware Bridge)
         $conn->executeStatement("DROP TRIGGER IF EXISTS trg_cache_insert");
         $conn->executeStatement("
             CREATE TRIGGER trg_cache_insert
-            AFTER INSERT ON cache
+            BEFORE INSERT ON cache
             FOR EACH ROW
             BEGIN
-                DECLARE v_teilnehmer_id INT;
-                DECLARE v_transponder_id INT;
-                DECLARE v_last_timestamp INT;
-                DECLARE v_startzeit INT;
-                DECLARE v_buchungssperre INT DEFAULT 10;
-                
-                -- Get buchungssperre from configuration
-                SELECT buchungssperre INTO v_buchungssperre FROM konfiguration LIMIT 1;
-                
-                -- Get Teilnehmer and Transponder IDs
-                SELECT t.id, tr.Transpondernummer, UNIX_TIMESTAMP(t.Startzeit)
-                INTO v_teilnehmer_id, v_transponder_id, v_startzeit
+                DECLARE v_TeilnehmerId INT;
+                DECLARE v_TransponderId INT;
+                DECLARE v_LastTimestamp INT;
+                DECLARE v_LockoutTime INT DEFAULT 10;
+
+                -- Mark as processed immediately
+                SET NEW.verarbeitet = 1;
+
+                -- Find participant and transponder ID by RFID key
+                SELECT t.id, tr.Transpondernummer INTO v_TeilnehmerId, v_TransponderId
                 FROM transponder tr
                 JOIN teilnehmer t ON t.transponder = tr.Transpondernummer
                 WHERE tr.Transponderschluessel = NEW.Transponderschluessel
                 LIMIT 1;
-                
-                IF v_teilnehmer_id IS NOT NULL THEN
-                    -- Check last hit in log
-                    SELECT MAX(Timestamp) INTO v_last_timestamp
-                    FROM log
-                    WHERE TeilnehmerId = v_teilnehmer_id AND geloescht = 0;
-                    
-                    -- Logic: check startzeit and buchungssperre (configurable)
-                    -- If mass start (ms) and startzeit is 0, we still allow it (matches VB.NET logic)
-                    IF (NEW.Buchungszeit >= v_startzeit OR v_startzeit IS NULL OR v_startzeit = 0) AND 
-                       (v_last_timestamp IS NULL OR NEW.Buchungszeit >= v_last_timestamp + v_buchungssperre) THEN
-                        
+
+                IF v_TeilnehmerId IS NOT NULL THEN
+                    -- Get lockout time from config
+                    SELECT buchungssperre INTO v_LockoutTime FROM konfiguration LIMIT 1;
+                    IF v_LockoutTime IS NULL THEN SET v_LockoutTime = 10; END IF;
+
+                    -- Check for duplicate
+                    SELECT MAX(Timestamp) INTO v_LastTimestamp 
+                    FROM log 
+                    WHERE TeilnehmerId = v_TeilnehmerId AND geloescht = 0;
+
+                    IF v_LastTimestamp IS NULL OR (NEW.Buchungszeit - v_LastTimestamp) >= v_LockoutTime THEN
                         INSERT INTO log (TeilnehmerId, TransponderId, Timestamp, Leser, geloescht, berechnet)
-                        VALUES (v_teilnehmer_id, v_transponder_id, NEW.Buchungszeit, NEW.Leser, 0, 0);
-                        
+                        VALUES (v_TeilnehmerId, v_TransponderId, NEW.Buchungszeit, NEW.Leser, 0, 0);
                     END IF;
-                    
-                    -- Mark as processed
                 END IF;
             END
         ");
