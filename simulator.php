@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,35 +29,53 @@
 
         /* Provides a smooth fade-in for new log entries. */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         /* Customizes the scrollbar for the console window. */
         .console-window::-webkit-scrollbar {
             width: 8px;
         }
+
         .console-window::-webkit-scrollbar-track {
             background: #000;
         }
+
         .console-window::-webkit-scrollbar-thumb {
             background: #334155;
             border-radius: 4px;
         }
     </style>
 </head>
+
 <body class="bg-dark text-light d-flex flex-column align-items-center min-vh-100 py-5 px-3">
     <div class="container" style="max-width: 800px;">
         <div class="alert alert-danger shadow-sm border-0 mb-4 px-4 py-3">
             <h1 class="h4 text-danger mb-2 fw-bold">Achtung!</h1>
-            <p class="mb-0 text-dark">Nicht während der Veranstaltung live nutzen. Für den Simulator müssen Strecken und Altersklassen angelegt sein.</p>
+            <p class="mb-0 text-dark">Nicht während der Veranstaltung live nutzen. Für den Simulator müssen Strecken und
+                Altersklassen angelegt sein.</p>
         </div>
 
         <div class="card bg-secondary text-light mb-4 shadow border-0 rounded-3">
             <div class="card-body p-4 d-flex justify-content-between align-items-center">
-                <div>
+                <div class="flex-grow-1">
                     <h2 class="h5 mb-1 fw-bold">Simulator Engine</h2>
                     <p class="mb-0 text-light opacity-75 small">Generates random bookings</p>
+                </div>
+                <div class="me-3">
+                    <label for="modeSelect" class="small text-light opacity-75 d-block mb-1">Mode:</label>
+                    <select id="modeSelect" class="form-select form-select-sm bg-dark text-light border-secondary">
+                        <option value="log">Direct Log (Hit)</option>
+                        <option value="cache">Cache (RFID Trigger)</option>
+                    </select>
                 </div>
                 <button id="toggleBtn" class="btn btn-success fw-bold text-uppercase px-4 py-2 shadow-sm">Start</button>
             </div>
@@ -79,8 +98,9 @@
             function fetchdata() {
                 if (!isRunning) return;
 
+                var mode = $('#modeSelect').val();
                 $.ajax({
-                    url: 'api/teilnehmer/simulator',
+                    url: 'api/teilnehmer/simulator/' + mode,
                     type: 'GET',
                     success: function (entries) {
                         if (entries.length > 0) {
@@ -117,12 +137,12 @@
                 isRunning = !isRunning;
                 if (isRunning) {
                     $(this).removeClass('btn-success').addClass('btn-danger').text('Stop');
-                    
+
                     if ($('#daten').text().includes('System ready')) {
                         $('#daten').empty();
                     }
                     $('#daten').prepend('<div class="log-entry mb-2 pb-2 text-success">> Simulation started...</div>');
-                    
+
                     fetchdata();
                 } else {
                     $(this).removeClass('btn-danger').addClass('btn-success').text('Start');
@@ -130,13 +150,14 @@
                     $('#daten').prepend('<div class="log-entry mb-2 pb-2 text-danger">> Simulation stopped.</div>');
                 }
             });
-            
+
             if ('serviceWorker' in navigator) {
-              window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js');
-              });
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('sw.js');
+                });
             }
         });
     </script>
 </body>
+
 </html>
