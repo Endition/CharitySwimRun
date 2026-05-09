@@ -184,6 +184,7 @@ class EA_Repository
         try {
             $schemaTool->createSchema($classes);
             $this->installTriggers();
+            $this->installEvents();
             echo "Die Datenbanktabelle wurde erfolgreich erstellt.";
         } catch (Exception $e) {
             echo "Es gab einen Fehler beim Erstellen der Tabelle: " . $e->getMessage();
@@ -284,6 +285,41 @@ class EA_Repository
                     END IF;
                 END IF;
             END
+        ");
+    }
+
+    /**
+     * Installs MySQL Events for scheduled tasks.
+     * Specifically, it creates an event to recalculate participant rankings every 3 minutes.
+     * 
+     * @return void
+     */
+    private function installEvents(): void
+    {
+        $conn = $this->entityManager->getConnection();
+
+        // Ensure the event scheduler is enabled
+        $conn->executeStatement("SET GLOBAL event_scheduler = ON");
+
+        // Event for ranking calculation every 3 minutes
+        $conn->executeStatement("DROP EVENT IF EXISTS e_aktualisiere_ranking");
+        $conn->executeStatement("
+            CREATE EVENT e_aktualisiere_ranking
+            ON SCHEDULE EVERY 3 MINUTE
+            DO
+                UPDATE teilnehmer t
+                JOIN (
+                    SELECT
+                        id,
+                        RANK() OVER (PARTITION BY Geschlecht ORDER BY impulseCache DESC)                         AS gesamt_rank,
+                        RANK() OVER (PARTITION BY Geschlecht, Strecke ORDER BY impulseCache DESC)                AS strecken_rank,
+                        RANK() OVER (PARTITION BY Geschlecht, Strecke, Altersklasse ORDER BY impulseCache DESC) AS ak_rank
+                    FROM teilnehmer
+                ) r ON t.id = r.id
+                SET
+                    t.Gesamtplatz   = r.gesamt_rank,
+                    t.Streckenplatz = r.strecken_rank,
+                    t.AKPlatz       = r.ak_rank
         ");
     }
 
