@@ -150,12 +150,6 @@
                     $('#daten').prepend('<div class="log-entry mb-2 pb-2 text-danger">> Simulation stopped.</div>');
                 }
             });
-
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('sw.js');
-                });
-            }
         });
     </script>
 </body>
