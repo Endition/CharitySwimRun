@@ -84,6 +84,9 @@ class EA_Configuration
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $simulatorAvailable = false;
 
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $buchungssperre = 10;
+
     #[ORM\Column(type: Types::STRING)]
     private string $sponsor = "";
 
@@ -328,6 +331,14 @@ class EA_Configuration
             "savedvalue" => "",
             "erklaerung" => "Dieser Sponsor erscheint oben in der Log-Anzeige als präsentiert von ",
             "abhängigkeit" => null
+        ),
+        "buchungssperre" => array(
+            "name" => "Buchungssperre (Sekunden)",
+            "type" => "number",
+            "pflichtfeld" => true,
+            "savedvalue" => "10",
+            "erklaerung" => "Minimale Zeit in Sekunden, die zwischen zwei Buchungen desselben Teilnehmers liegen muss.",
+            "abhängigkeit" => null
         )
     );
     public const AGEGROUPMODUS_BIRTHYEAR = 0;
@@ -369,6 +380,7 @@ class EA_Configuration
         $this->werte['input_email']['savedvalue'] = (int)$this->getInputEmail();
         $this->werte['simulatorAvailable']['savedvalue'] = (int)$this->getInputEmail();
         $this->werte['sponsor']['savedvalue'] = $this->getSponsor();
+        $this->werte['buchungssperre']['savedvalue'] = $this->getBuchungssperre();
         return $this->werte;
     }
 
@@ -685,8 +697,16 @@ class EA_Configuration
     public function setSponsor($sponsor): void
     {
         $this->sponsor = $sponsor;
+    }
 
+    public function getBuchungssperre(): int
+    {
+        return $this->buchungssperre;
+    }
 
+    public function setBuchungssperre(int $buchungssperre): void
+    {
+        $this->buchungssperre = $buchungssperre;
     }
 
     public function getLastCalculationResultsNumber(): int
