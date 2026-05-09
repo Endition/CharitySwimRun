@@ -11,35 +11,31 @@ use Doctrine\DBAL\Types\Types;
 #[ORM\Index(name: "TeilnehmerId", columns: ["TeilnehmerId"])]
 #[ORM\Index(name: "TransponderId", columns: ["TransponderId"])]
 #[ORM\Index(name: "Leser", columns: ["Leser"])]
-#[ORM\Index(name: "berechnet", columns: ["berechnet"])]
 #[ORM\Index(name: "geloescht", columns: ["geloescht"])]
 
 class EA_Hit
 {
-    #[ORM\Column(type: Types::INTEGER,name:"ImpulsId")]
+    #[ORM\Column(type: Types::INTEGER, name: "ImpulsId")]
     #[ORM\GeneratedValue]
     #[ORM\Id]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: EA_Starter::class)]
-    #[ORM\JoinColumn(name: 'TeilnehmerId', referencedColumnName: 'id',nullable:true,options:["default"=>null])]
+    #[ORM\JoinColumn(name: 'TeilnehmerId', referencedColumnName: 'id', nullable: true, options: ["default" => null])]
     private ?EA_Starter $teilnehmer = null;
 
-    #[ORM\Column(type: Types::INTEGER,name:"TransponderId",nullable:true,options:["default"=>null])]
+    #[ORM\Column(type: Types::INTEGER, name: "TransponderId", nullable: true, options: ["default" => null])]
     private ?int $transponderId = null;
 
-    #[ORM\Column(type: Types::INTEGER,name:"Timestamp")]
+    #[ORM\Column(type: Types::INTEGER, name: "Timestamp")]
     private ?int $timestamp = null;
     private ?int $rundenzeit = null;
     private ?int $gesamtzeit = null;
 
-    #[ORM\Column(type: Types::INTEGER,name:"Leser")]
+    #[ORM\Column(type: Types::INTEGER, name: "Leser")]
     private int $leser = 0;
 
-    #[ORM\Column(type: Types::BOOLEAN,name:"berechnet",options:["default"=>0])]
-    private bool $berechnet = false;
-
-    #[ORM\Column(type: Types::BOOLEAN,name:"geloescht",options:["default"=>0])]
+    #[ORM\Column(type: Types::BOOLEAN, name: "geloescht", options: ["default" => 0])]
     private bool $geloescht = false;
 
     public function __construct()
@@ -93,14 +89,14 @@ class EA_Hit
 
     public function getRundenzeit(string $format = "ts"): string
     {
-        if($this->rundenzeit === null){
+        if ($this->rundenzeit === null) {
             $this->rundenzeit = 0;
         }
         if ($format === "ts") {
             return $this->rundenzeit === null ? 0 : $this->rundenzeit;
         } elseif ($format === "H:i:s") {
             return $this->rundenzeit === null ? 0 : EA_Helper::FormatterRundenzeit($this->rundenzeit);
-        }else{
+        } else {
             return "";
         }
     }
@@ -116,7 +112,7 @@ class EA_Hit
             return $this->gesamtzeit === null ? 0 : $this->gesamtzeit;
         } elseif ($format === "H:i:s") {
             return $this->gesamtzeit === null ? 0 : EA_Helper::FormatterRundenzeit($this->gesamtzeit);
-        }else{
+        } else {
             return "";
         }
     }
@@ -136,16 +132,6 @@ class EA_Hit
         $this->leser = $leser;
     }
 
-    public function getBerechnet(): bool
-    {
-        return $this->berechnet;
-    }
-
-    public function setBerechnet(bool $berechnet)
-    {
-        $this->berechnet = $berechnet;
-    }
-
     public function getGeloescht(): bool
     {
         return $this->geloescht;
@@ -155,5 +141,5 @@ class EA_Hit
     {
         $this->geloescht = $geloescht;
     }
- 
+
 }

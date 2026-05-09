@@ -279,8 +279,8 @@ class EA_Repository
                     WHERE TeilnehmerId = v_TeilnehmerId AND geloescht = 0;
 
                     IF v_LastTimestamp IS NULL OR (NEW.Buchungszeit - v_LastTimestamp) >= v_LockoutTime THEN
-                        INSERT INTO log (TeilnehmerId, TransponderId, Timestamp, Leser, geloescht, berechnet)
-                        VALUES (v_TeilnehmerId, v_TransponderId, NEW.Buchungszeit, NEW.Leser, 0, 0);
+                        INSERT INTO log (TeilnehmerId, TransponderId, Timestamp, Leser, geloescht)
+                        VALUES (v_TeilnehmerId, v_TransponderId, NEW.Buchungszeit, NEW.Leser, 0);
                     END IF;
                 END IF;
             END
