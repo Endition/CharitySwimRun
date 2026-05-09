@@ -307,6 +307,8 @@ class EA_Repository
             CREATE EVENT e_aktualisiere_ranking
             ON SCHEDULE EVERY 3 MINUTE
             DO
+            BEGIN
+                -- 1. Update participant rankings
                 UPDATE teilnehmer t
                 JOIN (
                     SELECT
@@ -319,7 +321,13 @@ class EA_Repository
                 SET
                     t.Gesamtplatz   = r.gesamt_rank,
                     t.Streckenplatz = r.strecken_rank,
-                    t.AKPlatz       = r.ak_rank
+                    t.AKPlatz       = r.ak_rank;
+
+                -- 2. Synchronize the last calculation count to avoid redundant PHP-side triggers
+                UPDATE konfiguration 
+                SET lastCalculationResultsNumber = (SELECT COUNT(*) FROM log WHERE geloescht = 0)
+                LIMIT 1;
+            END
         ");
     }
 

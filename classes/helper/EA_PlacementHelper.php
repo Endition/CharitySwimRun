@@ -56,6 +56,8 @@ class EA_PlacementHelper
         }
 
         // Persist all three rankings with a single SQL statement using Window Functions (MySQL 8.0+).
+        // HINWEIS: Diese manuelle Berechnung dient als Echtzeit-Fallback für Urkunden/Berichte,
+        // damit diese immer aktuell sind, auch wenn das 3-Minuten-MySQL-Event noch nicht gelaufen ist.
         $this->EA_StarterRepository->berechnePlatzierungSQL();
 
         // Update the in-memory PHP objects to reflect the newly calculated ranks for the current request,
