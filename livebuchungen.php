@@ -136,24 +136,30 @@
 
     <script>
         $(document).ready(function () {
-            var lastTimestamp = '';
+            let lastTimestamp = '';
+            let isPolling = false;
 
             function checkForUpdates() {
+                if (isPolling) return;
+                isPolling = true;
+
                 $.ajax({
                     url: 'api/teilnehmer/livebuchungen/' + lastTimestamp,
                     type: 'GET',
                     cache: false,
+                    dataType: 'json',
                     success: function (entries) {
-                        if (entries.length > 0) {
+                        if (entries && entries.length > 0) {
                             lastTimestamp = entries[0].timestamp;
 
+                            const rows = [];
                             for (var i = entries.length - 1; i >= 0; i--) {
                                 var entry = entries[i];
                                 var isEpic = (entry.meter > 0 && entry.meter % 2500 === 0);
                                 var rowClass = isEpic ? 'new-entry-round-number' : 'new-entry';
                                 var meterDisplay = isEpic ? '⭐ ' + entry.meter + 'm' : entry.meter + 'm';
 
-                                var newRow = $(
+                                rows.push(
                                     '<tr class="' + rowClass + '">' +
                                     '<td class="py-4 px-4"><span class="badge bg-light bg-opacity-10 rounded-pill px-3 py-2 fs-3">' + entry.zeit + '</span></td>' +
                                     '<td class="py-4 px-4 fw-bold text-white">' + entry.gesamtname + '</td>' +
@@ -164,23 +170,39 @@
                                     '<td class="text-end py-4 px-4" style="font-variant-numeric: tabular-nums;">' + entry.gesamtzeit + '</td>' +
                                     '</tr>'
                                 );
+                            }
+                            
+                            const $tbody = $('#data-table tbody');
+                            $tbody.prepend(rows.join(''));
 
-                                $('#data-table tbody').prepend(newRow);
+                            const maxRows = 12;
+                            const $allRows = $tbody.find('tr');
+                            
+                            // Fallback: If too many rows accumulate (e.g. background tab paused animations), 
+                            // remove all leaving rows immediately to prevent memory bloat.
+                            if ($allRows.length > maxRows * 2) {
+                                $tbody.find('.is-leaving').remove();
                             }
 
-                            var maxRows = 12;
-                            $('#data-table tbody tr').not('.is-leaving').each(function (index) {
+                            $tbody.find('tr').not('.is-leaving').each(function (index) {
                                 if (index >= maxRows) {
-                                    $(this).addClass('is-leaving').fadeOut(400, function () { $(this).remove(); });
+                                    const $row = $(this);
+                                    // If tab is hidden, don't animate to avoid pending callbacks
+                                    if (document.hidden) {
+                                        $row.remove();
+                                    } else {
+                                        $row.addClass('is-leaving').fadeOut(400, function () { 
+                                            $(this).remove(); 
+                                        });
+                                    }
                                 }
                             });
                         }
                     },
-                    complete: function () {
-                        setTimeout(checkForUpdates, 1000);
-                    },
-                    error: function () {
-                        setTimeout(checkForUpdates, 5000);
+                    complete: function (xhr, status) {
+                        isPolling = false;
+                        const delay = (status === 'success') ? 1000 : 5000;
+                        setTimeout(checkForUpdates, delay);
                     }
                 });
             }

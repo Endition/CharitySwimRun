@@ -89,13 +89,15 @@
         $(document).ready(function () {
             var isRunning = false;
             var timeoutId = null;
+            var isPolling = false;
 
             /**
              * Fetches simulator data from the API and updates the view.
              * Schedules the next execution randomly if the simulator is running.
              */
             function fetchdata() {
-                if (!isRunning) return;
+                if (!isRunning || isPolling) return;
+                isPolling = true;
 
                 var mode = $('#modeSelect').val();
                 $.ajax({
@@ -103,7 +105,7 @@
                     type: 'GET',
                     cache: false,
                     success: function (entries) {
-                        if (entries.length > 0) {
+                        if (entries && entries.length > 0) {
                             /* Clears initial placeholder text if present */
                             if ($('#daten').text().includes('System ready')) {
                                 $('#daten').empty();
@@ -122,6 +124,7 @@
                         }
                     },
                     complete: function () {
+                        isPolling = false;
                         if (isRunning) {
                             /* Schedules the next cycle with random delay up to 1.5 seconds. */
                             timeoutId = setTimeout(fetchdata, Math.floor(Math.random() * 1500));
