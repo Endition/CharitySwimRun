@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#172554">
     <title>Livebuchungen - Charity Swim & Run</title>
     <script src="vendor/components/jquery/jquery.min.js"></script>
@@ -32,7 +31,7 @@
             backdrop-filter: blur(10px);
         }
 
-        .table > :not(caption) > * > * {
+        .table> :not(caption)>*>* {
             background-color: transparent;
             color: #F8FAFC;
             border-bottom-color: rgba(255, 255, 255, 0.05);
@@ -44,37 +43,70 @@
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
         }
 
-        tr { transition: all 0.3s ease; }
+        tr {
+            transition: all 0.3s ease;
+        }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes highlightNormal {
-            0% { background-color: rgba(56, 189, 248, 0.5); box-shadow: inset 0 0 20px var(--accent-glow); }
-            100% { background-color: transparent; box-shadow: none; }
+            0% {
+                background-color: rgba(56, 189, 248, 0.5);
+                box-shadow: inset 0 0 20px var(--accent-glow);
+            }
+
+            100% {
+                background-color: transparent;
+                box-shadow: none;
+            }
         }
 
         @keyframes highlightEpic {
-            0% { background-color: rgba(250, 204, 21, 0.6); box-shadow: inset 0 0 30px var(--epic-glow); transform: scale(1.01); }
-            50% { background-color: rgba(250, 204, 21, 0.3); }
-            100% { background-color: transparent; box-shadow: none; transform: scale(1); }
+            0% {
+                background-color: rgba(250, 204, 21, 0.6);
+                box-shadow: inset 0 0 30px var(--epic-glow);
+                transform: scale(1.01);
+            }
+
+            50% {
+                background-color: rgba(250, 204, 21, 0.3);
+            }
+
+            100% {
+                background-color: transparent;
+                box-shadow: none;
+                transform: scale(1);
+            }
         }
 
-        .new-entry { animation: slideIn 0.5s ease-out forwards, highlightNormal 3s ease-out forwards; }
-        
+        .new-entry {
+            animation: slideIn 0.5s ease-out forwards, highlightNormal 3s ease-out forwards;
+        }
+
         .new-entry-round-number {
             animation: slideIn 0.5s ease-out forwards, highlightEpic 4s ease-out forwards;
             font-weight: 700;
             color: #FDE047 !important;
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
         }
+
         .new-entry-round-number td {
-             color: #FDE047 !important;
+            color: #FDE047 !important;
         }
 
-        ::-webkit-scrollbar { display: none; }
+        ::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 
@@ -82,7 +114,8 @@
     <div class="text-center mb-4 text-uppercase" style="letter-spacing: 4px;">
     </div>
 
-    <div class="table-container container-fluid border border-secondary border-opacity-25 rounded-4 shadow-lg overflow-hidden p-0" style="max-width: 1800px;">
+    <div class="table-container container-fluid border border-secondary border-opacity-25 rounded-4 shadow-lg overflow-hidden p-0"
+        style="max-width: 1800px;">
         <table id="data-table" class="table table-borderless fs-2 align-middle mb-0">
             <thead class="text-uppercase" style="letter-spacing: 2px;">
                 <tr>

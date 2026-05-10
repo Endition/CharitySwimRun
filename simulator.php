@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#172554">
     <title>Simulator - Charity Swim & Run</title>
     <script src="vendor/components/jquery/jquery.min.js"></script>
