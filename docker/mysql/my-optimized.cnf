@@ -1,0 +1,23 @@
+[mysqld]
+# MySQL Optimization for CharitySwimRun
+
+# Innodb Buffer Pool: The most important setting. Stores data and indexes in RAM.
+# Recommended: 50-75% of available RAM if DB is large, 256MB is plenty for this project.
+innodb_buffer_pool_size = 256M
+
+# Log File Size: Larger files reduce disk I/O for heavy write operations (like during simulation).
+innodb_log_file_size = 64M
+
+# 0: Every second, 1: Every commit (slowest), 2: Every second to disk (fast & safe enough).
+innodb_flush_log_at_trx_commit = 2
+
+# Direct I/O: Bypasses OS cache (usually faster on Linux/Docker).
+innodb_flush_method = O_DIRECT
+
+# Skip reverse DNS lookups for faster connections.
+skip-name-resolve
+
+# General Settings
+max_connections = 100
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci

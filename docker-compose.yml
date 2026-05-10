@@ -37,6 +37,7 @@ services:
       retries: 55
     volumes:
       - ./mysql-data:/var/lib/mysql
+      - ./docker/mysql/my-optimized.cnf:/etc/mysql/conf.d/my-optimized.cnf
 
   # phpMyAdmin service
   phpmyadmin:
