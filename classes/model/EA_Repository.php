@@ -121,6 +121,8 @@ class EA_Repository
             $config->setAutoGenerateProxyClasses(true);
         } else {
             $config->setAutoGenerateProxyClasses(false);
+            // NOTE: If you change your Entity classes, you may need to clear this directory manually:
+            // C:\Users\matze\CharitySwimRun\doctrineMetaDataCache2\doctrine_metadata
             $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata', 0, ROOT_PATH . "/doctrineMetaDataCache2"));
             $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
         }

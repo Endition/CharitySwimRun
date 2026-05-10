@@ -343,7 +343,6 @@ class EA_Configuration
             "erklaerung" => "Dieser Sponsor erscheint oben in der Log-Anzeige als präsentiert von ",
             "abhängigkeit" => null
         ),
-
         "entwicklermodus" => array(
             "name" => "Entwicklermodus",
             "type" => "select",
@@ -352,6 +351,8 @@ class EA_Configuration
                 1 => "ein",
                 0 => "aus"
             ),
+
+
             "pflichtfeld" => true,
             "erklaerung" => "Im Entwicklermodus werden Caches deaktiviert und Proxies automatisch generiert. Im Live-Modus ist die Performance besser.",
             "abhängigkeit" => null
