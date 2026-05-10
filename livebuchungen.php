@@ -109,6 +109,7 @@
                 $.ajax({
                     url: 'api/teilnehmer/livebuchungen/' + lastTimestamp,
                     type: 'GET',
+                    cache: false,
                     success: function (entries) {
                         if (entries.length > 0) {
                             lastTimestamp = entries[0].timestamp;
@@ -135,9 +136,9 @@
                             }
 
                             var maxRows = 12;
-                            $('#data-table tbody tr').each(function (index) {
+                            $('#data-table tbody tr').not('.is-leaving').each(function (index) {
                                 if (index >= maxRows) {
-                                    $(this).fadeOut(400, function () { $(this).remove(); });
+                                    $(this).addClass('is-leaving').fadeOut(400, function () { $(this).remove(); });
                                 }
                             });
                         }

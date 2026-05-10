@@ -102,6 +102,7 @@
                 $.ajax({
                     url: 'api/teilnehmer/simulator/' + mode,
                     type: 'GET',
+                    cache: false,
                     success: function (entries) {
                         if (entries.length > 0) {
                             /* Clears initial placeholder text if present */
