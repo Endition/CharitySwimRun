@@ -113,7 +113,7 @@ class EA_SimulatorController extends EA_Controller
             }
 
             $newTeilnehmer->setAltersklasse($this->EA_AgeGroupRepository->findByGeburtsjahr($geburtsdatum));
-            $newTeilnehmer->setKonfiguration($this->EA_ConfigurationRepository->load());
+            $newTeilnehmer->setKonfiguration($this->konfiguration);
             $this->EA_StarterRepository->create($newTeilnehmer);
             $messages[] = "neuen Teilnehmer {$newTeilnehmer->getGesamtname()} angelegt";
         }
@@ -156,13 +156,16 @@ class EA_SimulatorController extends EA_Controller
 
                     // 20% chance for a duplicate scan to test the lockout (Buchungssperre)
                     if (rand(1, 100) <= 20) {
+                        $lockout = $this->konfiguration->getBuchungssperre();
+                        $delay = rand(0, max(0, $lockout - 1));
+
                         $cacheDuplicate = new \CharitySwimRun\classes\model\EA_Cache();
                         $cacheDuplicate->setTransponderschluessel($rfidChip->getTransponderschluessel());
-                        $cacheDuplicate->setBuchungszeit(time());
+                        $cacheDuplicate->setBuchungszeit(time() + $delay);
                         $cacheDuplicate->setLeser($cache->getLeser());
                         $this->entityManager->persist($cacheDuplicate);
                         $this->entityManager->flush();
-                        $messages[] = "TEST: Doppel-Scan gesendet (Sperre prüfen)";
+                        $messages[] = "TEST: Doppel-Scan mit {$delay}s Zeitversatz gesendet (Sperre: {$lockout}s)";
                     }
                 } else {
                     $messages[] = "FEHLER: Kein RFID-Key für Transponder {$transponderNummer} gefunden. Nutze Fallback auf Log.";
