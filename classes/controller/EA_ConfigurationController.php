@@ -59,6 +59,7 @@ class EA_ConfigurationController extends EA_Controller
         $konfiguration->setInputEmail((bool)$_POST['input_adresse']);
         $konfiguration->setInputAdresse((bool)$_POST['input_email']);
         $konfiguration->setSponsor($_POST['sponsor']);
+        $konfiguration->setEntwicklermodus((bool)$_POST['entwicklermodus']);
 
         $this->EA_ConfigurationRepository->update();
         return $konfiguration;

@@ -20,7 +20,8 @@ $EA_Repository = new EA_Repository($EA_SQL["benutzer"],$EA_SQL["passwort"],$EA_S
 
 
 $requestMethod = $_SERVER["REQUEST_METHOD"];
-$requestUri = explode("/", trim($_SERVER["REQUEST_URI"], "/"));
+$requestUriPath = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+$requestUri = explode("/", trim($requestUriPath, "/"));
 
 // CharitySwimRun/Api/...
 $numberInUriApi = 1;

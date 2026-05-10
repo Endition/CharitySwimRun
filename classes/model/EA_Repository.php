@@ -96,12 +96,34 @@ class EA_Repository
 
     private function createEntityManager(): void
     {
-        $config = ORMSetup::createAttributeMetadataConfiguration([ROOT_PATH . "/classes"], false, );
+        $isDevMode = true; // Default fallback
+
+        // Detect Developer Mode before creating ORM
+        try {
+            $dsn = "mysql:host={$this->server};dbname=" . self::DATABASE . ";charset=utf8mb4";
+            $pdo = new \PDO($dsn, $this->user, $this->password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_SILENT]);
+
+            $stmt = $pdo->query("SELECT entwicklermodus FROM konfiguration LIMIT 1");
+            if ($stmt) {
+                $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+                if ($res) {
+                    $isDevMode = (bool) $res['entwicklermodus'];
+                }
+            }
+        } catch (\Exception $e) {
+            // Table might not exist during setup
+        }
+
+        $config = ORMSetup::createAttributeMetadataConfiguration([ROOT_PATH . "/classes"], $isDevMode);
         //https://www.doctrine-project.org/projects/doctrine-orm/en/3.1/reference/advanced-configuration.html#query-cache-recommended
         // Manuell den Cache löschen: C:\laragon\www\CharitySwimRun\doctrineMetaDataCache2\doctrine_metadata
-        $config->setAutoGenerateProxyClasses(true);
-        $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata', 0, ROOT_PATH . "/doctrineMetaDataCache2"));
-        $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
+        if ($isDevMode) {
+            $config->setAutoGenerateProxyClasses(true);
+        } else {
+            $config->setAutoGenerateProxyClasses(false);
+            $config->setMetadataCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_metadata', 0, ROOT_PATH . "/doctrineMetaDataCache2"));
+            $config->setQueryCache(new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries'));
+        }
 
         $connectionParams = [
             'dbname' => $this->database,
@@ -340,7 +362,7 @@ class EA_Repository
     {
         $conn = $this->entityManager->getConnection();
         $missing = [];
-        
+
         // Required Triggers
         $requiredTriggers = ['trg_hit_insert', 'trg_hit_update', 'trg_hit_delete', 'trg_cache_insert'];
         $existingTriggers = $conn->iterateAssociative("SHOW TRIGGERS");
@@ -348,7 +370,7 @@ class EA_Repository
         foreach ($existingTriggers as $t) {
             $foundTriggers[] = $t['Trigger'];
         }
-        
+
         foreach ($requiredTriggers as $rt) {
             if (!in_array($rt, $foundTriggers)) {
                 $missing[] = "Trigger: $rt";

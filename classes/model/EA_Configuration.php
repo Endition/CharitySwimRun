@@ -84,6 +84,9 @@ class EA_Configuration
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $simulatorAvailable = false;
 
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $entwicklermodus = false;
+
     #[ORM\Column(type: Types::INTEGER)]
     private int $buchungssperre = 10;
 
@@ -120,6 +123,14 @@ class EA_Configuration
             "pflichtfeld" => true,
             "savedvalue" => "ja",
             "erklaerung" => "Werden bei der Veranstaltung Transponder benutzt?",
+            "abhängigkeit" => null
+        ),
+        "buchungssperre" => array(
+            "name" => "Buchungssperre (Sekunden)",
+            "type" => "number",
+            "pflichtfeld" => true,
+            "savedvalue" => "10",
+            "erklaerung" => "Minimale Zeit in Sekunden, die zwischen zwei Buchungen desselben Teilnehmers liegen muss.",
             "abhängigkeit" => null
         ),
         "starttyp" => array(
@@ -332,12 +343,17 @@ class EA_Configuration
             "erklaerung" => "Dieser Sponsor erscheint oben in der Log-Anzeige als präsentiert von ",
             "abhängigkeit" => null
         ),
-        "buchungssperre" => array(
-            "name" => "Buchungssperre (Sekunden)",
-            "type" => "number",
+
+        "entwicklermodus" => array(
+            "name" => "Entwicklermodus",
+            "type" => "select",
+            "savedvalue" => 0,
+            "value" => array(
+                1 => "ein",
+                0 => "aus"
+            ),
             "pflichtfeld" => true,
-            "savedvalue" => "10",
-            "erklaerung" => "Minimale Zeit in Sekunden, die zwischen zwei Buchungen desselben Teilnehmers liegen muss.",
+            "erklaerung" => "Im Entwicklermodus werden Caches deaktiviert und Proxies automatisch generiert. Im Live-Modus ist die Performance besser.",
             "abhängigkeit" => null
         )
     );
@@ -358,14 +374,14 @@ class EA_Configuration
     {
         $this->werte['veranstaltungsname']['savedvalue'] = $this->getVeranstaltungsname();
         $this->werte['veranstaltungslogo']['savedvalue'] = $this->getVeranstaltungslogo();
-        $this->werte['transponder']['savedvalue'] = (int)$this->getTransponder();
+        $this->werte['transponder']['savedvalue'] = (int) $this->getTransponder();
         $this->werte['starttyp']['savedvalue'] = $this->getStarttyp();
         $this->werte['streckenart']['savedvalue'] = $this->getStreckenart();
-        $this->werte['startgruppen']['savedvalue'] = (int)$this->getStartgruppen();
+        $this->werte['startgruppen']['savedvalue'] = (int) $this->getStartgruppen();
         $this->werte['altersklassen']['savedvalue'] = $this->getAltersklassen();
         $this->werte['start']['savedvalue'] = $this->getStart()->format("Y-m-d H:i:s");
         $this->werte['ende']['savedvalue'] = $this->getEnde()->format("Y-m-d H:i:s");
-        $this->werte['mannschaften']['savedvalue'] = (int)$this->getMannschaften();
+        $this->werte['mannschaften']['savedvalue'] = (int) $this->getMannschaften();
         $this->werte['anzahl_startgruppen']['savedvalue'] = $this->getStartgruppenAnzahl();
         $this->werte['max_mitglieder']['savedvalue'] = $this->getMannschaftMitgliedAnzahl();
         $this->werte['mannschaft_punkte_berechnung']['savedvalue'] = $this->getMannschaftPunkteBerechnen();
@@ -376,11 +392,12 @@ class EA_Configuration
         $this->werte['geld']['savedvalue'] = $this->getGeld();
         $this->werte['veranstaltungsrekord']['savedvalue'] = $this->getVeranstaltungsrekord();
         $this->werte['teilnehmerrekord']['savedvalue'] = $this->getTeilnehmerrekord();
-        $this->werte['input_adresse']['savedvalue'] = (int)$this->getInputAdresse();
-        $this->werte['input_email']['savedvalue'] = (int)$this->getInputEmail();
-        $this->werte['simulatorAvailable']['savedvalue'] = (int)$this->getInputEmail();
+        $this->werte['input_adresse']['savedvalue'] = (int) $this->getInputAdresse();
+        $this->werte['input_email']['savedvalue'] = (int) $this->getInputEmail();
+        $this->werte['simulatorAvailable']['savedvalue'] = (int) $this->getInputEmail();
         $this->werte['sponsor']['savedvalue'] = $this->getSponsor();
         $this->werte['buchungssperre']['savedvalue'] = $this->getBuchungssperre();
+        $this->werte['entwicklermodus']['savedvalue'] = (int) $this->getEntwicklermodus();
         return $this->werte;
     }
 
@@ -475,7 +492,7 @@ class EA_Configuration
         return $this->altersklassen;
     }
 
- 
+
     public function setAltersklassen(int $altersklassen): void
     {
         $this->altersklassen = $altersklassen;
@@ -574,7 +591,7 @@ class EA_Configuration
     }
 
 
-    public function getFaktor(): int 
+    public function getFaktor(): int
     {
         return $this->faktor;
     }
@@ -631,7 +648,7 @@ class EA_Configuration
         return $this->veranstaltungsrekord;
     }
 
- 
+
     public function setVeranstaltungsrekord($veranstaltungsrekord): void
     {
         $this->veranstaltungsrekord = $veranstaltungsrekord;
@@ -671,7 +688,7 @@ class EA_Configuration
         return $this->inputAdresse;
     }
 
-  
+
     public function setInputAdresse($inputAdresse): void
     {
         $this->inputAdresse = $inputAdresse;
@@ -682,7 +699,7 @@ class EA_Configuration
         return $this->simulatorAvailable;
     }
 
-  
+
     public function setSimulatorAvailable(bool $simulatorAvailable): void
     {
         $this->simulatorAvailable = $simulatorAvailable;
@@ -717,6 +734,16 @@ class EA_Configuration
     public function setLastCalculationResultsNumber(int $lastCalculationResultsNumber): void
     {
         $this->lastCalculationResultsNumber = $lastCalculationResultsNumber;
+    }
+
+    public function getEntwicklermodus(): bool
+    {
+        return $this->entwicklermodus;
+    }
+
+    public function setEntwicklermodus(bool $entwicklermodus): void
+    {
+        $this->entwicklermodus = $entwicklermodus;
     }
 
 }
