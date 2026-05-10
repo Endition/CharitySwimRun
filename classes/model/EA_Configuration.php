@@ -82,9 +82,6 @@ class EA_Configuration
     private bool $inputAdresse = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $simulatorAvailable = false;
-
-    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $entwicklermodus = false;
 
     #[ORM\Column(type: Types::INTEGER)]
@@ -323,18 +320,6 @@ class EA_Configuration
             "erklaerung" => "Soll E-Mail bei der Anmeldung angezeigt werden oder nicht",
             "abhängigkeit" => null
         ),
-        "simulatorAvailable" => array(
-            "name" => "Simulator möglich",
-            "type" => "select",
-            "savedvalue" => 1,
-            "value" => array(
-                1 => "ja",
-                0 => "nein"
-            ),
-            "pflichtfeld" => true,
-            "erklaerung" => "Ist der Simulatormodus verfügbar",
-            "abhängigkeit" => null
-        ),
         "sponsor" => array(
             "name" => "Sponsor für Log",
             "type" => "text",
@@ -395,7 +380,6 @@ class EA_Configuration
         $this->werte['teilnehmerrekord']['savedvalue'] = $this->getTeilnehmerrekord();
         $this->werte['input_adresse']['savedvalue'] = (int) $this->getInputAdresse();
         $this->werte['input_email']['savedvalue'] = (int) $this->getInputEmail();
-        $this->werte['simulatorAvailable']['savedvalue'] = (int) $this->getInputEmail();
         $this->werte['sponsor']['savedvalue'] = $this->getSponsor();
         $this->werte['buchungssperre']['savedvalue'] = $this->getBuchungssperre();
         $this->werte['entwicklermodus']['savedvalue'] = (int) $this->getEntwicklermodus();
@@ -693,17 +677,6 @@ class EA_Configuration
     public function setInputAdresse($inputAdresse): void
     {
         $this->inputAdresse = $inputAdresse;
-    }
-
-    public function getSimulatorAvailable(): bool
-    {
-        return $this->simulatorAvailable;
-    }
-
-
-    public function setSimulatorAvailable(bool $simulatorAvailable): void
-    {
-        $this->simulatorAvailable = $simulatorAvailable;
     }
 
 

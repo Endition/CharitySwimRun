@@ -57,11 +57,24 @@ class EA_MenueRenderer
         "10-00-00" => array("name" => "Login", "doc" => "login", "icon" => "fa fa-enter fa-fw", "necassaryRoleId"=>EA_User::USERROLE_PUBLIC)
     );
 
+    /**
+     * Returns the raw menu structure array.
+     * 
+     * @return array The complete menu structure.
+     */
     public function getMenueStructure(): array
     {
         return $this->menueStruktur;
     }
 
+    /**
+     * Generates the filtered menu HTML based on active features and simulator availability.
+     * 
+     * @param bool $isTransponderActive Whether RFID transponder features are enabled.
+     * @param bool $isTeamActive Whether team-related features are enabled.
+     * @param bool $isSimulatorAvailable Whether the simulator should be shown.
+     * @return string The rendered menu HTML.
+     */
     public function getMenue(bool $isTransponderActive,bool $isTeamActive, bool $isSimulatorAvailable ): string
     {
         if ($isTransponderActive === false) {
@@ -90,6 +103,13 @@ class EA_MenueRenderer
         return $this->renderMenu2($this->menueStruktur, 0);
     }
 
+    /**
+     * Recursively renders the menu structure into HTML.
+     * 
+     * @param array $menue The menu structure to render.
+     * @param int $ebene The current nesting level (unused but kept for structure).
+     * @return string The generated HTML list items.
+     */
     public function renderMenu2(array $menue, int $ebene = 0): string
     {
         $content = "";
