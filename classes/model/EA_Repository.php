@@ -335,8 +335,9 @@ class EA_Repository
                                 LIMIT 1;
 
                                 IF v_LastTimestamp IS NULL THEN
+                                    -- Store NULL for TransponderId when TeilnehmerId is known to avoid redundancy
                                     INSERT INTO log (TeilnehmerId, TransponderId, Timestamp, Leser, geloescht)
-                                    VALUES (v_TeilnehmerId, v_TransponderId, NEW.Buchungszeit, NEW.Leser, 0);
+                                    VALUES (v_TeilnehmerId, NULL, NEW.Buchungszeit, NEW.Leser, 0);
                                 END IF;
                             END IF;
                         END IF;
@@ -500,9 +501,10 @@ class EA_Repository
         $connection->executeStatement("SET FOREIGN_KEY_CHECKS = 1;");
     }
 
-    public function update(): void
+    public function update(): bool
     {
         $this->entityManager->flush();
+        return true;
     }
     //performance
     //php.ini -> realpath_cache_size = 64M

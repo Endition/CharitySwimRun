@@ -101,7 +101,8 @@ class EA_HitRepository extends EA_Repository
         $queryBuilder
             ->select('i')
             ->from(EA_Hit::class, 'i')
-            ->where("i.teilnehmer IS NULL");
+            ->where("i.teilnehmer IS NULL")
+            ->andWhere("i.geloescht = 0");
 
         return $queryBuilder->getQuery()->getResult();
     }

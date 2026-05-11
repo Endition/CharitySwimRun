@@ -28,7 +28,13 @@ id="buchungsuebersicht">
 				<tr class="odd gradeX">
 					<td>{$hit->getId()}</td>
 					{if $konfiguration->getTransponder() eq true}
-						<td>{$hit->getTransponderId()}</td>
+						<td>
+							{if $hit->getTransponderId()}
+								{$hit->getTransponderId()}
+							{else}
+								{$hit->getTeilnehmer()->getTransponder()}
+							{/if}
+						</td>
 					{/if}
 					<td>{$hit->getTimestamp("d.m.Y H:i:s")}</td>
 					<td>{$hit->getTeilnehmer()->getGesamtname()}</td>

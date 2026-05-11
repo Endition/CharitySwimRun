@@ -106,7 +106,6 @@ class EA_StarterHitOverviewController extends EA_Controller
     {
         $impuls = new EA_Hit();
         $impuls->setTeilnehmer($EA_Starter);
-        $impuls->setTransponderId($EA_Starter->getTransponder());
         $impuls->setTimestamp(time());
         $impuls->setLeser(99);
         

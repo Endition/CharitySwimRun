@@ -25,32 +25,55 @@ class EA_HitFalseEntryController extends EA_Controller
         return $content;
     }
 
-    private function zuordneFehlbuchung():void
+    private function zuordneFehlbuchung(): void
     {
-        foreach ($_POST['tpzuordnenTnId'] as $impulsId => $startnummer) {
-            if ($_POST['tpaction'][$impulsId] == "true" && $startnummer != null) {
-                $impuls = $this->EA_HitRepository->loadById($impulsId);
-                $teilnehmer = $this->EA_StarterRepository->loadByStartnummer($startnummer);
-                if ($teilnehmer === null) {
-                    $this->EA_Messages->addMessage("Startnummer nicht gefunden",156573535744,EA_Message::MESSAGE_ERROR);
+        if (!isset($_POST['tpaction']) || !is_array($_POST['tpaction'])) {
+            return;
+        }
+
+        foreach ($_POST['tpaction'] as $impulsId => $checkboxValue) {
+            $impulsId = (int)$impulsId;
+            if (isset($_POST['tpzuordnenTnId'][$impulsId])) {
+                $startnummer = trim((string)$_POST['tpzuordnenTnId'][$impulsId]);
+                
+                if ($startnummer !== "") {
+                    $impuls = $this->EA_HitRepository->loadById($impulsId);
+                    if (!$impuls) {
+                        $this->EA_Messages->addMessage("Impuls ID {$impulsId} nicht gefunden.", 0, EA_Message::MESSAGE_ERROR);
+                        continue;
+                    }
+
+                    $teilnehmer = $this->EA_StarterRepository->loadByStartnummer((int)$startnummer);
+                    
+                    if ($teilnehmer === null) {
+                        $this->EA_Messages->addMessage("Startnummer '{$startnummer}' wurde nicht im System gefunden.", 156573535744, EA_Message::MESSAGE_ERROR);
+                    } else {
+                        $impuls->setTeilnehmer($teilnehmer);
+                        $impuls->setTransponderId(null);
+                        $this->EA_HitRepository->update();
+                        $this->EA_Messages->addMessage("Impuls {$impulsId} wurde erfolgreich Teilnehmer {$teilnehmer->getGesamtname()} (StNr: {$teilnehmer->getStartnummer()}) zugeordnet.", 32647777141, EA_Message::MESSAGE_SUCCESS);
+                    }
                 } else {
-                    $impuls->setTeilnehmer($teilnehmer);
-                    $impuls->setTransponderId($teilnehmer->getTransponder());
-                    $this->EA_HitRepository->update();
-                    $this->EA_Messages->addMessage("Fehlbuchung zugeordnet",32647777141,EA_Message::MESSAGE_SUCCESS);
+                    $this->EA_Messages->addMessage("Keine Startnummer für Impuls {$impulsId} eingegeben.", 0, EA_Message::MESSAGE_WARNING);
                 }
             }
         }
     }
 
-    private function deleteFehlbuchung():void
+    private function deleteFehlbuchung(): void
     {
+        if (!isset($_POST['tpaction']) || !is_array($_POST['tpaction'])) {
+            return;
+        }
+
         foreach ($_POST['tpaction'] as $impulsId => $value) {
-            if ($value == "true" && ctype_digit($impulsId)) {
+            if ($value === "true" && ctype_digit((string)$impulsId)) {
                 $impuls = $this->EA_HitRepository->loadById($impulsId);
-                $impuls->setGeloescht(true);
-                if ($this->EA_HitRepository->update()) {
-                    $this->EA_Messages->addMessage("Fehlbuchung als gelöscht markiert",1325375411,EA_Message::MESSAGE_SUCCESS);
+                if ($impuls) {
+                    $impuls->setGeloescht(true);
+                    if ($this->EA_HitRepository->update()) {
+                        $this->EA_Messages->addMessage("Fehlbuchung {$impulsId} als gelöscht markiert", 1325375411, EA_Message::MESSAGE_SUCCESS);
+                    }
                 }
             }
         }

@@ -151,7 +151,6 @@ class EA_ApiController extends EA_Controller
             $EA_I->setTeilnehmer($EA_T);
             date_default_timezone_set("Europe/Berlin");
             $EA_I->setTimestamp(time());
-            $EA_I->setTransponderId($EA_T->getTransponder());
             $EA_I->setLeser(99);
             $this->EA_HitRepository->create($EA_I);
         }
