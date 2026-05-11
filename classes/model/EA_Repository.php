@@ -295,15 +295,19 @@ class EA_Repository
 
                 IF v_TeilnehmerId IS NOT NULL THEN
                     -- Get lockout time from config
-                    SELECT buchungssperre INTO v_LockoutTime FROM konfiguration LIMIT 1;
-                    IF v_LockoutTime IS NULL THEN SET v_LockoutTime = 10; END IF;
+                    SELECT COALESCE(buchungssperre, 10) INTO v_LockoutTime FROM konfiguration LIMIT 1;
 
-                    -- Check for duplicate
-                    SELECT MAX(Timestamp) INTO v_LastTimestamp 
+                    -- Check for duplicate within the lockout window (handles > 2 entries correctly)
+                    SET v_LastTimestamp = NULL;
+                    SELECT Timestamp INTO v_LastTimestamp 
                     FROM log 
-                    WHERE TeilnehmerId = v_TeilnehmerId AND geloescht = 0;
+                    WHERE TeilnehmerId = v_TeilnehmerId 
+                      AND geloescht = 0 
+                      AND Timestamp <= NEW.Buchungszeit 
+                      AND Timestamp > (NEW.Buchungszeit - v_LockoutTime)
+                    LIMIT 1;
 
-                    IF v_LastTimestamp IS NULL OR (NEW.Buchungszeit - v_LastTimestamp) >= v_LockoutTime THEN
+                    IF v_LastTimestamp IS NULL THEN
                         INSERT INTO log (TeilnehmerId, TransponderId, Timestamp, Leser, geloescht)
                         VALUES (v_TeilnehmerId, v_TransponderId, NEW.Buchungszeit, NEW.Leser, 0);
                     END IF;

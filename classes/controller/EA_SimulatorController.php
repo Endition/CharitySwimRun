@@ -30,7 +30,7 @@ class EA_SimulatorController extends EA_Controller
         $messages = [];
 
         // 10% chance to create a new participant
-        if ($anzahlTeilnehmer < 20 || rand(0, $anzahlTeilnehmer) < ($anzahlTeilnehmer / 10)) {
+        if ($anzahlTeilnehmer < 20 || rand(0, $anzahlTeilnehmer) < ($anzahlTeilnehmer / 5)) {
             $vereinszufall = rand(0, 100);
             $mannschaftzufall = rand(0, 100);
 
@@ -154,18 +154,21 @@ class EA_SimulatorController extends EA_Controller
                     $this->entityManager->flush();
                     $messages[] = "SIMULIERT: RFID-Scan in Cache geschrieben (Key: {$rfidChip->getTransponderschluessel()})";
 
-                    // 20% chance for a duplicate scan to test the lockout (Buchungssperre)
+                    // 20% chance for multiple duplicate scans to test the trigger's robustness (Buchungssperre)
                     if (rand(1, 100) <= 20) {
                         $lockout = $this->konfiguration->getBuchungssperre();
-                        $delay = rand(0, max(0, $lockout - 1));
+                        $numDuplicates = rand(1, 4);
 
-                        $cacheDuplicate = new \CharitySwimRun\classes\model\EA_Cache();
-                        $cacheDuplicate->setTransponderschluessel($rfidChip->getTransponderschluessel());
-                        $cacheDuplicate->setBuchungszeit(time() + $delay);
-                        $cacheDuplicate->setLeser($cache->getLeser());
-                        $this->entityManager->persist($cacheDuplicate);
+                        for ($i = 0; $i < $numDuplicates; $i++) {
+                            $delay = rand(0, max(0, $lockout - 1));
+                            $cacheDuplicate = new \CharitySwimRun\classes\model\EA_Cache();
+                            $cacheDuplicate->setTransponderschluessel($rfidChip->getTransponderschluessel());
+                            $cacheDuplicate->setBuchungszeit(time() + $delay);
+                            $cacheDuplicate->setLeser($cache->getLeser());
+                            $this->entityManager->persist($cacheDuplicate);
+                            $messages[] = "TEST: Doppel-Scan {$i} mit {$delay}s Zeitversatz gesendet (Sperre: {$lockout}s)";
+                        }
                         $this->entityManager->flush();
-                        $messages[] = "TEST: Doppel-Scan mit {$delay}s Zeitversatz gesendet (Sperre: {$lockout}s)";
                     }
                 } else {
                     $messages[] = "FEHLER: Kein RFID-Key für Transponder {$transponderNummer} gefunden. Nutze Fallback auf Log.";
