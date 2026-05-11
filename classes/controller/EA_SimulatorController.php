@@ -2,191 +2,266 @@
 
 namespace CharitySwimRun\classes\controller;
 
-use DateTimeImmutable;
-use Doctrine\ORM\EntityManager;
-use CharitySwimRun\classes\model\EA_Hit;
-use CharitySwimRun\classes\model\EA_Team;
-use CharitySwimRun\classes\model\EA_Simulator;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Club;
+use CharitySwimRun\classes\model\EA_Team;
+use CharitySwimRun\classes\model\EA_Hit;
+use CharitySwimRun\classes\model\EA_Cache;
+use CharitySwimRun\classes\model\EA_Simulator;
+use DateTimeImmutable;
+use Doctrine\ORM\EntityManager;
 
+/**
+ * Controller for simulating race events and participant behavior.
+ */
 class EA_SimulatorController extends EA_Controller
 {
+    private EA_Simulator $simulatorData;
+
     public function __construct(EntityManager $entityManager)
     {
         parent::__construct($entityManager);
+        $this->simulatorData = new EA_Simulator();
     }
 
     /**
-     * Creates a random participant or hit based on the specified mode.
+     * Orchestrates the simulation by triggering different random events.
      * 
      * @param string $mode The simulation mode: 'log' (direct hit) or 'cache' (RFID trigger).
      * @return array List of messages describing the actions taken.
      */
     public function createRandomTeilnehmer(string $mode = 'log'): array
     {
-        $anzahlTeilnehmer = $this->EA_StarterRepository->getAnzahlTeilnehmer();
-        $EA_Simulator = new EA_Simulator();
         $messages = [];
 
-        // 10% chance to create a new participant
-        if ($anzahlTeilnehmer < 20 || rand(0, $anzahlTeilnehmer) < ($anzahlTeilnehmer / 10)) {
-            $vereinszufall = rand(0, 100);
-            $mannschaftzufall = rand(0, 100);
+        // 1. Participant Creation (5% chance)
+        $this->simulateNewParticipant($messages);
 
-            $streckeList = $this->EA_DistanceRepository->loadList();
-            $newTeilnehmer = new EA_Starter();
+        // 2. Transponder Returns (2% chance)
+        $this->simulateTransponderReturn($messages);
 
-            // Get available transponder IDs from the 'box' (database table transponder)
-            $allTransponders = $this->entityManager->createQueryBuilder()
-                ->select('r.Transpondernummer')
-                ->from(\CharitySwimRun\classes\model\EA_RfidChip::class, 'r')
-                ->getQuery()
-                ->getScalarResult();
-            $transponderIds = array_column($allTransponders, 'Transpondernummer');
-
-            // Find transponders that are not yet assigned to an active participant
-            $usedTransponders = $this->entityManager->createQueryBuilder()
-                ->select('t.transponder')
-                ->from(EA_Starter::class, 't')
-                ->where('t.transponder IS NOT NULL')
-                ->getQuery()
-                ->getScalarResult();
-            $usedIds = array_column($usedTransponders, 'transponder');
-
-            $availableIds = array_diff($transponderIds, $usedIds);
-
-            if (count($availableIds) > 0) {
-                $randomId = $availableIds[array_rand($availableIds)];
-                $newTeilnehmer->setTransponder($randomId);
-                $newTeilnehmer->setStartnummer($randomId);
-            } else {
-                // Fallback to random high number if no physical transponders are left
-                $newTeilnehmer->setStartnummer(rand(1000, 2000));
-                $newTeilnehmer->setTransponder($newTeilnehmer->getStartnummer());
-            }
-
-            $newTeilnehmer->setName($EA_Simulator->lastname[array_rand($EA_Simulator->lastname)]);
-            $newTeilnehmer->setVorname($EA_Simulator->firstname[array_rand($EA_Simulator->firstname)]);
-            $geburtsdatum = new DateTimeImmutable();
-            $geburtsdatum = $geburtsdatum->setTimestamp(mt_rand(strtotime("90 years ago"), strtotime("1 years ago")));
-            $newTeilnehmer->setGeburtsdatum($geburtsdatum);
-            $newTeilnehmer->setGeschlecht(EA_Starter::GESCHLECHT_LIST_KURZ[array_rand(EA_Starter::GESCHLECHT_LIST_KURZ)]);
-            $newTeilnehmer->setStrecke($streckeList[array_rand($streckeList)]);
-            $newTeilnehmer->setStartzeit(new DateTimeImmutable());
-
-            // Assign club based on probability
-            if ($vereinszufall > 50 && $vereinszufall < 90) {
-                $vereinList = $this->EA_ClubRepository->loadList();
-                if (count($vereinList) > 0) {
-                    $newTeilnehmer->setVerein($vereinList[array_rand($vereinList)]);
-                }
-            } elseif ($vereinszufall >= 90) {
-                $newVereinBez = $EA_Simulator->fiktiveVereine[array_rand($EA_Simulator->fiktiveVereine)];
-                $verein = $this->EA_ClubRepository->loadByBezeichnung($newVereinBez);
-                if ($verein === null) {
-                    $verein = new EA_Club();
-                    $verein->setVerein($newVereinBez);
-                    $this->EA_ClubRepository->create($verein);
-                }
-                $newTeilnehmer->setVerein($verein);
-                $messages[] = "Verein {$verein->getVerein()} angelegt";
-            }
-
-            // Assign team based on probability
-            if ($mannschaftzufall > 50 && $mannschaftzufall < 90) {
-                $mannschaftList = $this->EA_TeamRepository->loadList();
-                if (count($mannschaftList) > 0) {
-                    $newTeilnehmer->setMannschaft($mannschaftList[array_rand($mannschaftList)]);
-                }
-            } elseif ($mannschaftzufall >= 90) {
-                $mannschaftsKategorieList = $this->EA_TeamCategoryRepository->loadList();
-                $mannschaft = new EA_Team();
-                $mannschaft->setStartnummer(rand(1, 20000));
-                $mannschaft->setMannschaftskategorie($mannschaftsKategorieList[array_rand($mannschaftsKategorieList)]);
-                $mannschaft->setVer_name($EA_Simulator->lastname[array_rand($EA_Simulator->lastname)]);
-                $mannschaft->setVer_vorname($EA_Simulator->firstname[array_rand($EA_Simulator->firstname)]);
-                $mannschaft->setMannschaft($EA_Simulator->fiktiveMannschaften[array_rand($EA_Simulator->fiktiveMannschaften)]);
-                $this->EA_TeamRepository->create($mannschaft);
-                $newTeilnehmer->setMannschaft($mannschaft);
-                $messages[] = "Mannschaft {$mannschaft->getMannschaft()} angelegt";
-            }
-
-            $newTeilnehmer->setAltersklasse($this->EA_AgeGroupRepository->findByGeburtsjahr($geburtsdatum));
-            $newTeilnehmer->setKonfiguration($this->konfiguration);
-            $this->EA_StarterRepository->create($newTeilnehmer);
-            $messages[] = "neuen Teilnehmer {$newTeilnehmer->getGesamtname()} angelegt";
+        // 3. Fehlbuchungen / Unknown Scans (5% chance, only in cache mode)
+        if ($mode === 'cache') {
+            $this->simulateFehlbuchung($messages);
         }
 
-        // Generate a random impulse for an existing participant
-        $teilnehmerZufall = $this->EA_StarterRepository->loadRandomTeilnehmer();
-        if ($teilnehmerZufall) {
-            $this->createRandomImpuls($messages, $teilnehmerZufall, $mode);
-        }
+        // 4. Regular Hits / Scans (Always tries to pick one active participant)
+        $this->simulateActiveHit($messages, $mode);
 
         return $messages;
     }
 
     /**
-     * Simulates an RFID scan or a manual hit.
-     * 
-     * @param array $messages Reference to the message list.
-     * @param EA_Starter $teilnehmerZufall The participant to record the hit for.
-     * @param string $mode Simulation mode ('cache' or 'log').
+     * Logic for creating a new participant if transponders are available.
      */
-    public function createRandomImpuls(array &$messages, EA_Starter $teilnehmerZufall, string $mode = 'log'): void
+    private function simulateNewParticipant(array &$messages): void
+    {
+        $anzahlAktiv = $this->EA_StarterRepository->getAnzahlTeilnehmer();
+        
+        // 5% chance or if very few participants exist
+        if ($anzahlAktiv >= 20 && rand(1, 100) > 5) {
+            return;
+        }
+
+        $availableIds = $this->getAvailableTransponderIds();
+        if (empty($availableIds)) {
+            $messages[] = "SIMULATION: Kein freier Transponder mehr vorhanden - Erstellung abgebrochen.";
+            return;
+        }
+
+        $newTeilnehmer = new EA_Starter();
+        $randomId = $availableIds[array_rand($availableIds)];
+        $newTeilnehmer->setTransponder($randomId);
+        $newTeilnehmer->setStartnummer($randomId);
+
+        // Identity
+        $newTeilnehmer->setName($this->simulatorData->lastname[array_rand($this->simulatorData->lastname)]);
+        $newTeilnehmer->setVorname($this->simulatorData->firstname[array_rand($this->simulatorData->firstname)]);
+        
+        $geburtsdatum = (new DateTimeImmutable())->setTimestamp(mt_rand(strtotime("90 years ago"), strtotime("15 years ago")));
+        $newTeilnehmer->setGeburtsdatum($geburtsdatum);
+        $newTeilnehmer->setGeschlecht(EA_Starter::GESCHLECHT_LIST_KURZ[array_rand(EA_Starter::GESCHLECHT_LIST_KURZ)]);
+        
+        $streckeList = $this->EA_DistanceRepository->loadList();
+        $newTeilnehmer->setStrecke($streckeList[array_rand($streckeList)]);
+        $newTeilnehmer->setStartzeit(new DateTimeImmutable());
+        $newTeilnehmer->setKonfiguration($this->konfiguration);
+        $newTeilnehmer->setAltersklasse($this->EA_AgeGroupRepository->findByGeburtsjahr($geburtsdatum));
+        $newTeilnehmer->setStatus(EA_Starter::STATUS_STARTUNTERLAGEN_ABHEHOLT);
+
+        $this->assignRandomClubAndTeam($newTeilnehmer, $messages);
+
+        $this->EA_StarterRepository->create($newTeilnehmer);
+        $messages[] = "NEUANLAGE: {$newTeilnehmer->getGesamtname()} (StNr: {$newTeilnehmer->getStartnummer()}) angemeldet.";
+    }
+
+    /**
+     * Logic for simulating a participant returning their hardware.
+     */
+    private function simulateTransponderReturn(array &$messages): void
+    {
+        if (rand(1, 100) <= 2) {
+            $activeParticipant = $this->EA_StarterRepository->loadRandomTeilnehmer();
+            if ($activeParticipant) {
+                $activeParticipant->setStatus(EA_Starter::STATUS_TRANSPONDER_ZURUECKGEGEBEN);
+                $this->entityManager->flush();
+                $messages[] = "RÜCKGABE: {$activeParticipant->getGesamtname()} hat Transponder zurückgegeben.";
+            }
+        }
+    }
+
+    /**
+     * Simulates a scan of a chip that is not assigned to an active participant.
+     */
+    private function simulateFehlbuchung(array &$messages): void
+    {
+        if (rand(1, 100) > 5) {
+            return;
+        }
+
+        $allChips = $this->entityManager->createQueryBuilder()
+            ->select('r.Transpondernummer, r.Transponderschluessel')
+            ->from(\CharitySwimRun\classes\model\EA_RfidChip::class, 'r')
+            ->getQuery()->getScalarResult();
+
+        $activeTransponders = $this->entityManager->createQueryBuilder()
+            ->select('t.transponder')->from(EA_Starter::class, 't')
+            ->where('t.status < :s')->setParameter('s', EA_Starter::STATUS_TRANSPONDER_ZURUECKGEGEBEN)
+            ->getQuery()->getScalarResult();
+        
+        $activeIds = array_column($activeTransponders, 'transponder');
+        
+        $inactiveChips = array_filter($allChips, function($c) use ($activeIds) {
+            return !in_array($c['Transpondernummer'], $activeIds);
+        });
+
+        if (!empty($inactiveChips)) {
+            $chip = $inactiveChips[array_rand($inactiveChips)];
+            $this->pushToCache($chip['Transponderschluessel'], rand(1, 5));
+            $messages[] = "FEHLBUCHUNG: Inaktiver Chip gescannt (Nr: {$chip['Transpondernummer']})";
+        }
+    }
+
+    /**
+     * Logic for a regular scan of an active participant.
+     */
+    private function simulateActiveHit(array &$messages, string $mode): void
+    {
+        $teilnehmer = $this->EA_StarterRepository->loadRandomTeilnehmer();
+        if ($teilnehmer) {
+            $this->createRandomImpuls($messages, $teilnehmer, $mode);
+        }
+    }
+
+    /**
+     * Finds physical transponder IDs that are currently not assigned to active participants.
+     */
+    private function getAvailableTransponderIds(): array
+    {
+        $all = $this->entityManager->createQueryBuilder()
+            ->select('r.Transpondernummer')->from(\CharitySwimRun\classes\model\EA_RfidChip::class, 'r')
+            ->getQuery()->getScalarResult();
+        $allIds = array_column($all, 'Transpondernummer');
+
+        $used = $this->entityManager->createQueryBuilder()
+            ->select('t.transponder')->from(EA_Starter::class, 't')
+            ->where('t.transponder IS NOT NULL')
+            ->andWhere('t.status < :s')->setParameter('s', EA_Starter::STATUS_TRANSPONDER_ZURUECKGEGEBEN)
+            ->getQuery()->getScalarResult();
+        $usedIds = array_column($used, 'transponder');
+
+        return array_diff($allIds, $usedIds);
+    }
+
+    /**
+     * Helper to assign clubs or teams based on probability.
+     */
+    private function assignRandomClubAndTeam(EA_Starter $teilnehmer, array &$messages): void
+    {
+        $vProb = rand(1, 100);
+        if ($vProb > 50 && $vProb < 90) {
+            $list = $this->EA_ClubRepository->loadList();
+            if (!empty($list)) {
+                $teilnehmer->setVerein($list[array_rand($list)]);
+            }
+        } elseif ($vProb >= 90) {
+            $name = $this->simulatorData->fiktiveVereine[array_rand($this->simulatorData->fiktiveVereine)];
+            $verein = $this->EA_ClubRepository->loadByBezeichnung($name);
+            if ($verein === null) {
+                $verein = new EA_Club();
+                $verein->setVerein($name);
+                $this->EA_ClubRepository->create($verein);
+                $messages[] = "Verein {$name} angelegt";
+            }
+            $teilnehmer->setVerein($verein);
+        }
+
+        $mProb = rand(1, 100);
+        if ($mProb > 50 && $mProb < 90) {
+            $list = $this->EA_TeamRepository->loadList();
+            if (!empty($list)) {
+                $teilnehmer->setMannschaft($list[array_rand($list)]);
+            }
+        } elseif ($mProb >= 90) {
+            $cat = $this->EA_TeamCategoryRepository->loadList();
+            $team = new EA_Team();
+            $team->setStartnummer(rand(1, 20000));
+            $team->setMannschaftskategorie($cat[array_rand($cat)]);
+            $team->setVer_name($this->simulatorData->lastname[array_rand($this->simulatorData->lastname)]);
+            $team->setVer_vorname($this->simulatorData->firstname[array_rand($this->simulatorData->firstname)]);
+            $team->setMannschaft($this->simulatorData->fiktiveMannschaften[array_rand($this->simulatorData->fiktiveMannschaften)]);
+            $this->EA_TeamRepository->create($team);
+            $teilnehmer->setMannschaft($team);
+            $messages[] = "Mannschaft {$team->getMannschaft()} angelegt";
+        }
+    }
+
+    /**
+     * Pushes a raw scan entry to the cache table.
+     */
+    private function pushToCache(string $key, int $reader, int $delay = 0): void
+    {
+        $cache = new EA_Cache();
+        $cache->setTransponderschluessel($key);
+        $cache->setBuchungszeit(time() + $delay);
+        $cache->setLeser($reader);
+        $this->entityManager->persist($cache);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Simulates an RFID scan or a manual hit.
+     */
+    public function createRandomImpuls(array &$messages, EA_Starter $teilnehmer, string $mode = 'log'): void
     {
         if ($mode === 'cache') {
-            try {
-                $transponderNummer = $teilnehmerZufall->getTransponder();
-                if (!$transponderNummer) {
-                    throw new \Exception("Teilnehmer hat keinen Transponder zugewiesen.");
-                }
+            $tp = $teilnehmer->getTransponder();
+            $chip = $tp ? $this->entityManager->getRepository(\CharitySwimRun\classes\model\EA_RfidChip::class)->find($tp) : null;
 
-                $rfidChip = $this->entityManager->getRepository(\CharitySwimRun\classes\model\EA_RfidChip::class)->find($transponderNummer);
+            if ($chip) {
+                $this->pushToCache($chip->getTransponderschluessel(), rand(1, 5));
+                $messages[] = "SIMULIERT: RFID-Scan (Key: {$chip->getTransponderschluessel()})";
 
-                if ($rfidChip) {
-                    $cache = new \CharitySwimRun\classes\model\EA_Cache();
-                    $cache->setTransponderschluessel($rfidChip->getTransponderschluessel());
-                    $cache->setBuchungszeit(time());
-                    $cache->setLeser(rand(1, 5));
-                    $this->entityManager->persist($cache);
-                    $this->entityManager->flush();
-                    $messages[] = "SIMULIERT: RFID-Scan in Cache geschrieben (Key: {$rfidChip->getTransponderschluessel()})";
-
-                    // 20% chance for multiple duplicate scans to test the trigger's robustness (Buchungssperre)
-                    if (rand(1, 100) <= 20) {
-                        $lockout = $this->konfiguration->getBuchungssperre();
-                        $numDuplicates = rand(1, 4);
-
-                        for ($i = 1; $i <= $numDuplicates; $i++) {
-                            $delay = rand(0, max(0, $lockout - 1));
-                            $cacheDuplicate = new \CharitySwimRun\classes\model\EA_Cache();
-                            $cacheDuplicate->setTransponderschluessel($rfidChip->getTransponderschluessel());
-                            $cacheDuplicate->setBuchungszeit(time() + $delay);
-                            $cacheDuplicate->setLeser($cache->getLeser());
-                            $this->entityManager->persist($cacheDuplicate);
-                            $messages[] = "TEST: Doppel-Scan {$i} mit {$delay}s Zeitversatz gesendet (Sperre: {$lockout}s)";
-                        }
-                        $this->entityManager->flush();
+                // Robustness test: duplicates
+                if (rand(1, 100) <= 20) {
+                    $lockout = $this->konfiguration->getBuchungssperre();
+                    for ($i = 1; $i <= rand(1, 4); $i++) {
+                        $this->pushToCache($chip->getTransponderschluessel(), rand(1, 5), rand(0, max(0, $lockout - 1)));
+                        $messages[] = "TEST: Doppel-Scan {$i} gesendet.";
                     }
-                } else {
-                    $messages[] = "FEHLER: Kein RFID-Key für Transponder {$transponderNummer} gefunden. Nutze Fallback auf Log.";
-                    $mode = 'log'; // Fallback
                 }
-            } catch (\Throwable $t) {
-                $messages[] = "CACHE-FEHLER: " . $t->getMessage() . " (Fallback auf Log)";
-                $mode = 'log';
+            } else {
+                $mode = 'log'; // Fallback
             }
         }
 
         if ($mode === 'log') {
             $impuls = new EA_Hit();
             $impuls->setTimestamp(time());
-            $impuls->setTeilnehmer($teilnehmerZufall);
+            $impuls->setTeilnehmer($teilnehmer);
             $impuls->setLeser(rand(1, 5));
             $this->EA_HitRepository->create($impuls);
-            $messages[] = "Zufälligen Impuls für Teilnehmer {$teilnehmerZufall->getGesamtname()} (StNr: {$teilnehmerZufall->getStartnummer()}) erzeugt";
+            $messages[] = "MANUELL: Impuls für {$teilnehmer->getGesamtname()} erzeugt.";
         }
     }
 }

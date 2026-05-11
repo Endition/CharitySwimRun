@@ -113,12 +113,17 @@ class EA_StarterRepository extends EA_Repository
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 
-    public function getAnzahlTeilnehmer(): int
+    public function getAnzahlTeilnehmer(?int $statusMax = EA_Starter::STATUS_TRANSPONDER_ZURUECKGEGEBEN): int
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('count(t.id)')
             ->from(EA_Starter::class, 't');
+
+        if ($statusMax !== null) {
+            $queryBuilder->where('t.status < :statusMax')
+                         ->setParameter('statusMax', $statusMax);
+        }
           
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
@@ -687,15 +692,9 @@ class EA_StarterRepository extends EA_Repository
         return $query->getResult();
     }
 
-    /**
-     * Loads a single random participant from the database.
-     * Uses an efficient count and offset strategy to ensure performance with many entries.
-     * 
-     * @return EA_Starter|null A random participant or null if the list is empty.
-     */
-    public function loadRandomTeilnehmer(): ?EA_Starter
+    public function loadRandomTeilnehmer(?int $statusMax = EA_Starter::STATUS_TRANSPONDER_ZURUECKGEGEBEN): ?EA_Starter
     {
-        $count = $this->getAnzahlTeilnehmer();
+        $count = $this->getAnzahlTeilnehmer($statusMax);
         if ($count === 0) {
             return null;
         }
@@ -703,9 +702,15 @@ class EA_StarterRepository extends EA_Repository
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('t')
-            ->from(EA_Starter::class, 't')
-            ->setFirstResult(rand(0, $count - 1))
-            ->setMaxResults(1);
+            ->from(EA_Starter::class, 't');
+            
+        if ($statusMax !== null) {
+            $queryBuilder->where('t.status < :statusMax')
+                         ->setParameter('statusMax', $statusMax);
+        }
+
+        $queryBuilder->setFirstResult(rand(0, $count - 1))
+                     ->setMaxResults(1);
 
         return $queryBuilder->getQuery()->getOneOrNullResult();
     }
