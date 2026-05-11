@@ -159,7 +159,7 @@ class EA_SimulatorController extends EA_Controller
                         $lockout = $this->konfiguration->getBuchungssperre();
                         $numDuplicates = rand(1, 4);
 
-                        for ($i = 0; $i < $numDuplicates; $i++) {
+                        for ($i = 1; $i <= $numDuplicates; $i++) {
                             $delay = rand(0, max(0, $lockout - 1));
                             $cacheDuplicate = new \CharitySwimRun\classes\model\EA_Cache();
                             $cacheDuplicate->setTransponderschluessel($rfidChip->getTransponderschluessel());
