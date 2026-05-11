@@ -30,7 +30,7 @@ class EA_SimulatorController extends EA_Controller
         $messages = [];
 
         // 10% chance to create a new participant
-        if ($anzahlTeilnehmer < 20 || rand(0, $anzahlTeilnehmer) < ($anzahlTeilnehmer / 5)) {
+        if ($anzahlTeilnehmer < 20 || rand(0, $anzahlTeilnehmer) < ($anzahlTeilnehmer / 10)) {
             $vereinszufall = rand(0, 100);
             $mannschaftzufall = rand(0, 100);
 
