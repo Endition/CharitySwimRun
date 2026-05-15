@@ -282,13 +282,13 @@ class EA_Repository
             BEFORE INSERT ON cache
             FOR EACH ROW
             BEGIN
-                DECLARE v_TeilnehmerId INT;
-                DECLARE v_TransponderId INT;
-                DECLARE v_LastTimestamp INT;
-                DECLARE v_LockoutTime INT DEFAULT 10;
-                DECLARE v_Status INT;
-                DECLARE v_Startzeit DATETIME;
-                DECLARE v_Starttyp VARCHAR(255);
+                DECLARE v_teilnehmer_id INT DEFAULT NULL;
+                DECLARE v_transponder_id INT DEFAULT NULL;
+                DECLARE v_last_timestamp INT DEFAULT NULL;
+                DECLARE v_lockout_time INT DEFAULT 10;
+                DECLARE v_status INT DEFAULT NULL;
+                DECLARE v_startzeit DATETIME DEFAULT NULL;
+                DECLARE v_starttyp VARCHAR(255) DEFAULT NULL;
 
                 -- Mark as processed immediately
                 SET NEW.verarbeitet = 1;
@@ -296,7 +296,7 @@ class EA_Repository
                 -- Find participant and transponder info in one go
                 -- We only look for participants who haven't returned their transponder yet
                 SELECT t.id, tr.Transpondernummer, t.Status, t.Startzeit, k.buchungssperre, k.starttyp
-                INTO v_TeilnehmerId, v_TransponderId, v_Status, v_Startzeit, v_LockoutTime, v_Starttyp
+                INTO v_teilnehmer_id, v_transponder_id, v_status, v_startzeit, v_lockout_time, v_starttyp
                 FROM transponder tr
                 JOIN teilnehmer t ON t.transponder = tr.Transpondernummer
                 CROSS JOIN konfiguration k
@@ -305,39 +305,39 @@ class EA_Repository
                 ORDER BY t.id DESC
                 LIMIT 1;
 
-                IF v_TeilnehmerId IS NOT NULL THEN
+                IF v_teilnehmer_id IS NOT NULL THEN
                     -- 1. Status Check: Only allow if participant has picked up documents or is already on track
-                    IF v_Status >= $statusStartunterlagen THEN
+                    IF v_status >= $statusStartunterlagen THEN
                         
                         -- 2. Autostart logic (ade - Autostart durch Einbuchen)
                         -- If no start time is set yet and mode is ade, set it now
-                        IF v_Starttyp = 'ade' AND v_Startzeit IS NULL THEN
+                        IF v_starttyp = 'ade' AND v_startzeit IS NULL THEN
                             UPDATE teilnehmer 
                             SET Startzeit = FROM_UNIXTIME(NEW.Buchungszeit), 
                                 Status = $statusAufDerStrecke
-                            WHERE id = v_TeilnehmerId;
-                            SET v_Startzeit = FROM_UNIXTIME(NEW.Buchungszeit);
+                            WHERE id = v_teilnehmer_id;
+                            SET v_startzeit = FROM_UNIXTIME(NEW.Buchungszeit);
                         END IF;
 
                         -- 3. Timing checks (only if we have a start time)
-                        IF v_Startzeit IS NOT NULL THEN
+                        IF v_startzeit IS NOT NULL THEN
                             -- Check if scan is AFTER start time (ignore pre-start noise)
-                            IF NEW.Buchungszeit >= UNIX_TIMESTAMP(v_Startzeit) THEN
+                            IF NEW.Buchungszeit >= UNIX_TIMESTAMP(v_startzeit) THEN
                                 
                                 -- 4. Duplicate/Lockout check
-                                SET v_LastTimestamp = NULL;
-                                SELECT Timestamp INTO v_LastTimestamp 
+                                SET v_last_timestamp = NULL;
+                                SELECT Timestamp INTO v_last_timestamp 
                                 FROM log 
-                                WHERE TeilnehmerId = v_TeilnehmerId 
+                                WHERE TeilnehmerId = v_teilnehmer_id 
                                   AND geloescht = 0 
                                   AND Timestamp <= NEW.Buchungszeit 
-                                  AND Timestamp > (NEW.Buchungszeit - v_LockoutTime)
+                                  AND Timestamp > (NEW.Buchungszeit - v_lockout_time)
                                 LIMIT 1;
 
-                                IF v_LastTimestamp IS NULL THEN
+                                IF v_last_timestamp IS NULL THEN
                                     -- Store NULL for TransponderId when TeilnehmerId is known to avoid redundancy
                                     INSERT INTO log (TeilnehmerId, TransponderId, Timestamp, Leser, geloescht)
-                                    VALUES (v_TeilnehmerId, NULL, NEW.Buchungszeit, NEW.Leser, 0);
+                                    VALUES (v_teilnehmer_id, NULL, NEW.Buchungszeit, NEW.Leser, 0);
                                 END IF;
                             END IF;
                         END IF;
@@ -345,26 +345,26 @@ class EA_Repository
                 ELSE
                     -- Fallback: Log transponders that are in the database but not assigned to an active participant
                     -- This helps identifying unregistered starters or hardware issues
-                    SELECT Transpondernummer INTO v_TransponderId 
+                    SELECT Transpondernummer INTO v_transponder_id 
                     FROM transponder 
                     WHERE Transponderschluessel = NEW.Transponderschluessel 
                     LIMIT 1;
                     
-                    IF v_TransponderId IS NOT NULL THEN
+                    IF v_transponder_id IS NOT NULL THEN
                          -- Check if it's already logged recently to avoid spamming the log
-                         SET v_LastTimestamp = NULL;
-                         SELECT Timestamp INTO v_LastTimestamp 
+                         SET v_last_timestamp = NULL;
+                         SELECT Timestamp INTO v_last_timestamp 
                          FROM log 
-                         WHERE TransponderId = v_TransponderId 
+                         WHERE TransponderId = v_transponder_id 
                            AND TeilnehmerId IS NULL
                            AND geloescht = 0 
                            AND Timestamp <= NEW.Buchungszeit 
                            AND Timestamp > (NEW.Buchungszeit - 60) -- 1 minute lockout for unassigned chips
                          LIMIT 1;
 
-                         IF v_LastTimestamp IS NULL THEN
+                         IF v_last_timestamp IS NULL THEN
                             INSERT INTO log (TeilnehmerId, TransponderId, Timestamp, Leser, geloescht)
-                            VALUES (NULL, v_TransponderId, NEW.Buchungszeit, NEW.Leser, 0);
+                            VALUES (NULL, v_transponder_id, NEW.Buchungszeit, NEW.Leser, 0);
                          END IF;
                     END IF;
                 END IF;

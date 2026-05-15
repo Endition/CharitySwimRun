@@ -8,6 +8,7 @@ use CharitySwimRun\classes\model\EA_Team;
 use CharitySwimRun\classes\model\EA_Hit;
 use CharitySwimRun\classes\model\EA_Cache;
 use CharitySwimRun\classes\model\EA_Simulator;
+use CharitySwimRun\classes\model\EA_RfidChip;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
 
@@ -32,23 +33,35 @@ class EA_SimulatorController extends EA_Controller
      */
     public function createRandomTeilnehmer(string $mode = 'log'): array
     {
-        $messages = [];
+        try {
+            $messages = [];
 
-        // 1. Participant Creation (5% chance)
-        $this->simulateNewParticipant($messages);
+            if ($this->konfiguration === null) {
+                return ["ERROR: Keine Konfiguration in der Datenbank gefunden. Simulation abgebrochen."];
+            }
 
-        // 2. Transponder Returns (2% chance)
-        $this->simulateTransponderReturn($messages);
+            // 1. Participant Creation (5% chance)
+            $this->simulateNewParticipant($messages);
 
-        // 3. Fehlbuchungen / Unknown Scans (5% chance, only in cache mode)
-        if ($mode === 'cache') {
-            $this->simulateFehlbuchung($messages);
+            // 2. Transponder Returns (2% chance)
+            $this->simulateTransponderReturn($messages);
+
+            // 3. Fehlbuchungen / Unknown Scans (5% chance, only in cache mode)
+            if ($mode === 'cache') {
+                $this->simulateFehlbuchung($messages);
+            }
+
+            // 4. Regular Hits / Scans (Always tries to pick one active participant)
+            $this->simulateActiveHit($messages, $mode);
+
+            if (empty($messages)) {
+                $messages[] = "SIMULATION: In diesem Schritt ist nichts passiert (Zufall).";
+            }
+
+            return $messages;
+        } catch (\Throwable $e) {
+            return ["FATAL ERROR in Simulator: " . $e->getMessage() . " in " . $e->getFile() . " Line " . $e->getLine()];
         }
-
-        // 4. Regular Hits / Scans (Always tries to pick one active participant)
-        $this->simulateActiveHit($messages, $mode);
-
-        return $messages;
     }
 
     /**
@@ -83,7 +96,9 @@ class EA_SimulatorController extends EA_Controller
         $newTeilnehmer->setGeschlecht(EA_Starter::GESCHLECHT_LIST_KURZ[array_rand(EA_Starter::GESCHLECHT_LIST_KURZ)]);
         
         $streckeList = $this->EA_DistanceRepository->loadList();
-        $newTeilnehmer->setStrecke($streckeList[array_rand($streckeList)]);
+        if (!empty($streckeList)) {
+            $newTeilnehmer->setStrecke($streckeList[array_rand($streckeList)]);
+        }
         $newTeilnehmer->setStartzeit(new DateTimeImmutable());
         $newTeilnehmer->setKonfiguration($this->konfiguration);
         $newTeilnehmer->setAltersklasse($this->EA_AgeGroupRepository->findByGeburtsjahr($geburtsdatum));
@@ -121,7 +136,7 @@ class EA_SimulatorController extends EA_Controller
 
         $allChips = $this->entityManager->createQueryBuilder()
             ->select('r.Transpondernummer, r.Transponderschluessel')
-            ->from(\CharitySwimRun\classes\model\EA_RfidChip::class, 'r')
+            ->from(EA_RfidChip::class, 'r')
             ->getQuery()->getScalarResult();
 
         $activeTransponders = $this->entityManager->createQueryBuilder()
@@ -150,6 +165,8 @@ class EA_SimulatorController extends EA_Controller
         $teilnehmer = $this->EA_StarterRepository->loadRandomTeilnehmer();
         if ($teilnehmer) {
             $this->createRandomImpuls($messages, $teilnehmer, $mode);
+        } else {
+            $messages[] = "SIMULATION: Kein aktiver Teilnehmer für einen Hit gefunden.";
         }
     }
 
@@ -159,7 +176,7 @@ class EA_SimulatorController extends EA_Controller
     private function getAvailableTransponderIds(): array
     {
         $all = $this->entityManager->createQueryBuilder()
-            ->select('r.Transpondernummer')->from(\CharitySwimRun\classes\model\EA_RfidChip::class, 'r')
+            ->select('r.Transpondernummer')->from(EA_RfidChip::class, 'r')
             ->getQuery()->getScalarResult();
         $allIds = array_column($all, 'Transpondernummer');
 
@@ -204,15 +221,17 @@ class EA_SimulatorController extends EA_Controller
             }
         } elseif ($mProb >= 90) {
             $cat = $this->EA_TeamCategoryRepository->loadList();
-            $team = new EA_Team();
-            $team->setStartnummer(rand(1, 20000));
-            $team->setMannschaftskategorie($cat[array_rand($cat)]);
-            $team->setVer_name($this->simulatorData->lastname[array_rand($this->simulatorData->lastname)]);
-            $team->setVer_vorname($this->simulatorData->firstname[array_rand($this->simulatorData->firstname)]);
-            $team->setMannschaft($this->simulatorData->fiktiveMannschaften[array_rand($this->simulatorData->fiktiveMannschaften)]);
-            $this->EA_TeamRepository->create($team);
-            $teilnehmer->setMannschaft($team);
-            $messages[] = "Mannschaft {$team->getMannschaft()} angelegt";
+            if (!empty($cat)) {
+                $team = new EA_Team();
+                $team->setStartnummer(rand(1, 20000));
+                $team->setMannschaftskategorie($cat[array_rand($cat)]);
+                $team->setVer_name($this->simulatorData->lastname[array_rand($this->simulatorData->lastname)]);
+                $team->setVer_vorname($this->simulatorData->firstname[array_rand($this->simulatorData->firstname)]);
+                $team->setMannschaft($this->simulatorData->fiktiveMannschaften[array_rand($this->simulatorData->fiktiveMannschaften)]);
+                $this->EA_TeamRepository->create($team);
+                $teilnehmer->setMannschaft($team);
+                $messages[] = "Mannschaft {$team->getMannschaft()} angelegt";
+            }
         }
     }
 
@@ -236,7 +255,7 @@ class EA_SimulatorController extends EA_Controller
     {
         if ($mode === 'cache') {
             $tp = $teilnehmer->getTransponder();
-            $chip = $tp ? $this->entityManager->getRepository(\CharitySwimRun\classes\model\EA_RfidChip::class)->find($tp) : null;
+            $chip = $tp ? $this->entityManager->getRepository(EA_RfidChip::class)->find($tp) : null;
 
             if ($chip) {
                 $this->pushToCache($chip->getTransponderschluessel(), rand(1, 5));
@@ -259,7 +278,9 @@ class EA_SimulatorController extends EA_Controller
             $impuls = new EA_Hit();
             $impuls->setTimestamp(time());
             $impuls->setTeilnehmer($teilnehmer);
+            $impuls->setTransponderId(null); // Ensure TransponderId is NULL for participant hits
             $impuls->setLeser(rand(1, 5));
+            $impuls->setGeloescht(false);
             $this->EA_HitRepository->create($impuls);
             $messages[] = "MANUELL: Impuls für {$teilnehmer->getGesamtname()} erzeugt.";
         }
