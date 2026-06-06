@@ -155,9 +155,16 @@
                             const rows = [];
                             for (var i = entries.length - 1; i >= 0; i--) {
                                 var entry = entries[i];
-                                var isEpic = (entry.meter > 0 && entry.meter % 2500 === 0);
+                                var isMedal = (entry.medalReached && entry.medalReached !== '');
+                                var isEpic = (entry.meter > 0 && entry.meter % 2500 === 0) || isMedal;
                                 var rowClass = isEpic ? 'new-entry-round-number' : 'new-entry';
-                                var meterDisplay = isEpic ? '⭐ ' + entry.meter + 'm' : entry.meter + 'm';
+                                
+                                var meterDisplay = entry.meter + 'm';
+                                if (isMedal) {
+                                    meterDisplay = '🏆 ' + entry.medalReached + ' (' + entry.meter + 'm)';
+                                } else if (isEpic) {
+                                    meterDisplay = '⭐ ' + entry.meter + 'm';
+                                }
 
                                 rows.push(
                                     '<tr class="' + rowClass + '">' +

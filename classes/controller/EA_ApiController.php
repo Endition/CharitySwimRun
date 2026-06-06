@@ -390,6 +390,21 @@ class EA_ApiController extends EA_Controller
                 $prevTimestamp = $qb->getQuery()->getSingleScalarResult();
                 $prevTimestamp = $prevTimestamp ? (int)$prevTimestamp : $startzeit;
                 $impuls->setRundenzeit(max(0, $impuls->getTimestamp() - $prevTimestamp));
+                
+                $medalReached = '';
+                $ak = $teilnehmer->getAltersklasse();
+                if ($teilnehmer->getMeter() > 0) {
+                    if ($ak->getGold() !== null && $teilnehmer->getMeter() == $ak->getGold()) {
+                        $medalReached = 'Gold';
+                    } elseif ($ak->getSilber() !== null && $teilnehmer->getMeter() == $ak->getSilber()) {
+                        $medalReached = 'Silber';
+                    } elseif ($ak->getBronze() !== null && $teilnehmer->getMeter() == $ak->getBronze()) {
+                        $medalReached = 'Bronze';
+                    } elseif ($ak->getUrkunde() !== null && $teilnehmer->getMeter() == $ak->getUrkunde()) {
+                        $medalReached = 'Urkunde';
+                    }
+                }
+                
                 $result[] = [
                     "id" => $impuls->getTeilnehmer()->getId(),
                     "gesamtname" => $impuls->getTeilnehmer()->getGesamtname(),
@@ -400,6 +415,7 @@ class EA_ApiController extends EA_Controller
                     "zeit" => date("H:i:s", $impuls->getTimestamp()),
                     "rundezeit" => $impuls->getRundenzeit("H:i:s"),
                     "gesamtzeit" => $impuls->getGesamtzeit("H:i:s"),
+                    "medalReached" => $medalReached,
                 ];
             }
         }
@@ -454,6 +470,21 @@ class EA_ApiController extends EA_Controller
                 $prevTimestamp = $qb->getQuery()->getSingleScalarResult();
                 $prevTimestamp = $prevTimestamp ? (int)$prevTimestamp : $startzeit;
                 $impuls->setRundenzeit(max(0, $impuls->getTimestamp() - $prevTimestamp));
+                
+                $medalReached = '';
+                $ak = $teilnehmer->getAltersklasse();
+                if ($teilnehmer->getMeter() > 0) {
+                    if ($ak->getGold() !== null && $teilnehmer->getMeter() == $ak->getGold()) {
+                        $medalReached = 'Gold';
+                    } elseif ($ak->getSilber() !== null && $teilnehmer->getMeter() == $ak->getSilber()) {
+                        $medalReached = 'Silber';
+                    } elseif ($ak->getBronze() !== null && $teilnehmer->getMeter() == $ak->getBronze()) {
+                        $medalReached = 'Bronze';
+                    } elseif ($ak->getUrkunde() !== null && $teilnehmer->getMeter() == $ak->getUrkunde()) {
+                        $medalReached = 'Urkunde';
+                    }
+                }
+                
                 $result[] = [
                     "id" => $impuls->getTeilnehmer()->getId(),
                     "gesamtname" => $impuls->getTeilnehmer()->getGesamtname(),
@@ -464,6 +495,7 @@ class EA_ApiController extends EA_Controller
                     "zeit" => date("H:i:s", $impuls->getTimestamp()),
                     "rundezeit" => $impuls->getRundenzeit("H:i:s"),
                     "gesamtzeit" => $impuls->getGesamtzeit("H:i:s"),
+                    "medalReached" => $medalReached,
                 ];
             }
         }
