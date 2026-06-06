@@ -20,27 +20,22 @@ class EA_FemaleFirstnameRepository extends EA_Repository
 
     public function isFemaleFirstname(string $bezeichnung, int $maxDistance = 2): bool
     {
-        // 1. Zuerst LIKE-Suche (Teilstring)
+        /**
+         * We do an exact case-insensitive match here.
+         * Using LIKE '%name%' would match any female name containing the input (e.g. 'Al' -> 'Alice').
+         * Using Levenshtein distance causes male names to be incorrectly matched 
+         * as female (e.g. 'Paul' -> 'Paula' [dist 1], 'Tim' -> 'Kim' [dist 1], 'Mario' -> 'Maria' [dist 1]).
+         */
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('f')
             ->from(EA_FemaleFirstname::class, 'f')
-            ->where($qb->expr()->like('f.firstname', ':name'))
-            ->setParameter('name', '%' . $bezeichnung . '%')
+            ->where('f.firstname = :name')
+            ->setParameter('name', trim($bezeichnung))
             ->setMaxResults(1);
+        
         $result = $qb->getQuery()->getOneOrNullResult();
 
-        if ($result !== null) {
-            return true;
-        }
-
-        // 2. Wenn kein LIKE-Treffer: unscharfe Suche mit Levenshtein
-        $all = $this->entityManager->getRepository(EA_FemaleFirstname::class)->findAll();
-        foreach ($all as $firstname) {
-            if (levenshtein(mb_strtolower($bezeichnung), mb_strtolower($firstname->getFirstname())) <= $maxDistance) {
-                return true;
-            }
-        }
-        return false;
+        return $result !== null;
     }
 
 }
