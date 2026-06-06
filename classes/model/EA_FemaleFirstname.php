@@ -467,7 +467,8 @@ class EA_FemaleFirstname
             'Franzi',
             'Merit',
             'Ellie',
-            'Julie'
+            'Julie',
+            'Dora',
         ];
 
         sort($names, SORT_LOCALE_STRING);

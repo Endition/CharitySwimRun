@@ -22,7 +22,7 @@
                         <b>Geschlecht</b>:<br/> {$EA_Starter->getGeschlecht()}
                     </div>
                     <div class="col-2">
-                       <b> Geburtsdatum</b>:<br/> {$EA_Starter->getGeburtsdatum()->format("d.m.Y.")}
+                       <b> Geburtsdatum</b>:<br/> {$EA_Starter->getGeburtsdatum()->format("d.m.Y")}
                     </div>
                     <div class="col-2">
                         <b>Startgeld</b>:<br/> {$EA_Starter->getStartgeld()} € zzgl. {$EA_Starter->getTranspondergeld()} € Pfand 
