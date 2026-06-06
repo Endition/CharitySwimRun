@@ -34,7 +34,7 @@ class EA_Starter
     private ?int $transponder = null;
 
     #[ORM\Column(type: Types::INTEGER,name:'Status')]
-    private int $status = self::STATUS_ANGEMELDET;
+    private int $status = self::STATUS_STARTUNTERLAGEN_ABHEHOLT;
 
     #[ORM\Column(type: Types::INTEGER,name:'Gesamtplatz')]
     private int $gesamtplatz = 99999;

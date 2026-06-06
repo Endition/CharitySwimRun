@@ -18,6 +18,11 @@
 							<li> {$ip}</li>
 						{/foreach}
 					</ul>
+					<hr>
+					<h6>Windows Firewall Freigaben</h6>
+					<p>Sollte die Anwendung von anderen Geräten im Netzwerk nicht erreichbar sein, blockiert vermutlich die Windows-Firewall den eingehenden Datenverkehr. Für die Weboberfläche wird Port <strong>8080</strong> benötigt, für die direkte Datenbankverbindung der RFID-Anlage Port <strong>3306</strong>.</p>
+					<p><strong>Lösung:</strong> Führen Sie diese Befehle in einer als Administrator gestarteten PowerShell aus, um beide Ports freizugeben:</p>
+					<code class='d-block bg-dark text-white p-2 mt-2 rounded'>New-NetFirewallRule -DisplayName "Docker Web Port 8080" -Direction Inbound -LocalPort 8080 -Protocol TCP -Action Allow<br>New-NetFirewallRule -DisplayName "Docker MySQL Port 3306" -Direction Inbound -LocalPort 3306 -Protocol TCP -Action Allow</code>
 				</div>
 			</div>
 		</div>
