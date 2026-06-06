@@ -3,126 +3,200 @@ namespace CharitySwimRun\classes\controller;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManager;
+use SplFileObject;
 
 use CharitySwimRun\classes\model\EA_AgeGroupRepository;
-
 use CharitySwimRun\classes\model\EA_ConfigurationRepository;
 use CharitySwimRun\classes\model\EA_Starter;
 use CharitySwimRun\classes\model\EA_Message;
 
 class EA_ImportController extends EA_Controller
 {
-    public function __construct( EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager)
     {
         parent::__construct($entityManager);
     }
 
-    
     public function getPageImport(): string
     {
-        $messages = [];
-        if (isset($_POST['sendImportData']) && $_FILES['datei'] !== null) {
+        if (isset($_POST['sendImportData']) && isset($_FILES['datei'])) {
             $datei = $_FILES['datei'];
-            $trennzeichen = $_POST['trennzeichen'];
-            $ignorieren = isset($_POST['ignorieren']) ? "ja": "nein";
-            $error = false;
+            $trennzeichen = $_POST['trennzeichen'] ?? ';';
+            $ignorieren = isset($_POST['ignorieren']) ? true : false;
+            
+            if ($datei['error'] !== UPLOAD_ERR_OK) {
+                $this->EA_Messages->addMessage("Fehler beim Hochladen der Datei. Fehlercode: " . $datei['error'], 193534574, EA_Message::MESSAGE_ERROR);
+                return $this->EA_FR->getFormImport();
+            }
 
-            if (strtolower(substr($datei ['name'], -4)) !== ".csv") {
-                $this->EA_Messages->addMessage("Datei muss eine .csv Datei sein.",193534574,EA_Message::MESSAGE_ERROR);            
-                $error = true;
+            $mime_types = ['text/csv', 'text/plain', 'application/csv', 'text/comma-separated-values', 'application/excel', 'application/vnd.ms-excel', 'application/vnd.msexcel'];
+            $fileExtension = strtolower(pathinfo($datei['name'], PATHINFO_EXTENSION));
+
+            if ($fileExtension !== 'csv' && !in_array($datei['type'], $mime_types)) {
+                $this->EA_Messages->addMessage("Die hochgeladene Datei muss eine .csv Datei sein.", 193534574, EA_Message::MESSAGE_ERROR);
             } else {
-                move_uploaded_file($datei ['tmp_name'], "einlesen.csv"); // ausgewählte Datei muss temporäre Hochgeladen werden
-                // da der Direktzugriff verboten ist
-                // ###########Daten in eine Array laden###########################
-               $handle = fopen("einlesen.csv", "r");
-                $i = 1;
-                if ($handle !== false) {
-                    $this->EA_Messages->addMessage("Datei erfolgreich geöffnet.",193534574,EA_Message::MESSAGE_SUCCESS);
-                    // Kopfzeile überspringen, falls gewünscht
-                    if ($ignorieren === "ja") {
-                        fgetcsv($handle, 1000, $trennzeichen);
-                    }
-                    while (($data = fgetcsv($handle, 1000, $trennzeichen)) !== false) {
-                            foreach ($data as &$field) {
-                                #Datenbank is not UTF-8, deaktiviatet
-                              #  $field = mb_convert_encoding($field, 'UTF-8', 'auto');
-                            }
-                        if ($data[2] !== "" && $data[3] !== "" && $data[4] !== "" && $data[5] !== "" && $data[6] !== "") {
-                            $this->EA_Messages->addMessage("Unbedingt unter Teilnehmerübersicht die importierten Daten prüfen",235254753757,EA_Message::MESSAGE_INFO);
-                            $EA_T = $this->initiateTeilnehmerFromCSV($messages, $data);
-                            $answer = $this->EA_StarterRepository->create($EA_T);
-                            if ($answer === true) {
-                                $this->EA_Messages->addMessage("Zeile " . $i . " : Starter " . $data[1] . " " . $data[2]  . " erfolgreich angemeldet",1335375234,EA_Message::MESSAGE_SUCCESS);
-                            } else {
-                                $this->EA_Messages->addMessage("Zeile " . $i . " : Starternummer " . $data[1]  . " " . $data[2] . " " . $data[3] . " NICHT erfolgreich angemeldet",1235567775,EA_Message::MESSAGE_WARNING);
-                            }
+                $successCount = 0;
+                $errorCount = 0;
+                $errorMessages = [];
+                
+                try {
+                    $file = new SplFileObject($datei['tmp_name'], 'r');
+                    $file->setFlags(SplFileObject::READ_CSV | SplFileObject::READ_AHEAD | SplFileObject::SKIP_EMPTY | SplFileObject::DROP_NEW_LINE);
+                    $file->setCsvControl($trennzeichen);
+
+                    $konfiguration = $this->EA_ConfigurationRepository->load();
+                    
+                    foreach ($file as $index => $data) {
+                        // Header überspringen
+                        if ($index === 0 && $ignorieren) {
+                            continue;
                         }
-                        $this->EA_Messages->addMessage("Zeile überspringen. Nicht alle Werte ausgefüllt",456567346346345,EA_Message::MESSAGE_ERROR);
-                        $i++;
+                        
+                        if (!is_array($data) || count($data) < 7) {
+                            // Wahrscheinlich eine leere Zeile oder komplett fehlerhaft
+                            continue;
+                        }
+
+                        try {
+                            foreach ($data as &$field) {
+                                // Convert ISO-8859-1/Windows-1252 from Excel to UTF-8 for the DB
+                                $field = mb_convert_encoding($field, 'UTF-8', 'auto');
+                            }
+                            unset($field);
+                            
+                            $mappedData = [
+                                'startnummer'  => $data[0] ?? null,
+                                'transponder'  => $data[1] ?? null,
+                                'vorname'      => trim($data[2] ?? ""),
+                                'name'         => trim($data[3] ?? ""),
+                                'geburtsdatum' => trim($data[4] ?? ""),
+                                'geschlecht'   => trim($data[5] ?? ""),
+                                'strecke'      => trim($data[6] ?? ""),
+                                'startgruppe'  => $data[7] ?? 0,
+                                'plz'          => $data[8] ?? null,
+                                'ort'          => $data[9] ?? null,
+                                'strasse'      => $data[10] ?? null,
+                                'verein'       => trim($data[11] ?? ""),
+                                'email'        => trim($data[12] ?? ""),
+                                'mannschaft'   => trim($data[13] ?? ""),
+                                'status'       => $data[14] ?? null,
+                            ];
+
+                            if (empty($mappedData['vorname']) || empty($mappedData['name']) || empty($mappedData['strecke'])) {
+                                $errorCount++;
+                                $errorMessages[] = "Zeile " . ($index + 1) . ": Name, Vorname oder Strecke fehlt.";
+                                continue;
+                            }
+
+                            $EA_T = $this->initiateTeilnehmerFromCSV($mappedData, $konfiguration);
+                            
+                            // Persist directly to avoid flushing on every single row
+                            $this->entityManager->persist($EA_T);
+                            $successCount++;
+
+                            // Batch flush for performance
+                            if ($successCount % 100 === 0) {
+                                $this->entityManager->flush();
+                            }
+
+                        } catch (\Throwable $e) {
+                            $errorCount++;
+                            $errorMessages[] = "Zeile " . ($index + 1) . " Fehler: " . $e->getMessage();
+                        }
                     }
-                    fclose($handle);
-                    unlink("einlesen.csv");
-                } else {
-                    $this->EA_Messages->addMessage("Datei NICHT erfolgreich geöffnet",193534574,EA_Message::MESSAGE_ERROR);
-                    $error = true;
+                    
+                    // Final flush
+                    $this->entityManager->flush();
+                    
+                    // Clear query/result cache if necessary
+                    if (method_exists($this->entityManager->getConfiguration(), 'getResultCache') && $this->entityManager->getConfiguration()->getResultCache()) {
+                        $this->entityManager->getConfiguration()->getResultCache()->clear();
+                    }
+
+                    if ($successCount > 0) {
+                        $this->EA_Messages->addMessage("Erfolgreich $successCount Teilnehmer importiert.", 1001, EA_Message::MESSAGE_SUCCESS);
+                    }
+                    if ($errorCount > 0) {
+                        $errorDetails = implode("<br>", array_slice($errorMessages, 0, 10));
+                        if ($errorCount > 10) {
+                            $errorDetails .= "<br>... und " . ($errorCount - 10) . " weitere Fehler.";
+                        }
+                        $this->EA_Messages->addMessage("$errorCount Fehler aufgetreten:<br>" . $errorDetails, 1002, EA_Message::MESSAGE_WARNING);
+                    }
+
+                } catch (\Exception $e) {
+                    $this->EA_Messages->addMessage("Fehler beim Verarbeiten der CSV-Datei: " . $e->getMessage(), 193534574, EA_Message::MESSAGE_ERROR);
                 }
             }
         }
-        $content = $this->EA_FR->getFormImport();
-        return $content;
-    }
-    
-        /*
-     * Import from CSV, Vereine Strecken AKS übergeben, damit sie nicht jedes mal geladen werden müssen
-     */
-
-     private function initiateTeilnehmerFromCSV(&$messages, $data): EA_Starter
-     {
-         $konfiguration = $this->EA_ConfigurationRepository->load();
-         $EA_T = null;
-         $EA_T = new EA_Starter();
-         $EA_T->setKonfiguration($konfiguration);
-         if(!empty($data[0])){
-            $EA_T->setStartnummer(intval($data[0]));
-         }
-         $transponder = ($konfiguration->getTransponder() === false) ? $EA_T->getStartnummer() : intval($data[1]);
-         $EA_T->setTransponder($transponder);
-         $EA_T->setName(trim($data[3]) );
-         $EA_T->setVorname(trim($data[2]) );
-         $geburtsdatum = (is_numeric($data[4]) && strlen($data[4]) === 4) ? "01.01." . $data[4] : $data[4];
-         $EA_T->setGeburtsdatum(new DateTimeImmutable($geburtsdatum));
         
-         $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($EA_T->getGeburtsdatum());
-         $EA_T->setAltersklasse($altersklasse);
-         
-         $EA_T->setGeschlecht(strtoupper(trim($data[5])));
-         if($data[13] !== ""){
-            $mannschaft = $this->EA_TeamRepository->loadById($data[13]);
-            $EA_T->setMannschaft($mannschaft);
-         }
-         if($data[11] !== ""){
-         $verein = $this->EA_ClubRepository->loadByBezeichnung(mb_convert_encoding(trim($data[11]), 'UTF-8'));
-         $EA_T->setVerein($verein);
-         }
+        return $this->EA_FR->getFormImport();
+    }
 
-         if(ctype_digit($data[6]) && intval($data[6]) > 0){
-            $strecke = $this->EA_DistanceRepository->loadById(intval($data[6]));
-         } else {
-            $strecke = $this->EA_DistanceRepository->loadByBezeichnungLang(mb_convert_encoding(trim($data[6]), 'UTF-8'));
-         }
-         $strecke = $this->EA_DistanceRepository->loadById(intval($data[6]));
-         $EA_T->setStrecke($strecke);
+    private function initiateTeilnehmerFromCSV(array $data, \CharitySwimRun\classes\model\EA_Configuration $konfiguration): EA_Starter
+    {
+        $EA_T = new EA_Starter();
+        $EA_T->setKonfiguration($konfiguration);
 
-         $EA_T->setStartgruppe(intval($data[7]));
-         $EA_T->setMail(trim($data [12]));
-         $EA_T->setPlz(intval($data[8]));
-         $EA_T->setWohnort(mb_convert_encoding($data[9], 'UTF-8') );
-         $EA_T->setStrasse(mb_convert_encoding($data[10], 'UTF-8') );
-         $status = ($data[14] < 10) ? 10 : intval($data[13]);
-         $EA_T->setStatus($status);
-         $startzeit = ($konfiguration->getStarttyp() === "aba") ? new DateTimeImmutable() : null;
-         $EA_T->setStartzeit($startzeit);
-         return $EA_T;
-     }
+        if (!empty($data['startnummer'])) {
+            $EA_T->setStartnummer(intval($data['startnummer']));
+        }
 
+        $transponder = ($konfiguration->getTransponder() === false) ? $EA_T->getStartnummer() : (!empty($data['transponder']) ? intval($data['transponder']) : null);
+        $EA_T->setTransponder($transponder);
+
+        $EA_T->setName($data['name']);
+        $EA_T->setVorname($data['vorname']);
+
+        $geburtsdatum = (is_numeric($data['geburtsdatum']) && strlen($data['geburtsdatum']) === 4) ? "01.01." . $data['geburtsdatum'] : $data['geburtsdatum'];
+        try {
+            $EA_T->setGeburtsdatum(new DateTimeImmutable($geburtsdatum));
+        } catch (\Exception $e) {
+            $EA_T->setGeburtsdatum(new DateTimeImmutable());
+        }
+
+        $altersklasse = $this->EA_AgeGroupRepository->findByGeburtsjahr($EA_T->getGeburtsdatum());
+        $EA_T->setAltersklasse($altersklasse);
+
+        $EA_T->setGeschlecht(strtoupper($data['geschlecht']));
+
+        if (!empty($data['mannschaft'])) {
+            $mannschaft = $this->EA_TeamRepository->loadById(intval($data['mannschaft']));
+            if ($mannschaft) {
+                $EA_T->setMannschaft($mannschaft);
+            }
+        }
+
+        if (!empty($data['verein'])) {
+            $verein = $this->EA_ClubRepository->loadByBezeichnung($data['verein']);
+            $EA_T->setVerein($verein);
+        }
+
+        if (!empty($data['strecke'])) {
+            if (ctype_digit(strval($data['strecke'])) && intval($data['strecke']) > 0) {
+                $strecke = $this->EA_DistanceRepository->loadById(intval($data['strecke']));
+            } else {
+                $strecke = $this->EA_DistanceRepository->loadByBezeichnungLang($data['strecke']);
+            }
+            if ($strecke) {
+                $EA_T->setStrecke($strecke);
+            } else {
+                throw new \Exception("Strecke '" . $data['strecke'] . "' nicht gefunden.");
+            }
+        }
+
+        $EA_T->setStartgruppe(intval($data['startgruppe']));
+        $EA_T->setMail(empty($data['email']) ? null : $data['email']);
+        $EA_T->setPlz(empty($data['plz']) ? null : intval($data['plz']));
+        $EA_T->setWohnort(empty($data['ort']) ? null : $data['ort']);
+        $EA_T->setStrasse(empty($data['strasse']) ? null : $data['strasse']);
+
+        $status = (!empty($data['status']) && intval($data['status']) >= 10) ? intval($data['status']) : 30;
+        $EA_T->setStatus($status);
+
+        $startzeit = ($konfiguration->getStarttyp() === "aba") ? new DateTimeImmutable() : null;
+        $EA_T->setStartzeit($startzeit);
+
+        return $EA_T;
+    }
 }
