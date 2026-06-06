@@ -45,7 +45,7 @@
 }
 </style>
 
-<div class="container p-4 mx-auto" style="max-width: 900px;">
+<div class="container p-4 mx-auto" style="max-width: 1400px;">
     <div class="card shadow-sm border-0 mb-4 rounded-4">
         <div class="card-body text-center p-5">
             <h2 class="mb-3 fw-bold">Selbstauskunft</h2>
@@ -122,8 +122,8 @@
                     
                     /* Constructs and prepends the success card with detailed participant data. */
                     var successCard = $(
-                        '<div class="result-card new-kiosk-entry d-flex flex-column align-items-start flex-xl-row justify-content-between align-items-xl-center rounded-3 p-4 mb-3 border border-success border-5 border-top-0 border-end-0 border-bottom-0 shadow-sm fs-4">' +
-                            '<div class="mb-3 mb-xl-0 text-secondary fs-5">' + uhrzeit + ' Uhr</div>' +
+                        '<div class="result-card new-kiosk-entry d-flex flex-column align-items-start flex-lg-row justify-content-between align-items-lg-center rounded-3 p-4 mb-3 border border-success border-5 border-top-0 border-end-0 border-bottom-0 shadow-sm fs-4">' +
+                            '<div class="mb-3 mb-lg-0 text-secondary fs-5">' + uhrzeit + ' Uhr</div>' +
                             '<div class="d-flex flex-wrap align-items-center gap-3">' +
                                 '<span>StNr <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3 py-2 ms-1">' + data.startnummer + '</span></span>' +
                                 '<span>Meter <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3 py-2 ms-1">' + data.meter + 'm</span></span>' +
