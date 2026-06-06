@@ -252,7 +252,7 @@ class EA_StarterRepository extends EA_Repository
         return $query->getResult();
     }
 
-    public function loadListSmartyZugriff(?int $streckeId, ?int $altersklasseId, ?string $geschlecht, ?string $platzfilter = null, string $order = "gesamtplatz", ?int $moreHitsThan = null): array
+    public function loadListSmartyZugriff(?int $streckeId, ?int $altersklasseId, ?string $geschlecht, ?string $platzfilter = null, string $order = "gesamtplatz", ?int $moreHitsThan = null, string $orderDirection = "ASC"): array
     {
         $strecke = null;
         $altersklasse = null;
@@ -268,7 +268,7 @@ class EA_StarterRepository extends EA_Repository
         if($platzfilter){
             $limit = 3;
         }
-        return $this->loadList($strecke,$altersklasse,$geschlecht,null,null,null,null,$order,"ASC",null,null,null,null,null,null,null,null,$limit,null,$moreHitsThan);
+        return $this->loadList($strecke,$altersklasse,$geschlecht,null,null,null,null,$order,$orderDirection,null,null,null,null,null,null,null,null,$limit,null,$moreHitsThan);
     }
 
     public function delete(EA_Starter $Teilnehmer): void

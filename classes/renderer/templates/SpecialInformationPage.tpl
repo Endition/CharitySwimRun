@@ -292,7 +292,7 @@
                 <h4 class="card-title">Starter über 10.000m</h4>
             </div>
             <div class="card-body">
-                {assign var="starter" value=$teilnehmerRepository->loadListSmartyZugriff(null, null, null,null,'gesamtplatz',200) nocache}
+                {assign var="starter" value=$teilnehmerRepository->loadListSmartyZugriff(null, null, null,null,'impulseCache',200,'DESC') nocache}
                 <div class="table-responsive">
                     <table class="table table-sm table-striped table-hover mb-0">
                         <thead class="text-muted">

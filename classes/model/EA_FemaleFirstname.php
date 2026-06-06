@@ -11,12 +11,12 @@ class EA_FemaleFirstname
 {
 
 
-    #[ORM\Column(type: Types::INTEGER,name:"uid")]
+    #[ORM\Column(type: Types::INTEGER, name: "uid")]
     #[ORM\GeneratedValue]
     #[ORM\Id]
     private ?int $id = null;
-    
-    #[ORM\Column(type: Types::STRING,name:"firstname")]
+
+    #[ORM\Column(type: Types::STRING, name: "firstname")]
     private string $firstname = "";
 
 
@@ -461,7 +461,13 @@ class EA_FemaleFirstname
             'Ayse',
             'Agnes',
             'Anna',
-            'Stephanie'
+            'Stephanie',
+            'Mailin July',
+            'Anda',
+            'Franzi',
+            'Merit',
+            'Ellie',
+            'Julie'
         ];
 
         sort($names, SORT_LOCALE_STRING);
