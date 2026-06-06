@@ -21,32 +21,50 @@ class EA_FemaleFirstname
 
 
 
+    /**
+     * Initialize a new female firstname entity.
+     */
     public function __construct(?int $id = null, string $firstname = "")
     {
         $this->id = $id;
         $this->firstname = $firstname;
     }
 
+    /**
+     * Get the identifier of the entity.
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Set the identifier of the entity.
+     */
     public function setId(?int $id)
     {
         $this->id = $id;
     }
 
+    /**
+     * Get the firstname.
+     */
     public function getFirstname(): string
     {
         return $this->firstname;
     }
 
+    /**
+     * Set the firstname.
+     */
     public function setFirstname(string $firstname): void
     {
         $this->firstname = $firstname;
     }
 
+    /**
+     * Get an array of standard female firstnames.
+     */
     public static function getStandardElemente(): array
     {
         $names = [
@@ -441,7 +459,9 @@ class EA_FemaleFirstname
             'Zora',
             'Zeynep',
             'Ayse',
-            'Agnes'
+            'Agnes',
+            'Anna',
+            'Stephanie'
         ];
 
         sort($names, SORT_LOCALE_STRING);
@@ -455,6 +475,9 @@ class EA_FemaleFirstname
         return $list;
     }
 
+    /**
+     * Get the string representation of the entity.
+     */
     public function __toString()
     {
         return $this->getFirstname();

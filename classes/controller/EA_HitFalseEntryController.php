@@ -28,6 +28,7 @@ class EA_HitFalseEntryController extends EA_Controller
     private function zuordneFehlbuchung(): void
     {
         if (!isset($_POST['tpaction']) || !is_array($_POST['tpaction'])) {
+            $this->EA_Messages->addMessage("Bitte wählen Sie mindestens eine Fehlbuchung über die Checkbox aus.", 168434523, EA_Message::MESSAGE_WARNING);
             return;
         }
 
@@ -63,6 +64,7 @@ class EA_HitFalseEntryController extends EA_Controller
     private function deleteFehlbuchung(): void
     {
         if (!isset($_POST['tpaction']) || !is_array($_POST['tpaction'])) {
+            $this->EA_Messages->addMessage("Bitte wählen Sie mindestens eine Fehlbuchung über die Checkbox aus.", 168434524, EA_Message::MESSAGE_WARNING);
             return;
         }
 
